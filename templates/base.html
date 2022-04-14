@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" href="/static/img/OpenLoopBlack.png">
+    <link rel="apple-touch-startup-image" href="/static/img/OpenLoopBlack.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="" content="">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="icon" type="image/png" sizes="500x500" href="/static/img/OpenLoopBlack.png">
+    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/static/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/static/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/fonts/fontawesome5-overrides.min.css">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <div class="sidebar-brand-icon"><img src="/static/img/OpenLoop.png" width="60px" style="margin-top: -5px;"></div>
+                <div class="sidebar-brand-text mx-3"><span style="margin-right: 0px;">OpenLoop</span></div>
+                </a>
+                <hr class="sidebar-divider my-0" />
+                <ul id="accordionSidebar" class="navbar-nav text-light">
+                    <li class="nav-item"><a class="nav-link" href="../"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <hr class="sidebar-divider" />
+                    <div class="sidebar-heading">
+                        <p class="mb-0">INTERFACE</p>
+                    </div>
+                    <li class="nav-item">
+                        <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1" role="button"><i class="fas fa-cog"></i><span>Settings</span></a>
+                            <div id="collapse-1" class="collapse">
+                                <div class="bg-white border rounded py-2 collapse-inner">
+                                    <h6 class="collapse-header">SETTINGS</h6><a class="collapse-item" href="../about">About</a><a class="collapse-item" href="../plugins">Plugins</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-2" href="#collapse-2" role="button"><i class="fas fa-wrench"></i><span>Utilities</span></a>
+                            <div id="collapse-2" class="collapse">
+                                <div class="bg-white border rounded py-2 collapse-inner">
+                                    <h6 class="collapse-header">CUSTOM UTILITIES:</h6><a class="collapse-item" href="../upload">Upload Plugins</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <hr class="sidebar-divider" />
+                    <div class="sidebar-heading">
+                        <p class="mb-0">Addons</p>
+                    </div>
+                    <li class="nav-item">
+                        <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-3" href="#collapse-3" role="button"><i class="fas fa-box-open"></i><span>Plugins</span></a>
+                            <div id="collapse-3" class="collapse">
+                                <div class="bg-white border rounded py-2 collapse-inner">
+                                    {% for i in navbar %}
+                                        <h6 class="collapse-header">{{i}}</h6>
+                                        {% for l in navbar[i] %}
+                                            <a class="collapse-item" href="{{l.href}}">{{l.name}}</a>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <hr class="sidebar-divider" />
+                </ul>
+                <div class="text-center d-none d-md-inline"><button id="sidebarToggle" class="btn rounded-circle border-0" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="navbar-nav flex-nowrap ms-auto">
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#">
+                                        {% if not alerts==[] and alerts.length() > 0 %}
+                                        <span class="badge bg-danger badge-counter" id="notnum">{{alerts.length()}}</span>
+                                        {% endif %}
+                                        <i class="fas fa-bell fa-fw"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                        <h6 class="dropdown-header">alerts center</h6>
+                                        <div id="clear-me">
+                                            {% for i in alerts %}
+                                            <a class="dropdown-item d-flex align-items-center" href="/plugins/{{i.plugin}}">
+                                                <div class="me-3">
+                                                    <div class="bg-{{i.color}} icon-circle"><i class="{{i.icon}} text-white"></i></div>
+                                                </div>
+                                                <div><span class="small text-gray-500">{{i.combo}}</span>
+                                                    <p>{{i.description}}</p>
+                                                </div>
+                                            </a>
+                                            {% endfor %}
+                                        </div>
+                                        <a class="dropdown-item text-center small text-gray-500" href="#" id="clear">Clear Notifications</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
+                            </li>
+                            <li class="nav-item dropdown no-arrow"></li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="container-fluid">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Made with Flask as part of <a href="https://github.com/CycloneBiz">Cyclone</a></span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/js/bs-init.js"></script>
+    <script src="/static/js/theme.js"></script>
+</body>
+
+</html>
