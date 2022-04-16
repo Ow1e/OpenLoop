@@ -14,11 +14,19 @@ class AlertManager(list):
     """This is loaded by the loader, it has properties of a list but automatically sets a export function to ReFlow"""
     def __init__(self, shared):
         super().__init__()
-        shared.reflow["alerts"] = {"inner": self.print_hi}
-        self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "testing!!!!"))
+        shared.reflow["alerts"] = {"inner": self.exp_html, "length": self.exp_len}
+        #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
 
-    def print_hi(self):
+    def exp_html(self):
         p = ""
         for i in self:
             p += i.str_val
         return p
+
+    def exp_len(self):
+        x = len(self)
+        if x == 0:
+            x = ""
+        elif x > 9:
+            x = "9+"
+        return x
