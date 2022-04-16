@@ -2,6 +2,7 @@ from openloop.config import check as configCheck
 from openloop.database import Database
 from openloop.web import Web_Handler
 from openloop.reflow import ReFlow, ReFlow_Serve
+import openloop.crossweb as crossweb
 
 def load_data(app):
     """

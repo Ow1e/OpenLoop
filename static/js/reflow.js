@@ -1,9 +1,8 @@
 console.log("Running ReflowJS wrapper V1")
 
 async function reflow(req, type, elem){
-    let response = await fetch("/reflow/"+req);
-    if (response.ok) { // if HTTP-status is 200-299
-        // get the response body (the method explained below)
+    let response = await fetch("/reflow/refresh/"+req);
+    if (response.ok) {
         let json = await response.json();
         if (type=="innerHTML"){
             elem.innerHTML = json["value"]
