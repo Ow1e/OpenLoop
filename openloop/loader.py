@@ -1,4 +1,5 @@
 from openloop.alerts import AlertManager
+from openloop.auth import Auth_Handler
 from openloop.config import check as configCheck
 from openloop.database import Database
 from openloop.web import Web_Handler
@@ -13,7 +14,9 @@ def load_data(app):
         def __init__(self) -> None:
             self.app = app
             self.config = configCheck()
-            self.database = Database(self).db  
+            self.database = Database(self)
+            self.db = self.database.db
+            self.auth = Auth_Handler(self)
 
             self.reflow = ReFlow()
             app.register_blueprint(ReFlow_Serve(self.reflow).web, url_prefix="/reflow")
@@ -24,4 +27,5 @@ def load_data(app):
 
             app.register_blueprint(Web_Handler().web)
 
-    SharePoint()
+    share = SharePoint()
+    share.db.create_all()

@@ -2,11 +2,16 @@ from types import BuiltinFunctionType, FunctionType, MethodType
 from flask import Blueprint, jsonify
 from datetime import datetime
 
+def comp_time():
+    time = datetime.now().time()
+    return f"{time.hour}:{time.minute}:{time.second}"
+
 class ReFlow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = {
-            "time": datetime.now
+            "time": datetime.now,
+            "timec": comp_time
         }
 
 class ReFlow_Serve:
