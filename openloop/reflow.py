@@ -1,4 +1,4 @@
-from types import BuiltinFunctionType
+from types import BuiltinFunctionType, FunctionType, MethodType
 from flask import Blueprint, jsonify
 from datetime import datetime
 
@@ -34,6 +34,10 @@ class ReFlow_Serve:
             if current == {}:
                 current = None
             elif type(current) == BuiltinFunctionType:
+                current = str(current())
+            elif type(current) == MethodType:
+                current = str(current())
+            elif type(current) == FunctionType:
                 current = str(current())
 
             return {
