@@ -34,3 +34,23 @@ document.addEventListener('DOMContentLoaded', function() {
         setInterval(flow, time, req, type, serve)
 	}
 }, false);
+
+document.addEventListener('DOMContentLoaded', function() {
+
+	var serverd = document.querySelectorAll('[flow-click]');
+
+	for (var serve of serverd) {
+		var id = serve.getAttribute("flow-click")
+        serve.onclick = async function (){
+            let response = await fetch("/flow/refresh/"+id);
+            if (response.ok) {
+                let json = await response.json();
+                if (json["value"]!=null){
+                    window.location = json["value"]
+                }
+              } else {
+                alert("HTTP-Error: " + response.status);
+            }
+        }
+	}
+}, false);

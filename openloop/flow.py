@@ -17,13 +17,18 @@ def cpu_str():
         cpu_hist.append(val)
     return str(val)+"%"
 
+def debug_test():
+    print("Called debug test")
+    return "https://stackoverflow.com"
+
 class Flow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = {
             "time": datetime.now,
             "timec": comp_time,
-            "cpu": cpu_str
+            "cpu": cpu_str,
+            "debug": debug_test
         }
 
 class Flow_Serve:
