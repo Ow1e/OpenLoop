@@ -17,7 +17,7 @@ def cpu_str():
         cpu_hist.append(val)
     return str(val)+"%"
 
-class ReFlow(dict):
+class Flow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = {
@@ -26,9 +26,9 @@ class ReFlow(dict):
             "cpu": cpu_str
         }
 
-class ReFlow_Serve:
+class Flow_Serve:
     def __init__(self, reflow : dict) -> None:
-        api = Blueprint("reflow", __name__)
+        api = Blueprint("flow", __name__)
         self.web = api
 
         @api.route("/")

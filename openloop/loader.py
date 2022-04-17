@@ -3,7 +3,7 @@ from openloop.auth import Auth_Handler
 from openloop.config import check as configCheck
 from openloop.database import Database
 from openloop.web import Web_Handler
-from openloop.reflow import ReFlow, ReFlow_Serve
+from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
 
 def load_data(app):
@@ -18,8 +18,8 @@ def load_data(app):
             self.db = self.database.db
             self.auth = Auth_Handler(self)
 
-            self.reflow = ReFlow()
-            app.register_blueprint(ReFlow_Serve(self.reflow).web, url_prefix="/reflow")
+            self.reflow = Flow()
+            app.register_blueprint(Flow_Serve(self.reflow).web, url_prefix="/flow")
 
             self.alerts = AlertManager(self)
 

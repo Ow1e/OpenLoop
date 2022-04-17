@@ -1,7 +1,7 @@
-console.log("Running ReflowJS wrapper V1")
+console.log("Running FlowJS wrapper V1")
 
-async function reflow(req, type, elem){
-    let response = await fetch("/reflow/refresh/"+req);
+async function flow(req, type, elem){
+    let response = await fetch("/flow/refresh/"+req);
     if (response.ok) {
         let json = await response.json();
         if (type=="innerHTML"){
@@ -16,12 +16,12 @@ async function reflow(req, type, elem){
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	var serverd = document.querySelectorAll('[reflow-serv]');
+	var serverd = document.querySelectorAll('[flow-serv]');
 
 	for (var serve of serverd) {
-		var time = serve.getAttribute("reflow-time")
-        var req = serve.getAttribute("reflow-serv")
-        var type = serve.getAttribute("reflow-type")
+		var time = serve.getAttribute("flow-time")
+        var req = serve.getAttribute("flow-serv")
+        var type = serve.getAttribute("flow-type")
 
         if (type==null){
             var type = "innerHTML"
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (time==null){
             var time = 1000
         }
-        reflow(req, type, serve)
-        setInterval(reflow, time, req, type, serve)
+        flow(req, type, serve)
+        setInterval(flow, time, req, type, serve)
 	}
 }, false);
