@@ -1,6 +1,7 @@
 from types import BuiltinFunctionType, FunctionType, MethodType
 from flask import Blueprint, jsonify
 from datetime import datetime
+import psutil
 
 def comp_time():
     time = datetime.now().time()
@@ -11,7 +12,8 @@ class ReFlow(dict):
         super().__init__()
         self["defaults"] = {
             "time": datetime.now,
-            "timec": comp_time
+            "timec": comp_time,
+            "cpu": psutil.cpu_percent
         }
 
 class ReFlow_Serve:
