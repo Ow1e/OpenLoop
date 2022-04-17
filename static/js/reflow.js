@@ -6,6 +6,8 @@ async function reflow(req, type, elem){
         let json = await response.json();
         if (type=="innerHTML"){
             elem.innerHTML = json["value"]
+        } else if (type=="width"){
+            elem.style.width = json["value"]
         }
       } else {
         alert("HTTP-Error: " + response.status);
@@ -28,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (time==null){
             var time = 1000
         }
-
         reflow(req, type, serve)
         setInterval(reflow, time, req, type, serve)
 	}

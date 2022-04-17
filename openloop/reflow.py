@@ -7,13 +7,23 @@ def comp_time():
     time = datetime.now().time()
     return f"{time.hour}:{time.minute}:{time.second}"
 
+global cpu_hist
+cpu_hist = []
+def cpu_str():
+    val = psutil.cpu_percent()
+    if val == 0 or val == 100:
+        val = cpu_hist[len(cpu_hist)-1]
+    else:
+        cpu_hist.append(val)
+    return str(val)+"%"
+
 class ReFlow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = {
             "time": datetime.now,
             "timec": comp_time,
-            "cpu": psutil.cpu_percent
+            "cpu": cpu_str
         }
 
 class ReFlow_Serve:
@@ -45,7 +55,7 @@ class ReFlow_Serve:
             elif type(current) == MethodType:
                 current = str(current())
             elif type(current) == FunctionType:
-                current = str(current())
+                current = current()
 
             return {
                 "item": element,
