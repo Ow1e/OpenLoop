@@ -18,14 +18,14 @@ def load_data(app):
             self.db = self.database.db
             self.auth = Auth_Handler(self)
 
-            self.reflow = Flow()
-            app.register_blueprint(Flow_Serve(self.reflow).web, url_prefix="/flow")
-
+            self.flow = Flow()
             self.alerts = AlertManager(self)
+
+            app.register_blueprint(Flow_Serve(self.flow).web, url_prefix="/flow")
 
             self.plugins = Deployer()
 
-            app.register_blueprint(Web_Handler().web)
+            app.register_blueprint(Web_Handler(self).web)
 
     share = SharePoint()
     share.db.create_all()

@@ -6,6 +6,10 @@ class Flow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = package
+        self["pages"] = {
+            "builtin": {},
+            "plugins": {}
+        }
 
 class Flow_Serve:
     def __init__(self, reflow : dict) -> None:

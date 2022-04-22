@@ -22,7 +22,10 @@ class Page(Element):
 class Heading(Element):
     def __init__(self, title, size=1):
         super().__init__()
-        self.outer = '<h{}>{}</h{}>'.format(size, "{}", size)
+        if size!=0:
+            self.outer = '<h{}>{}</h{}>'.format(size, "{}", size)
+        else:
+            self.outer = '<div class="d-sm-flex justify-content-between align-items-center mb-4"><h3 class="text-dark mb-0">{}</h3></div>'
         self.append(title)
 
 class Card(Element):

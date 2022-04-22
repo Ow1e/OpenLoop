@@ -1,5 +1,21 @@
 console.log("Running FlowJS wrapper V1")
 
+document.addEventListener('DOMContentLoaded', function() {
+
+	var serverd = document.querySelectorAll('[flow]');
+
+	for (var serve of serverd) {
+        var req = serve.getAttribute("flow")
+        var type = serve.getAttribute("flow-type")
+
+        if (type==null){
+            var type = "innerHTML"
+        }
+        
+        flow(req, type, serve)
+	}
+}, false);
+
 async function flow(req, type, elem){
     let response = await fetch("/flow/refresh/"+req);
     if (response.ok) {
@@ -58,3 +74,5 @@ document.addEventListener('DOMContentLoaded', function() {
         set_onclick(serve)
 	}
 }, false);
+
+console.log("Completed FlowJS Start")

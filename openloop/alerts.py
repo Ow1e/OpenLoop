@@ -14,7 +14,7 @@ class AlertManager(list):
     """This is loaded by the loader, it has properties of a list but automatically sets a export function to ReFlow"""
     def __init__(self, shared):
         super().__init__()
-        shared.reflow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
+        shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
         #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
 
     def exp_html(self):
