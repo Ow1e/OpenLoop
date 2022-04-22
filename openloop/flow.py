@@ -38,6 +38,9 @@ class Flow_Serve:
             elif type(current) == FunctionType:
                 current = current()
 
+            if current == None:
+                current = "null"
+
             return {
                 "item": element,
                 "value": current

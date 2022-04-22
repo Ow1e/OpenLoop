@@ -35,22 +35,26 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 }, false);
 
+async function set_onclick(serve){
+    serve.onclick = async function (){
+        var id = serve.getAttribute("flow-click")
+        let response = await fetch("/flow/refresh/"+id);
+        if (response.ok) {
+            let json = await response.json();
+            if (json["value"]!=null && json["value"]!="None"){
+                window.location = json["value"]
+            }
+          } else {
+            alert("HTTP-Error: " + response.status);
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
 	var serverd = document.querySelectorAll('[flow-click]');
 
 	for (var serve of serverd) {
-		var id = serve.getAttribute("flow-click")
-        serve.onclick = async function (){
-            let response = await fetch("/flow/refresh/"+id);
-            if (response.ok) {
-                let json = await response.json();
-                if (json["value"]!=null){
-                    window.location = json["value"]
-                }
-              } else {
-                alert("HTTP-Error: " + response.status);
-            }
-        }
+        set_onclick(serve)
 	}
 }, false);
