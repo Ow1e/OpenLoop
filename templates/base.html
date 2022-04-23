@@ -43,6 +43,15 @@
                                     </form>
                                 </div>
                             </li>
+                            {% if flow_enabled %}
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link" href="#" id="refresh">
+                                        <i class="fas fa-redo fa-fw"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            {% endif %}
                             <li class="nav-item dropdown no-arrow mx-1">
                                 {% include "alerts.jinja" %}
                             </li>

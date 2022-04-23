@@ -17,6 +17,6 @@ class Web_Handler:
         def render_page(page):
             if page in routes:
                 page = str(page)
-                return render_template("flow.jinja", flow=f"pages.builtin.{page}", title = page.title())
+                return render_template("flow.jinja", flow=f"pages.builtin.{page}", title = page.title(), flow_enabled = True)
             else:
                 return render_template("404.jinja", code=404, text="That page does not exist!")

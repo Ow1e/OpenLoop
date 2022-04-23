@@ -62,6 +62,20 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 }, false);
 
+if (document.getElementById("page")!=null){
+    console.log("Detected Flow Page...")
+    var page = document.getElementById("page")
+    if (document.getElementById("refresh")!=null){
+        console.log("Found Button")
+        var ref = document.getElementById("refresh")
+        ref.onclick = function(){
+            flow(page.getAttribute("flow"), "innerHTML", page)
+        } 
+    } else {
+        console.log("Could not find button")
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
 
 	var serverd = document.querySelectorAll('[flow-serv]');
