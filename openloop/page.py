@@ -5,6 +5,13 @@ OpenLoop built-in routes/render functions
 from openloop.crossweb import Element, Page, Heading, Card
 import openloop as openloop
 
+def index():
+    page = Page()
+    text = Heading("Dashboard", 0)
+    print(text.export())
+    page.append(text)
+    return page.export()
+
 def about():
     p = Page()
     p.append(Heading("About", 0))
@@ -15,5 +22,6 @@ def about():
     return p.export()
 
 routes = {
-    "about": about
+    "about": about,
+    "index": index
 }
