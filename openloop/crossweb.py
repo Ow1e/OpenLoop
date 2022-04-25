@@ -6,10 +6,10 @@ class Element(list):
         self.flow = ""
     
     def add_flow(self, serv, time = None, type = None):
-        self.flow = ""
+        self.flow = "reflow "
         self.flow += f'flow-serv="'+serv+'"'
         if time != None:
-            self.flow += f'flow-time="'+time+'"'
+            self.flow += f'flow-time="'+str(time)+'"'
         if type != None:
             self.flow += f'flow-type="'+type+'"'
         

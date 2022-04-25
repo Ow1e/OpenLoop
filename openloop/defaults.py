@@ -1,5 +1,6 @@
 from datetime import datetime
 import psutil
+import openloop as openloop
 
 global cpu_hist
 cpu_hist = []
@@ -19,9 +20,13 @@ def comp_time():
     time = datetime.now().time()
     return f"{time.hour}:{time.minute}:{time.second}"
 
+def version():
+    return f"{openloop.num}-{openloop.code}"
+
 package = {
     "time": datetime.now,
     "timec": comp_time,
     "cpu": cpu_str,
-    "debug": debug_test
+    "debug": debug_test,
+    "version": version
 }

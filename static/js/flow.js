@@ -28,40 +28,6 @@ async function flow(req, type, elem){
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-
-	var serverd = document.querySelectorAll('[flow]');
-
-	for (var serve of serverd) {
-        var req = serve.getAttribute("flow")
-        var type = serve.getAttribute("flow-type")
-
-        if (type==null){
-            var type = "innerHTML"
-        }
-        
-        flow(req, type, serve)
-	}
-
-    var serverd = document.querySelectorAll('[reflow]');
-
-	for (var serve of serverd) {
-		var time = serve.getAttribute("flow-time")
-        var req = serve.getAttribute("flow-serv")
-        var type = serve.getAttribute("flow-type")
-
-        if (type==null){
-            var type = "innerHTML"
-        }
-        
-        if (time==null){
-            var time = 1000
-        }
-        flow(req, type, serve)
-        setInterval(flow, time, req, type, serve)
-	}
-}, false);
-
 if (document.getElementById("page")!=null){
     console.log("Detected Flow Page...")
     var page = document.getElementById("page")
@@ -78,13 +44,31 @@ if (document.getElementById("page")!=null){
 
 document.addEventListener('DOMContentLoaded', function() {
 
+	var serverd = document.querySelectorAll('[flow]');
+
+	for (var serve of serverd) {
+        var req = serve.getAttribute("flow")
+        var type = serve.getAttribute("flow-type")
+        console.log(serve)
+        if (type==null){
+            var type = "innerHTML"
+        }
+        
+        flow(req, type, serve)
+	}
+
+    start_flow()
+}, false);
+
+function start_flow(){
+
 	var serverd = document.querySelectorAll('[flow-serv]');
 
 	for (var serve of serverd) {
 		var time = serve.getAttribute("flow-time")
         var req = serve.getAttribute("flow-serv")
         var type = serve.getAttribute("flow-type")
-
+        console.log(serve)
         if (type==null){
             var type = "innerHTML"
         }
@@ -95,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         flow(req, type, serve)
         setInterval(flow, time, req, type, serve)
 	}
-}, false);
+}
 
 async function set_onclick(serve){
     serve.onclick = async function (){
