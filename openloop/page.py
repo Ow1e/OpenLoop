@@ -2,7 +2,7 @@
 OpenLoop built-in routes/render functions
 """
 
-from openloop.crossweb import Element, Page, Heading, Card
+from openloop.crossweb import *
 import openloop as openloop
 
 def about():
@@ -16,6 +16,16 @@ def about():
     p.append(c)
     return p.export()
 
+def index():
+    p = Page()
+    p.append(Heading("Dashboard", 0))
+    row = Row()
+    for i, color in enumerate(["primary", "success", "danger", "warning"]):
+        row.append(Feature("SHEESH", color=color, inner=i+1))
+    p.append(row)
+    return p.export()
+
 routes = {
-    "about": about
+    "about": about,
+    "index": index
 }
