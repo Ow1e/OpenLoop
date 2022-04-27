@@ -8,8 +8,8 @@ class Web_Handler:
         
         @web.route("/")
         def index():
-            return render_template("blank.jinja")
+            return render_template("blank.jinja", title = "Blank")
         
         @web.route("/about")
         def about():
-            return render_template("blank.jinja", html = routes["about"]())
+            return render_template("blank.jinja", html = routes["about"](), title= "About" )
