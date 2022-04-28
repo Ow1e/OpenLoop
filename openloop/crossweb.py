@@ -67,10 +67,10 @@ class Row(Element):
         self.outer = '<div class="row">{}</div>'
 
 class Feature(Element):
-    def __init__(self, title, icon = "fab fa-superpowers", inner = "Nothing", color = "primary"):
+    def __init__(self, title, icon = "fab fa-superpowers", inner = "Nothing", color = "primary", size=6):
         super().__init__()
         html = """
-<div class="col-md-6 col-xl-3 mb-4">
+<div class="col-md-{} col-xl-3 mb-4">
     <div class="card shadow border-start-primary py-2">
         <div class="card-body">
             <div class="row align-items-center no-gutters">
@@ -84,7 +84,7 @@ class Feature(Element):
     </div>
 </div>
 """
-        self.outer = condense(html).format(color, title, inner, icon)
+        self.outer = condense(html).format(size, color, title, inner, icon)
 
 
 
