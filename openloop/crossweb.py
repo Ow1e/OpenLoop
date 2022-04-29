@@ -16,6 +16,7 @@ def condense(inp):
 class Element(list):
     """A Element"""
     def __init__(self):
+        """CrossWeb Element"""
         super().__init__()
         self.outer = "<p flow>{}</p>"
         self.flow = ""
@@ -86,7 +87,35 @@ class Feature(Element):
 """
         self.outer = condense(html).format(size, color, title, inner, icon)
 
+class Table(Element):
+    """Holds table elements"""
+    def __init__(self):
+        super().__init__()
+        self.outer = '<div id="dataTable" class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info"><table id="dataTable" class="table my-0">{}</table></div>'
 
+class Table_Header(Element):
+    """Table header"""
+    def __init__(self):
+        super().__init__()
+        self.outer = '<thead>{}</thead>'
+
+class Table_Body(Element):
+    """Table body"""
+    def __init__(self):
+        super().__init__()
+        self.outer = '<tbody>{}</tbody>'
+
+class Table_Row(Element):
+    """Table row"""
+    def __init__(self):
+        super().__init__()
+        self.outer = "<tr>{}</tr>"
+
+class Table_Cell(Element):
+    """Table cell"""
+    def __init__(self, text=""):
+        super().__init__()
+        self.outer = "<th>"+text+"{}</th>"
 
 package = {
     "Element": Element,
