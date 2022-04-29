@@ -11,7 +11,7 @@ class AlertManager:
     def __init__(self, shared):
         self.db = shared.db
         self.alert = shared.database.Alert
-        alert = self.alert()
+        alert = self.alert(color="success", contents="WOW")
         self.db.session.add(alert)
         self.db.session.commit()
         shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
@@ -21,7 +21,7 @@ class AlertManager:
     def exp_html(self):
         contents = ""
         for i in self.alert.query.all():
-            contents += i.export(alert)
+            contents = i.export(alert)+contents
         return contents
 
     def exp_len(self):
