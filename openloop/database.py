@@ -24,9 +24,9 @@ def convert_zones(datetype : datetime):
         return f"{minutes} minutes ago."
     elif minutes < 1 and hours == 0:
         return f"{seconds} seconds ago."
-    elif hours == 1:
+    elif hours >= 1:
         return f"{hours} hour ago."
-    elif hours > 1:
+    else:
         return f"{hours} hour ago."
 
 class Database:
