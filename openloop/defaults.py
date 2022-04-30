@@ -13,8 +13,11 @@ def cpu_str():
     return str(val)+"%"
 
 def cpu_temperature():
-    temp_data = psutil.sensors_temperatures()
-    return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
+    if "sensors_temperatures" in dir(psutil):
+        temp_data = psutil.sensors_temperatures()
+        return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
+    else:
+        return "Unsupported"
 
 def ram_usage():
     ram_used = psutil.virtual_memory().percent
