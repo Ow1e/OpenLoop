@@ -7,16 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="col-md-10">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="text-primary m-0 fw-bold">Code Editor</h6>
-        </div>
-        <div class="card-body">
-            <div id="monaco_editor" style="height:400px">
-            </div>
-        </div>
-    </div>
+<div id="monaco_editor" style="height:400px">
 </div>
 {% endblock %}
 
@@ -37,12 +28,5 @@ var editor = monaco.editor.create(h_div, {
     ].join('\n'),
     language: 'python'
 });
-
-window.addEventListener("keypress", function(event) {
-  if (!(event.which == 115 && event.ctrlKey) && !(event.which == 19)) return true
-  alert("Ctrl-S pressed")
-  event.preventDefault()
-  return false
-})
 </script>
 {% endblock %}
