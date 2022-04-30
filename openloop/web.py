@@ -8,7 +8,7 @@ class Web_Handler:
         
         @web.route("/")
         def index():
-            return render_template("blank.jinja", html = routes["index"](), title= "Dashboard" )
+            return render_template("blank.jinja", html = routes["index"](), title= "Dashboard", active=True)
         
         @web.route("/about")
         def about():
