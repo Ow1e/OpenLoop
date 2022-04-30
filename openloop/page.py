@@ -23,8 +23,8 @@ def index():
     data = [
         {"title": "CPU USAGE", "flow": "defaults.cpu", "color": "primary", "icon": "fas fa-microchip"},
         {"title": "RAM USAGE", "flow": "defaults.ram_used", "color": "success", "icon": "fab fa-superpowers"},
-        {"title": "CPU TEMP", "flow": "defaults.cpu_temp", "color": "danger", "icon": "fab fa-fire-alt"},
-        {"title": "SERVER TIME", "flow": "defaults.timec", "color": "info", "icon": "fab fa-hourglass"},
+        {"title": "CPU TEMP", "flow": "defaults.cpu_temp", "color": "danger", "icon": "fas fa-fire-alt"},
+        {"title": "SERVER TIME", "flow": "defaults.timec", "color": "info", "icon": "fas fa-hourglass"},
     ]
     for i in data:
         fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"])
