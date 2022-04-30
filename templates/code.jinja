@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Code Editor - OpenLoop{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" data-name="vs/editor/editor.main" href="/static/js/ext/monaco-editor/min/vs/editor/editor.main.css">
+{% endblock %}
+
+{% block content %}
+<div id="monaco_editor" style="height:400px">
+</div>
+{% endblock %}
+
+{% block js %}
+<script>var require = { paths: { 'vs': '/static/js/ext/monaco-editor/min/vs' } };</script>
+
+<script src="/static/js/ext/monaco-editor/min/vs/loader.js"></script>
+<script src="/static/js/ext/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+<script src="/static/js/ext/monaco-editor/min/vs/editor/editor.main.js"></script>
+
+<script>
+// CREATE AN EDITOR
+var h_div = document.getElementById('monaco_editor');
+var editor = monaco.editor.create(h_div, {
+    value: [
+        '# Welcome to the test IDE',
+        'print("hello world")'
+    ].join('\n'),
+    language: 'python'
+});
+</script>
+{% endblock %}

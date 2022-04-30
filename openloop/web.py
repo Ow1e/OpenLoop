@@ -13,3 +13,7 @@ class Web_Handler:
         @web.route("/about")
         def about():
             return render_template("blank.jinja", html = routes["about"](), title= "About" )
+            
+        @web.route("/editor")
+        def code():
+            return render_template("code.jinja")
