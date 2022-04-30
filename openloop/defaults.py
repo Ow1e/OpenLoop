@@ -15,7 +15,12 @@ def cpu_str():
 def cpu_temperature():
     temp_data = psutil.sensors_temperatures()
     return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
-    
+
+def ram_usage():
+    ram_used = psutil.virtual_memory().percent
+    return str(ram_used) + "%"
+
+
 def debug_test():
     print("Called debug test")
     return "https://stackoverflow.com"
@@ -32,6 +37,7 @@ package = {
     "timec": comp_time,
     "cpu": cpu_str,
     "cpu_temp": cpu_temperature,
+    "ram_used": ram_usage,
     "debug": debug_test,
     "version": version
 }
