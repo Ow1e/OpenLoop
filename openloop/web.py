@@ -47,3 +47,7 @@ class Web_Handler:
         @web.route("/about")
         def about():
             return render_template("blank.jinja", html = routes["about"](), title= "About" )
+
+        @web.route("/offline")
+        def offline():
+            return render_template("blank.jinja", html = routes["offline"](), title= "Offline" )

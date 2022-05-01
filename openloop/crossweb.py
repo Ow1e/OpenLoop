@@ -46,13 +46,15 @@ class Page(Element):
         self.outer = '<div class="row">{}</div>'
 
 class Heading(Element):
-    def __init__(self, title, size=1):
+    def __init__(self, title = "", size=1):
         super().__init__()
         if size!=0:
             self.outer = '<h{} flow>{}</h{}>'.format(size, "{}", size)
         else:
             self.outer = '<div class="d-sm-flex justify-content-between align-items-center mb-4"><h3 class="text-dark mb-0" flow>{}</h3></div>'
-        self.append(title)
+        
+        if title != "" and title != None:
+            self.append(title)
 
 class Card(Element):
     def __init__(self, title, size):
@@ -116,6 +118,12 @@ class Table_Cell(Element):
     def __init__(self, text=""):
         super().__init__()
         self.outer = "<th>"+text+"{}</th>"
+
+class Icon(Element):
+    "Icon"
+    def __init__(self, classes = ""):
+        super().__init__()
+        self.outer = '<i class="'+classes+'"></i>'
 
 package = {
     "Element": Element,

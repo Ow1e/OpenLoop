@@ -16,6 +16,17 @@ def about():
     p.append(c)
     return p.export()
 
+def offline():
+    p = Page()
+    c = Card("Offline Mode", 6)
+    h = Heading()
+    h.append(Icon("fas fa-cloud fa-1x text-gray-300"))
+    h.append("  OpenLoop is offline!")
+    c.append(h)
+    c.append("You are currently running under a PWA, but your internet is disconnected.")
+    p.append(c)
+    return p.export()
+
 def index():
     p = Page()
     p.append(Heading("Dashboard", 0))
@@ -35,5 +46,6 @@ def index():
 
 routes = {
     "about": about,
-    "index": index
+    "index": index,
+    "offline": offline
 }
