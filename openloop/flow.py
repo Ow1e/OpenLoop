@@ -1,5 +1,5 @@
 from types import BuiltinFunctionType, FunctionType, MethodType
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, escape
 from openloop.defaults import package
 
 class Flow(dict):
@@ -46,6 +46,6 @@ class Flow_Serve:
                 current = "null"
 
             return {
-                "item": element,
+                "item": escape(element),
                 "value": current
             }
