@@ -10,7 +10,9 @@ const staticAssets = [
     "/static/img/OpenLoop.png",
     "/static/img/OpenLoopBlack.png",
     "/static/bootstrap/css/bootstrap.min.css",
-    "/static/bootstrap/js/bootstrap.min.js"
+    "/static/bootstrap/js/bootstrap.min.js",
+    "/",
+    "/about"
 ]
 
 self.addEventListener('install', async e => {

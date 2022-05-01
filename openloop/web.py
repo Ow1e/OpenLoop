@@ -7,12 +7,19 @@ MANIFEST = {
     "short_name": "OpenLoop",
     "description": "Open Source IoT software.",
     "id": "/",
+    "theme_color": "#4e73df",
+    "background_color": "#4e73df",
     "start_url": ".",
     "display": "standalone",
     "icons": [
         {
             "src": "/static/img/OpenLoopBlack.png",
             "sizes": "500x500",
+            "type": "image/png"
+        },
+        {
+            "src": "/static/img/OpenLoop512.png",
+            "sizes": "512x512",
             "type": "image/png"
         }
     ]
