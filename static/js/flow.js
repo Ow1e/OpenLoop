@@ -1,5 +1,20 @@
 console.log("Running FlowJS wrapper V1")
 
+window.addEventListener("load", () => {
+    registerSW()
+})
+
+async function registerSW(){
+    if ("serviceWorker" in navigator){
+        console.log("Service Worker Detected")
+        try {
+            await navigator.serviceWorker.register("./sw.js")
+        } catch (e) {
+            console.log("Flow Service Worker Failed")
+        }
+    }
+}
+
 function show_net(){
     document.getElementById('offline').style.display='none'
 }
@@ -18,6 +33,8 @@ async function flow(req, type, elem){
                 elem.innerHTML = json["value"]
             } else if (type=="width"){
                 elem.style.width = json["value"]
+            } else {
+                return json["value"]
             }
           } else {
             alert("HTTP-Error: " + response.status);
