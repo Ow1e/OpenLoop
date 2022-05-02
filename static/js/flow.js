@@ -6,12 +6,14 @@ window.addEventListener("load", () => {
 
 async function registerSW(){
     if ("serviceWorker" in navigator){
-        console.log("Service Worker Detected")
+        console.info("PWA is enabled. With this URL you can access full PWA\nhttps://docs.cyclone.biz/using-pwas")
         try {
             await navigator.serviceWorker.register("./sw.js")
         } catch (e) {
             console.log("Flow Service Worker Failed")
         }
+    } else {
+        console.info("PWA is disabled, Service Workers only work with HTTPS and Localhost")
     }
 }
 
