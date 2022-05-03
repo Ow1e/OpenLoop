@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/static/fonts/fontawesome5-overrides.min.css">
     <link rel="manifest" href="./manifest.webmanifest">
     <meta name="theme-color" content="#4E73DF">
+    {% block head %}{% endblock %}
 </head>
 
 <body id="page-top" class="bg-gradient-primary">
@@ -86,6 +87,7 @@
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/js/bs-init.js"></script>
     <script src="/static/js/theme.js"></script>
+    {% block js %}{% endblock %}
 </body>
 
 </html>

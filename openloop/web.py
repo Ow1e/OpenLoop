@@ -48,6 +48,6 @@ class Web_Handler:
         def about():
             return render_template("blank.jinja", html = routes["about"](), title= "About" )
 
-        @web.route("/offline")
+        @web.route("/client")
         def offline():
-            return render_template("blank.jinja", html = routes["offline"](), title= "Offline" )
+            return render_template("debug.jinja")

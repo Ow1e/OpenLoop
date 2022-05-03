@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{title}} - OpenLoop{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="text-primary m-0 fw-bold">  Client Debug</h6>
+            </div>
+            <div class="card-body" >
+                <h1 ><i class="fas fa-cloud fa-1x text-gray-300" style="margin-right: 10px;"></i>Client Debug</h1>
+                <p id="debug"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="/static/js/debug.js"></script>
+{% endblock %}
