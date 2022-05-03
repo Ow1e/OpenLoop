@@ -6,6 +6,7 @@ from openloop.web import Web_Handler
 from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
 from openloop.api import API_Handler
+import logging
 
 def load_data(app):
     """
@@ -28,6 +29,8 @@ def load_data(app):
             app.register_blueprint(API_Handler(self).api, url_prefix="/api")
 
             app.register_blueprint(Web_Handler(self).web)
+            logging.info("Completed imports in Sharepoint")
 
+    logging.info("Loading Sharepoint")
     share = SharePoint()
     share.db.create_all()
