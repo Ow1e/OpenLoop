@@ -37,7 +37,6 @@ class Web_Handler:
 
         @web.route("/sw.js")
         def service_worker():
-            print("Service")
             return send_from_directory(shared.app.static_folder, 'sw.js')
 
         @web.route("/")
