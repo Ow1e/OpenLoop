@@ -44,7 +44,6 @@ async function flow(req, type, elem){
         show_net()
     } catch (error) {
         hide_net()
-        elem.innerHTML = ""
     }
 }
 
