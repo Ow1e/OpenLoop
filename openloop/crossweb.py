@@ -124,10 +124,3 @@ class Icon(Element):
     def __init__(self, classes = ""):
         super().__init__()
         self.outer = '<i class="'+classes+'"></i>'
-
-package = {
-    "Element": Element,
-    "Page": Page,
-    "Heading": Heading,
-    "Card": Card
-}

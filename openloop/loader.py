@@ -25,7 +25,7 @@ def load_data(app):
 
             app.register_blueprint(Flow_Serve(self.flow).web, url_prefix="/flow")
 
-            self.plugins = Deployer()
+            self.plugins = Deployer(self)
             app.register_blueprint(API_Handler(self).api, url_prefix="/api")
 
             app.register_blueprint(Web_Handler(self).web)
