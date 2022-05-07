@@ -12,6 +12,9 @@ def example():
 class Enviroment:
     def __init__(self, path, src, shared) -> None:
         self.shared = shared
+        self.name = path.split(".")[0]
+        self.path = path
+        
         self.pages = {
             "index": example
         }
@@ -37,8 +40,9 @@ class Deployer:
 
         logging.info("Reading Plugins")
         for i in os.listdir("plugins"): # Lists plugins and read them all, then sends them in a dict
-            with open(i) as f:
+            with open(f"plugins/{i}") as f:
                 sources[i] = f.read()
+                globals()
 
         logging.info("Initializing Plugins")
         for i in sources:

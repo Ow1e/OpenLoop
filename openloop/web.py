@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, url_for, send_from_directory
-from openloop.page import routes
+from openloop.page import index as serv_index
+from openloop.page import about as serv_about
+from openloop.page import plugins as serv_plugins
 import os
 
 MANIFEST = {
@@ -36,12 +38,16 @@ class Web_Handler:
 
         @web.route("/")
         def index():
-            return render_template("blank.jinja", html = routes["index"](), title= "Dashboard", active=True)
+            return render_template("blank.jinja", html = serv_index(), title= "Dashboard", active=True)
         
         @web.route("/about")
         def about():
-            return render_template("blank.jinja", html = routes["about"](), title= "About" )
+            return render_template("blank.jinja", html = serv_about(), title= "About" )
 
         @web.route("/client")
         def offline():
             return render_template("debug.jinja")
+
+        @web.route("/plugins")
+        def list_plugins():
+            return render_template("blank.jinja", html = serv_plugins(shared.plugins.enviroments))
