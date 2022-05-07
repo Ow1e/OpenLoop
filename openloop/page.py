@@ -16,6 +16,7 @@ def about():
     p.append(c)
 
     c = Card("Credits", 5)
+    c.append("Thanks allot to the GitHub contributers of OpenLoop.")
     p.append(c)
     return p.export()
 
