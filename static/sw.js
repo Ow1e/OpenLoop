@@ -1,4 +1,4 @@
-const cacheName =  "v3-m1"
+const cacheName =  "v3-mt1"
 console.log("Running cache version "+cacheName)
 const staticAssets = [
     "/static/js/bs-init.js",
@@ -9,6 +9,7 @@ const staticAssets = [
     "/static/img/CycloneTransparent.png",
     "/static/img/OpenLoop.png",
     "/static/img/OpenLoopBlack.png",
+    "/static/img/OpenLoop512.png",
     "/static/bootstrap/css/bootstrap.min.css",
     "/static/bootstrap/js/bootstrap.min.js",
     "/static/fonts/fa-solid-900.ttf",

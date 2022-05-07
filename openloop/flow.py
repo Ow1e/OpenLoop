@@ -8,7 +8,7 @@ class Flow(dict):
         self["defaults"] = package
         self["pages"] = {
             "builtin": {},
-            "plugins": {}
+            "plugins": {} # This wont be used for a while
         }
 
 class Flow_Serve:

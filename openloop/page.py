@@ -8,11 +8,14 @@ import openloop as openloop
 def about():
     p = Page()
     p.append(Heading("About", 0))
-    c = Card("Version", 6)
+    c = Card("Version", 7)
     title = Heading("OpenLoop")
     title.add_flow("defaults.version", 5000)
     c.append(title)
     c.append("Made with Flask")
+    p.append(c)
+
+    c = Card("Credits", 5)
     p.append(c)
     return p.export()
 
