@@ -19,6 +19,7 @@ class Element(list):
         """CrossWeb Element"""
         super().__init__()
         self.outer = "<p flow>{}</p>"
+        self.flow_enabled = True
         self.flow = ""
     
     def add_flow(self, serv, time = None, type = None):
@@ -37,7 +38,11 @@ class Element(list):
                 export += str(i)
             else:
                 export += i.export()
-        return self.outer.replace("flow", self.flow).format(export)
+        
+        if self.flow_enabled:
+            return self.outer.replace("flow", self.flow).format(export)
+        else:
+            return self.outer.format(export)
 
 class Page(Element):
     """This will organize Cards and export them, no html actually defined"""
@@ -124,3 +129,20 @@ class Icon(Element):
     def __init__(self, classes = ""):
         super().__init__()
         self.outer = '<i class="'+classes+'"></i>'
+
+class Button(Element):
+    """Button with Flow Support"""
+    def __init__(self, color = "primary", icon = "fas fa-flag", flow = "", text=""):
+        super().__init__()
+        self.flow_enabled = False
+        self.html = '''
+<a class="btn btn-{} btn-icon-split" role="button" flow-click="{}">
+    <span class="text-white-50 icon">
+        <i class="{}"></i>
+    </span>
+    <span class="text-white text">{}</span>
+</a>
+'''.format(color, flow, icon, "{}")
+        self.outer = condense(self.html)
+        if text!="":
+            self.append(text)

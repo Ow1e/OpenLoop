@@ -11,4 +11,4 @@ load_data(app)
 
 if __name__=="__main__":
     logging.warning("This is not running on a production WSGI server, for non development use gunicorn or another WSGI server.")
-    app.run()
+    app.run("0.0.0.0")

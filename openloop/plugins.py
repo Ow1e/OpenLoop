@@ -2,13 +2,6 @@ import os, sys
 import logging
 import openloop.crossweb as crossweb
 
-def example():
-    p = crossweb.Page()
-    p.append(crossweb.Heading("My Plugin", 0))
-    c = crossweb.Card("About", 6)
-    c.append("This is a example of CrossWeb")
-    p.append(c)
-
 class Enviroment:
     def __init__(self, path, src, shared) -> None:
         self.shared = shared
@@ -16,11 +9,11 @@ class Enviroment:
         self.path = path
         
         self.pages = {
-            "index": example
+            "index": self.crossweb_example
         }
 
         env = {
-            "io": self,
+            "plugin": self,
             "crossweb": crossweb
         }
         
@@ -29,6 +22,14 @@ class Enviroment:
                 env[i] = getattr(crossweb, i)
 
         exec(compile(src, path, "exec"), env, {})
+
+    def crossweb_example(self):
+        p = crossweb.Page()
+        p.append(crossweb.Heading(self.name, 0))
+        c = crossweb.Card("About", 6)
+        c.append("This is a default page, a developer can turn this place into their own dashboard!")
+        p.append(c)
+        return p.export()
 
 class Deployer:
     def __init__(self, shared) -> None:

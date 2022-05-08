@@ -120,6 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var serverd = document.querySelectorAll('[flow-click]');
 
 	for (var serve of serverd) {
+        console.log(serve)
         set_onclick(serve)
 	}
 }, false);

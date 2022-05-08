@@ -6,6 +6,7 @@ class Flow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = package
+        self["redirects"] = {}
         self["pages"] = {
             "builtin": {},
             "plugins": {} # This wont be used for a while
