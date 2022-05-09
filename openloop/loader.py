@@ -6,6 +6,7 @@ from openloop.web import Web_Handler
 from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
 from openloop.api import API_Handler
+from openloop.methods import Methods
 import logging
 
 def load_data(app):
@@ -22,13 +23,13 @@ def load_data(app):
 
             self.flow = Flow()
             self.alerts = AlertManager(self)
+            self.plugins = Deployer(self)
+            self.methods = Methods(self)
 
             app.register_blueprint(Flow_Serve(self.flow).web, url_prefix="/flow")
-
-            self.plugins = Deployer(self)
             app.register_blueprint(API_Handler(self).api, url_prefix="/api")
-
             app.register_blueprint(Web_Handler(self).web)
+
             logging.info("Completed imports in Sharepoint")
 
     logging.info("Loading Sharepoint")

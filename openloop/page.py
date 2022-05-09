@@ -39,9 +39,13 @@ def index():
 
 def set_pl_redirects(plugin_list, flow):
     flow["redirects"]["plugins"] = {}
+    flow["redirects"]["plugins_ext"] = {}
     for i in plugin_list:
         flow["redirects"]["plugins"][i.name] = f"../plugin/{i.name}"
-
+    for i in plugin_list:
+        for l in i.pages:
+            flow["redirects"]["plugins_ext"][i.name] = {}
+            
 def plugins(plugin_list):
     p = Page()
     p.append(Heading("Plugins", 0))
@@ -62,7 +66,7 @@ def plugins(plugin_list):
         row.append(Table_Cell(i.name))
         row.append(Table_Cell(i.path))
         btn_cell = Table_Cell()
-        btn_cell.append(Button(text="Enter Page", flow=f"redirects.plugins.{i.name}"))
+        btn_cell.append(Button(text="Enter Page", flow=f"redirects.plugins.{i.name}", icon="fas fa-sitemap"))
         row.append(btn_cell)
         body.append(row)
     
