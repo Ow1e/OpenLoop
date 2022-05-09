@@ -8,6 +8,7 @@ class Enviroment:
         self.name = path.split(".")[0]
         self.path = path
         
+        self.refresh = 5000
         self.pages = {
             "index": self.crossweb_example
         }

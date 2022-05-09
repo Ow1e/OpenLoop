@@ -3,6 +3,7 @@
 class Methods:
     def __init__(self, shared) -> None:
         self.shared = shared
+        self.len = len
     
     def plugins(self):
         pr = {"PLUGINS": []}
