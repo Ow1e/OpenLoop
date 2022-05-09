@@ -1,4 +1,4 @@
-"""Called by blueprint for navbar"""
+"""For functions like parsing"""
 
 class Methods:
     def __init__(self, shared) -> None:

@@ -40,6 +40,10 @@ class Web_Handler:
         def service_worker():
             return send_from_directory(shared.app.static_folder, 'sw.js')
 
+        def navbar(): # Navbars are requested seperately so they are not cached
+            return render_template("nav_plugins.jinja", methods=methods)
+        shared.flow["defaults"]["navbar"] = navbar
+
         @web.route("/")
         def index():
             return render_template("blank.jinja", methods=methods, html = serv_index(), title= "Dashboard", active=True)

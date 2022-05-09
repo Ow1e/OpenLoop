@@ -35,20 +35,7 @@
             <li class="nav-item">
                 <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-3" href="#collapse-3" role="button"><i class="fas fa-box-open"></i><span>Plugins</span></a>
                     <div id="collapse-3" class="collapse">
-                        <div class="bg-white border rounded py-2 collapse-inner">
-                            {% set navbar = methods.plugins() %}
-                            {% for i in navbar %}
-                                <h6 class="collapse-header">{{i}}</h6>
-                                {% if i == 'PLUGINS' %}
-                                    {% for l in navbar[i] %}
-                                        <a class="collapse-item" href="/plugin/{{l}}">{{l}}</a>
-                                    {% endfor %}
-                                {% else %}
-                                    {% for l in navbar[i] %}
-                                    <a class="collapse-item" href="/plugin/{{i}}/{{l}}">{%if l == 'index'%}Main Page{% else %}{{l}}{% endif %}</a>
-                                    {% endfor %}
-                                {% endif %}
-                            {% endfor %}
+                        <div class="bg-white border rounded py-2 collapse-inner" flow="defaults.navbar">
                         </div>
                     </div>
                 </div>
