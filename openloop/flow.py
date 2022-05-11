@@ -1,5 +1,5 @@
 from types import BuiltinFunctionType, FunctionType, MethodType
-from flask import Blueprint, jsonify, escape
+from flask import Blueprint, jsonify, escape, redirect, request, url_for
 from openloop.defaults import package
 
 class Flow(dict):
@@ -8,26 +8,26 @@ class Flow(dict):
         self["defaults"] = package
         self["redirects"] = {}
         self["pages"] = {
-            "builtin": {},
-            "plugins": {} # This wont be used for a while
+            "builtin": {}
         }
+        self["plugins"] = {} # This is for plugins
 
 class Flow_Serve:
-    def __init__(self, reflow : dict) -> None:
+    def __init__(self, flow : dict) -> None:
         api = Blueprint("flow", __name__)
         self.web = api
 
         @api.route("/")
         def information():
             return {
-                "version": "ReFlow Protocol Version 1.0"
+                "version": "Flow Protocol Version 2.0"
             }
 
-        @api.route("/refresh/<element>")
+        @api.route("/refresh/<element>", methods=["GET", "POST"])
         def update_item(element : str):
             path = element.split(".")
 
-            current = reflow
+            current = flow
             for i in path:
                 if i in current:
                     current = current[i]
@@ -41,7 +41,14 @@ class Flow_Serve:
             elif type(current) == MethodType:
                 current = str(current())
             elif type(current) == FunctionType:
-                current = current()
+                if request.method == "POST":
+                    current = current(request.form)
+                    if request.form.get("formLocation")!=None:
+                        return redirect(request.form.get("formLocation"))
+                    else:
+                        return redirect(url_for("web.index"))
+                else:
+                    current = current()
 
             if current == None:
                 current = "null"

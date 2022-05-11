@@ -39,12 +39,8 @@ def index():
 
 def set_pl_redirects(plugin_list, flow):
     flow["redirects"]["plugins"] = {}
-    flow["redirects"]["plugins_ext"] = {}
     for i in plugin_list:
-        flow["redirects"]["plugins"][i.name] = f"../plugin/{i.name}"
-    for i in plugin_list:
-        for l in i.pages:
-            flow["redirects"]["plugins_ext"][i.name] = {}
+        flow["redirects"]["plugins"][i.name] = f"/plugin/{i.name}"
             
 def plugins(plugin_list):
     p = Page()

@@ -125,4 +125,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 }, false);
 
+document.addEventListener('DOMContentLoaded', function() {
+
+	var serverd = document.querySelectorAll('[location]');
+
+	for (var serve of serverd) {
+        serve.value = window.location.href
+	}
+}, false);
+
 console.log("Completed FlowJS Start")

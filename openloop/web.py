@@ -44,9 +44,6 @@ class Web_Handler:
             return render_template("nav_plugins.jinja", methods=methods)
         shared.flow["defaults"]["navbar"] = navbar
 
-        for i in shared.plugins.enviroments:
-            shared.flow["pages"]["plugins"][i.name] = i.pages
-
         @web.route("/")
         def index():
             return render_template("blank.jinja", methods=methods, html = serv_index(), title= "Dashboard", active=True)
@@ -68,7 +65,7 @@ class Web_Handler:
             plugin = self.get_plugin(name)
             if plugin:
                 if "index" in plugin.pages:
-                    return render_template("flow.jinja", methods=methods, flow=f"pages.plugins.{plugin.name}.index", time=plugin.refresh, title=name)    
+                    return render_template("blank.jinja", methods=methods, html = plugin.pages["index"](), title=plugin.name)    
                 else:
                     return render_template("404.jinja", methods=methods, code=404, text=f"{name} has no index page")
             else:
@@ -81,7 +78,7 @@ class Web_Handler:
                 if page == "index":
                     return redirect(url_for(".view_plugin_index", name=name))
                 elif page in plugin.pages:
-                    return render_template("flow.jinja", methods=methods, flow=f"pages.plugins.{plugin.name}.{page}", time=plugin.refresh, title=name)    
+                    return render_template("blank.jinja", methods=methods, html = plugin.pages[page](), title=f"{page} | {plugin.name}")    
                 else:
                     return render_template("404.jinja", methods=methods, code=404, text=f"{name} has no {page} page")
             else:

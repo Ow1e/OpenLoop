@@ -20,8 +20,6 @@ class API_Handler:
         api = Blueprint("api", __name__)
         self.api = api
 
-        shared.flow["api"] = {"api_keys": self.api_keys}
-
         @api.route("/")
         def api():
             return render_template("blank.jinja", html = api_render(), title= "API" )

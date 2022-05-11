@@ -1,12 +1,18 @@
 import os, sys
 import logging
+import secrets
 import openloop.crossweb as crossweb
 
 class Enviroment:
     def __init__(self, path, src, shared) -> None:
-        self.shared = shared
         self.name = path.split(".")[0]
         self.path = path
+        
+        self.secret = secrets.token_urlsafe(16) # This is so other plugins cannot edit/transmit to others
+
+        shared.flow["plugins"][self.secret] = {}
+        self.flow = shared.flow["plugins"][self.secret]
+        self.flow_path = f"plugins.{self.secret}"
         
         self.refresh = 5000
         self.pages = {
