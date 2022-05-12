@@ -1,6 +1,8 @@
 import os, sys
 import logging
 import secrets
+import sched
+import time
 import openloop.crossweb as crossweb
 
 class Enviroment:
@@ -36,6 +38,10 @@ class Enviroment:
         c.append("This is a default page, a developer can turn this place into their own dashboard!")
         p.append(c)
         return p.export()
+
+    def create_loop(self):
+        # Thanks to https://stackoverflow.com/questions/474528/what-is-the-best-way-to-repeatedly-execute-a-function-every-x-seconds
+        return sched.scheduler(time.time, time.sleep)
 
 class Deployer:
     def __init__(self, shared) -> None:
