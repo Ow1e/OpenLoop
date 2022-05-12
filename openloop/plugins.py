@@ -14,7 +14,6 @@ class Enviroment:
         self.flow = shared.flow["plugins"][self.secret]
         self.flow_path = f"plugins.{self.secret}"
         
-        self.refresh = 5000
         self.pages = {
             "index": self.crossweb_example
         }

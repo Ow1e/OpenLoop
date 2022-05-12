@@ -174,7 +174,7 @@ class Form(Element):
     def __init__(self, flow_path):
         super().__init__()
         self.flow_enabled = False
-        self.outer = '<form>{}</form>'.format("{}")
+        self.outer = '<form action="/flow/refresh/{}" method="post">{}</form>'.format(flow_path, "{}")
         self.append('<input type="hidden" location name="formLocation" value="">')
 
 
