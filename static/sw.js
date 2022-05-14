@@ -1,4 +1,4 @@
-const cacheName =  "v3-mt1"
+const cacheName =  "v3-mt2"
 console.log("Running cache version "+cacheName)
 const staticAssets = [
     "/static/js/bs-init.js",

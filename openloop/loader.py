@@ -18,7 +18,6 @@ def load_data(app):
             self.app = app
             self.config = configCheck()
             self.database = Database(self)
-            self.db = self.database.db
             self.auth = Auth_Handler(self)
 
             self.flow = Flow()
@@ -34,4 +33,3 @@ def load_data(app):
 
     logging.info("Loading Sharepoint")
     share = SharePoint()
-    share.db.create_all()

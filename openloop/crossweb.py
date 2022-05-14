@@ -198,6 +198,26 @@ class Label(Element):
 
 
 class Input(Element):
+    """Input for form"""
     def __init__(self, name, type="text", placeholder=""):
         super().__init__()
         self.outer = f'<input class="form-control" type="{type}" placeholder="{placeholder}" name="{name}" />'
+
+class Image(Element):
+    """HTML image"""
+    def __init__(self, src, height, width=None):
+        super().__init__()
+        if width==None:
+            self.outer = f'<img src="{src}" height="{height}" style="margin: 10px;">'
+        else:
+            self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;">'
+
+class Text(Element):
+    def __init__(self):
+        super().__init__()
+        self.outer = "{}"
+
+class Link(Element):
+    def __init__(self, link):
+        super().__init__()
+        self.outer = '<a href="{}">{}</a>'.format(link, "{}")

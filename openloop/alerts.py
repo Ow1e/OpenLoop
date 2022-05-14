@@ -9,23 +9,18 @@ alert = """<a class="dropdown-item d-flex align-items-center" href="{}"><div cla
 class AlertManager:
     """This is loaded by the loader, it has properties of a list but automatically sets a export function to ReFlow"""
     def __init__(self, shared):
-        self.db = shared.db
-        self.alert = shared.database.Alert
-        alert = self.alert(color="success", contents="WOW")
-        self.db.session.add(alert)
-        self.db.session.commit()
         shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
         #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
 
 
     def exp_html(self):
         contents = ""
-        for i in self.alert.query.all():
+        for i in []:
             contents = i.export(alert)+contents
         return contents
 
     def exp_len(self):
-        x = len(self.alert.query.all())
+        x = 0
         if x == 0:
             x = ""
         elif x > 9:
@@ -33,6 +28,4 @@ class AlertManager:
         return x
 
     def clear(self):
-        for i in self.alert.query.all():
-            self.db.session.delete(i)
-        self.db.session.commit()
+        pass

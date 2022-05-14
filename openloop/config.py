@@ -6,7 +6,7 @@ def check():
 
     if not os.path.exists("config.ini"):
         config["Settings"] = {
-            "sqlalchemy_uri": "sqlite:///database.db"
+            "mongodb": "mongodb+srv://<username>:<password>@<cluster-address>/test?retryWrites=true&w=majority"
         }
         with open("config.ini", "w") as f:
             config.write(f)

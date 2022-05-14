@@ -8,16 +8,29 @@ import openloop as openloop
 def about():
     p = Page()
     p.append(Heading("About", 0))
+
+    row = Row()
+
     c = Card("Version", 7)
     title = Heading("OpenLoop")
     title.add_flow("defaults.version", 5000)
     c.append(title)
     c.append("Made with Flask")
-    p.append(c)
+    row.append(c)
 
-    c = Card("Credits", 5)
-    c.append("Thanks allot to the GitHub contributers of OpenLoop.")
-    p.append(c)
+    c = Card("Badges", 5)
+
+    mongo = Link("https://www.mongodb.com")
+    mongo.append(Image("/static/img/Mongo.png", 50))
+
+    flask = Link("https://flask.palletsprojects.com")
+    flask.append(Image("/static/img/Flask.png", 60))
+
+    c.append(mongo)
+    c.append(flask)
+    row.append(c)
+
+    p.append(row)
     return p.export()
 
 def index():
