@@ -1,4 +1,4 @@
-const cacheName =  "v3-mt2"
+const cacheName =  "v3-mt3"
 console.log("Running cache version "+cacheName)
 const staticAssets = [
     "/static/js/bs-init.js",
@@ -64,7 +64,13 @@ self.addEventListener('fetch', async e => {
 async function cacheFirst(req) {
     const cache = await caches.open(cacheName);
     const cached = await cache.match(req);
-    return cached || fetch(req);
+    try {
+        return cached || fetch(req);
+    } catch {
+        hide_net()
+        await new Promise(r => setTimeout(r, 2000));
+        location.reload()
+    }
 }
 
 async function networkAndCache(req) {

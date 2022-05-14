@@ -4,6 +4,8 @@ window.addEventListener("load", () => {
     registerSW()
 })
 
+var offline = false;
+
 async function registerSW(){
     if ("serviceWorker" in navigator){
         console.info("PWA is enabled. With this URL you can access full PWA\nhttps://docs.cyclone.biz/using-pwas")
@@ -44,6 +46,10 @@ async function flow(req, type, elem){
         show_net()
     } catch (error) {
         hide_net()
+        var offline = true;
+        console.warn("OpenLoop tried to update via Flow, but is offline = "+offline)
+        await new Promise(r => setTimeout(r, 10000));
+        location.reload()
     }
 }
 
