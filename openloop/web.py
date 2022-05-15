@@ -54,7 +54,7 @@ class Web_Handler:
 
         @web.route("/client")
         def offline():
-            return render_template("debug.jinja")
+            return render_template("debug.jinja", methods=methods)
 
         @web.route("/plugins")
         def list_plugins():

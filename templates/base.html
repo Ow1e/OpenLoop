@@ -23,7 +23,7 @@
     {% block head %}{% endblock %}
 </head>
 
-<body id="page-top" class="bg-gradient-primary">
+<body id="page-top" class="bg-gradient-{{methods.theme}}">
     <div id="wrapper">
         {% include "navbar.jinja" %}
         <div class="d-flex flex-column" id="content-wrapper">
@@ -31,7 +31,7 @@
                 <div style="padding: 10px;padding-bottom: 0px;" id="offline" style="display: none;" hidden>
                     <p style="background: var(--bs-red);color: var(--bs-white);padding: 10px;padding-bottom: 10px;border-radius: 10px;">Disconnected to OpenLoop Server! Reconnecting Soon...</p>
                 </div>
-                <div style="padding: 10px;padding-bottom: 0px;" id="connecting">
+                <div style="padding: 10px;padding-bottom: 0px;" id="connecting" hidden>
                     <p style="background: var(--bs-blue);color: var(--bs-white);padding: 10px;padding-bottom: 10px;border-radius: 10px;">Trying to connect to OpenLoop Server...</p>
                 </div>
                 <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">

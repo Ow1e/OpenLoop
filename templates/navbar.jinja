@@ -1,7 +1,7 @@
-<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-{{methods.theme}} p-0">
     <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
         <div class="sidebar-brand-icon"><img src="/static/img/OpenLoop.png" width="60px" style="margin-top: -5px;"></div>
-        <div class="sidebar-brand-text mx-3"><span style="margin-right: 0px;">OpenLoop</span></div>
+        <div class="sidebar-brand-text mx-3"><span style="margin-right: 0px;">{{ methods.name }}</span></div>
         </a>
         <hr class="sidebar-divider my-0" />
         <ul id="accordionSidebar" class="navbar-nav text-light">
@@ -23,7 +23,8 @@
                 <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-2" href="#collapse-2" role="button"><i class="fas fa-wrench"></i><span>Utilities</span></a>
                     <div id="collapse-2" class="collapse">
                         <div class="bg-white border rounded py-2 collapse-inner">
-                            <h6 class="collapse-header">CUSTOM UTILITIES:</h6><a class="collapse-item" href="../upload">Upload Plugins</a>
+                            <h6 class="collapse-header">CUSTOM UTILITIES:</h6>
+                            <a class="collapse-item" href="/client">Client Info</a>
                         </div>
                     </div>
                 </div>

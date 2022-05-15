@@ -4,6 +4,8 @@ class Methods:
     def __init__(self, shared) -> None:
         self.shared = shared
         self.len = len
+        self.name = shared.config["Customize"].get("name", "OpenLoop")
+        self.theme = shared.config["Customize"].get("theme", "primary")
     
     def plugins(self):
         pr = {"PLUGINS": []}
