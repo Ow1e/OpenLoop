@@ -112,9 +112,6 @@ async function set_onclick(serve){
         let response = await fetch("/flow/refresh/"+id);
         if (response.ok) {
             let json = await response.json();
-            if (json["value"]!=null && json["value"]!="None"){
-                window.location = json["value"]
-            }
           } else {
             alert("HTTP-Error: " + response.status);
         }

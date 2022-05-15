@@ -8,10 +8,12 @@ content += "Online: "+navigator.onLine+"<br>"
 
 document.getElementById("debug").innerHTML = content
 
+console.info("Loaded Client Debug Helper")
+
 function erase_pwa(){
     navigator.serviceWorker.getRegistrations().then(function(registrations) {
         for(let registration of registrations) {
          registration.unregister()
     } })
-    console.info("Unregistered Workers")
+    alert("Erased cache")
 }
