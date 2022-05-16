@@ -1,7 +1,7 @@
 <div class="nav-item dropdown no-arrow">
     <a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter" flow-serv="alerts.length" flow-time="1000"></span><i class="fas fa-bell fa-fw"></i></a>
     <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-        <h6 class="dropdown-header">alerts</h6>
+        <h6 class="dropdown-header bg-{{methods.theme}}">alerts</h6>
         <div flow-serv="alerts.inner" flow-time="1000">
         </div>
         <a class="dropdown-item text-center small text-gray-500" href="javascript:void" flow-click="alerts.clear">Clear Alerts</a>
