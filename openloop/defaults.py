@@ -12,12 +12,20 @@ def cpu_str():
         cpu_hist.append(val)
     return str(val)+"%"
 
+global cpu_temp_enabled
+cpu_temp_enabled = True
 def cpu_temperature():
-    if "sensors_temperatures" in dir(psutil):
-        temp_data = psutil.sensors_temperatures()
-        return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
+    if cpu_temp_enabled:
+        try:
+            if "sensors_temperatures" in dir(psutil):
+                temp_data = psutil.sensors_temperatures()
+                return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
+            else:
+                return "Unsupported"
+        except:
+            return "Error"
     else:
-        return "Unsupported"
+        return "Disabled"
 
 def ram_usage():
     ram_used = psutil.virtual_memory().percent
