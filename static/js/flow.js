@@ -41,7 +41,7 @@ async function flow(req, type, elem){
                 return json["value"]
             }
           } else {
-            alert("HTTP-Error: " + response.status);
+            console.error("HTTP-Error: " + response.status);
         }
         show_net()
     } catch (error) {
@@ -113,7 +113,7 @@ async function set_onclick(serve){
         if (response.ok) {
             let json = await response.json();
           } else {
-            alert("HTTP-Error: " + response.status);
+            alert("Error pressing button!");
         }
     }
 }
