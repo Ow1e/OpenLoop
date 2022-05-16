@@ -7,7 +7,7 @@ def check():
 
     if not os.path.exists("config.ini"):
         config["MongoDB"] = {
-            "uri": "mongodb+srv://<username>:<password>@<cluster-address>/test?retryWrites=true&w=majority",
+            "uri": "mongodb://localhost:27017",
             "name": "OpenLoop"
         }
         config["Customize"] = {

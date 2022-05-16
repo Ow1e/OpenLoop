@@ -30,19 +30,11 @@ def convert_zones(datetype : datetime):
 class Database:
     def __init__(self, shared) -> None:
         settings = dict(shared.config["MongoDB"])
-        default = "mongodb+srv://<username>:<password>@<cluster-address>/test?retryWrites=true&w=majority"
-        if settings.get("uri", default)==default:
-            sys.exit("MongoDB is not configured!")
-        else:
-            try:
-                client = pymongo.MongoClient(settings.get("uri"), serverSelectionTimeoutMS=5000)
-            except:
-                sys.exit("Invalid URI")
+        default = "mongodb://localhost:27017"
+        try:
+            client = pymongo.MongoClient(settings.get("uri"), serverSelectionTimeoutMS=5000)
+        except:
+            sys.exit("Invalid URI")
 
-            try:
-                self.info = client.server_info()
-            except:
-                sys.exit("Connection Error")
-
-            self.client = client
-            self.db = client[settings.get("name", "OpenLoop")]
+        self.client = client
+        self.db = client[settings.get("name", "OpenLoop")]
