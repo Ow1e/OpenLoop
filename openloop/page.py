@@ -11,14 +11,14 @@ def about():
 
     row = Row()
 
-    c = Card("Version", 7)
+    c = Card("Version", 5)
     title = Heading("OpenLoop")
     title.add_flow("defaults.version", 5000)
     c.append(title)
     c.append("Made with Flask")
     row.append(c)
 
-    c = Card("Badges", 5)
+    c = Card("Badges", 7)
 
     mongo = Link("https://www.mongodb.com")
     mongo.append(Image("/static/img/Mongo.png", 50))
@@ -26,8 +26,16 @@ def about():
     flask = Link("https://flask.palletsprojects.com")
     flask.append(Image("/static/img/Flask.png", 60))
 
+    pwa = Link("https://web.dev/progressive-web-apps/")
+    pwa.append(Image("/static/img/pwa.svg", 60))
+
+    cyclone = Link("https://cyclone.biz")
+    cyclone.append(Image("/static/img/CycloneWhite.png", 60))
+
     c.append(mongo)
     c.append(flask)
+    c.append(pwa)
+    c.append(cyclone)
     row.append(c)
 
     p.append(row)
