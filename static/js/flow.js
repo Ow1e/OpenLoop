@@ -112,6 +112,9 @@ async function set_onclick(serve){
         let response = await fetch("/flow/refresh/"+id);
         if (response.ok) {
             let json = await response.json();
+            if (json["value"].startsWith("http") || json["value"].startsWith("/")){
+                location.href = json["value"]
+            }
           } else {
             alert("Error pressing button!");
         }
