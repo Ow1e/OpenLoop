@@ -4,8 +4,7 @@ Generates device names used by the API
 
 from random import randint
 
-flowers = """
-Achillea
+flowers = """Achillea
 Adam's-needle
 Agapanthus
 Ageratum
@@ -127,11 +126,9 @@ Waxflower
 Windflower
 Wolfsbane
 Zantedeschia
-Zinna
-""".splitlines()
+Zinna""".splitlines()
 
-elements = """
-Actinium
+elements = """Actinium
 Americium
 Argon
 Arsenic
@@ -234,8 +231,7 @@ Xenon
 Ytterbium
 Yttrium
 Zinc
-Zirconium
-""".splitlines()
+Zirconium""".splitlines()
 
 def sel_random(arr):
     l = len(arr)-1
@@ -248,8 +244,9 @@ def generate():
     return f"{el} {fl}"
 
 if __name__ == "__main__":
-    x = generate()
-    print(x)
-    print(len(elements))
-    print(len(flowers))
-    print(pow(len(flowers), len(flowers)))
+    from time import sleep
+
+    while True:
+        x = generate()
+        print(x)
+        sleep(.5)

@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, url_for, send_from_directory, redirect
 from openloop.page import index as serv_index
 from openloop.page import about as serv_about
-from openloop.page import plugins as serv_plugins
+from openloop.page import plugins as serv_flow_plugins
 from openloop.page import set_pl_redirects
+from openloop.page import plugins_view as serv_plugins
 import os
 
 MANIFEST = {
@@ -29,6 +30,7 @@ class Web_Handler:
         self.web = web
         methods = shared.methods
         self.shared = shared
+        shared.flow["pages"]["builtin"]["plugins"] = self.serv_flow_plugins_cl
         set_pl_redirects(shared.plugins.enviroments, shared.flow)
         
         # WEB MANIFEST PWA
@@ -58,7 +60,7 @@ class Web_Handler:
 
         @web.route("/plugins")
         def list_plugins():
-            return render_template("blank.jinja", methods=methods, html = serv_plugins(shared.plugins.enviroments), title="Plugins")
+            return render_template("blank.jinja", methods=methods, html = serv_plugins(), title="Plugins")
 
         @web.route("/plugin/<name>")
         def view_plugin_index(name):
@@ -92,3 +94,6 @@ class Web_Handler:
                 chosen = i
                 break
         return chosen
+
+    def serv_flow_plugins_cl(self):
+        return serv_flow_plugins(self.shared.plugins.enviroments)

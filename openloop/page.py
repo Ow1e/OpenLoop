@@ -64,9 +64,6 @@ def set_pl_redirects(plugin_list, flow):
         flow["redirects"]["plugins"][i.name] = f"/plugin/{i.name}"
             
 def plugins(plugin_list):
-    p = Page()
-    p.append(Heading("Plugins", 0))
-    c = Card("Plugin List", 12)
     table = Table()
 
     header = Table_Header()
@@ -86,16 +83,25 @@ def plugins(plugin_list):
         btn_cell.append(Button(text="Enter Page", flow=f"redirects.plugins.{i.name}", icon="fas fa-sitemap"))
         row.append(btn_cell)
         body.append(row)
-    
+
     table.append(header)
     table.append(body)
     if len(body) > 9:
         table.append(header)
-
-    c.append("Note that on Plugin Startup plugin metadata is changed.")
-    c.append(table)
-    c.append("<b>This chart does not auto update</b>")
-    p.append(c)
     
-    return p.export()
+    return table.export()
 
+def plugins_view():
+    p = Page()
+    c = Card("Plugins", 7)
+    chart = Div()
+    chart.add_flow("pages.builtin.plugins")
+    c.append("Plugin metadata updates every time a OpenLoop instance is restarted")
+    c.append(chart)
+    p.append(c)
+
+    c = Card("Plugin API", 5)
+    c.append(Text("See documentation "))
+    c.append(Link("https://docs.cyclone.biz", "here"))
+    p.append(c)
+    return p.export()

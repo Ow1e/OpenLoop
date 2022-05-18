@@ -213,11 +213,20 @@ class Image(Element):
             self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;">'
 
 class Text(Element):
-    def __init__(self):
+    def __init__(self, text=None):
         super().__init__()
         self.outer = "{}"
+        if text!=None:
+            self.append(text)
 
 class Link(Element):
-    def __init__(self, link):
+    def __init__(self, link, text=None):
         super().__init__()
         self.outer = '<a href="{}">{}</a>'.format(link, "{}")
+        if text!=None:
+            self.append(text)
+
+class Div(Element):
+    def __init__(self):
+        super().__init__()
+        self.outer = "<div flow>{}</div>"

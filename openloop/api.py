@@ -10,9 +10,23 @@ def api_render():
     p.append(Heading("Programming Interface", 0))
     keys = Card("API Keys", 7)
     keys.add_flow("api.api_keys")
-    form = Card("Register Key", 5)
+    form_card = Card("Active Feeds", 5)
+
+    form = Form("api.keys_submit")
+    
+    form.append(Heading("Register Feeds", 2))
+
+    row = Row()
+
+    form_elem = Form_Element()
+    form_elem.append(Label("Label Name"))
+    form_elem.append(Input("", placeholder="My Sensor"))
+    row.append(form_elem)
+
+    form.append(row)
+    form_card.append(form)
     p.append(keys)
-    p.append(form)
+    p.append(form_card)
     return p.export()
 
 class API_Handler:
@@ -20,9 +34,13 @@ class API_Handler:
         api = Blueprint("api", __name__)
         self.api = api
 
+        shared.flow["api"] = {
+            "api_keys": self.api_keys
+        }
+
         @api.route("/")
         def api():
-            return render_template("blank.jinja", html = api_render(), title= "API" )
+            return render_template("blank.jinja", methods = shared.methods, html = api_render(), title= "API" )
 
     def api_keys(self):
         table = Table()
