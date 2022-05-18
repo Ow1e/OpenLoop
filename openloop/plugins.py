@@ -3,6 +3,8 @@ import logging
 import secrets
 import sched
 import time
+import requests
+import pip_api
 import openloop.crossweb as crossweb
 
 class Enviroment:
@@ -22,7 +24,9 @@ class Enviroment:
 
         env = {
             "plugin": self,
-            "crossweb": crossweb
+            "crossweb": crossweb,
+            "requests": requests,
+            "flow": self.flow
         }
         
         for i in dir(crossweb):
