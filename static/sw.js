@@ -42,6 +42,8 @@ const staticAssets = [
     "/static/fonts/fa-regular-400.eot",
     "/",
     "/about",
+    "/plugins",
+    "/api/"
 ]
 
 self.addEventListener('install', async e => {

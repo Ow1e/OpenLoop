@@ -138,7 +138,9 @@ class Table_Cell(Element):
 
     def __init__(self, text=""):
         super().__init__()
-        self.outer = "<th>"+text+"{}</th>"
+        self.outer = "<th>{}</th>"
+        if text!="":
+            self.append(text)
 
 
 class Icon(Element):

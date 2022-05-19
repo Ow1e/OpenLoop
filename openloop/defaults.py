@@ -12,20 +12,25 @@ def cpu_str():
         cpu_hist.append(val)
     return str(val)+"%"
 
-global cpu_temp_enabled
-cpu_temp_enabled = True
-def cpu_temperature():
-    if cpu_temp_enabled:
-        try:
-            if "sensors_temperatures" in dir(psutil):
-                temp_data = psutil.sensors_temperatures()
-                return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
-            else:
-                return "Unsupported"
-        except:
-            return "Error"
-    else:
-        return "Disabled"
+class CPU_Temp:
+    def __init__(self) -> None:
+        self.enabled = True
+
+    def get(self):
+        if self.enabled:
+            try:
+                if "sensors_temperatures" in dir(psutil):
+                    temp_data = psutil.sensors_temperatures()
+                    return str(temp_data["cpu_thermal"][0].current) + chr(176) + "C"
+                else:
+                    return "Unsupported"
+            except:
+                self.enabled = False
+                return "Error"
+        else:
+            return "Disabled"
+
+cpu_temp = CPU_Temp()
 
 def ram_usage():
     ram_used = psutil.virtual_memory().percent
@@ -47,7 +52,7 @@ package = {
     "time": datetime.now,
     "timec": comp_time,
     "cpu": cpu_str,
-    "cpu_temp": cpu_temperature,
+    "cpu_temp": cpu_temp.get,
     "ram_used": ram_usage,
     "debug": debug_test,
     "version": version

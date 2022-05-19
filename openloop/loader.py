@@ -18,14 +18,18 @@ def load_data(app):
             self.app = app
             self.config = configCheck()
             self.database = Database(self)
-            self.auth = Auth_Handler(self)
 
             self.flow = Flow()
             self.alerts = AlertManager(self)
             self.plugins = Deployer(self)
+
             self.methods = Methods(self)
 
-            app.register_blueprint(Flow_Serve(self.flow).web, url_prefix="/flow")
+            self.auth = Auth_Handler(self)
+            self.vault = self.auth.auth
+
+            app.register_blueprint(self.auth.web, url_prefix="/auth")
+            app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
             app.register_blueprint(API_Handler(self).api, url_prefix="/api")
             app.register_blueprint(Web_Handler(self).web)
 

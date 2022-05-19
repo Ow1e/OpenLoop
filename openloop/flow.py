@@ -13,17 +13,20 @@ class Flow(dict):
         self["plugins"] = {} # This is for plugins
 
 class Flow_Serve:
-    def __init__(self, flow : dict) -> None:
+    def __init__(self, shared) -> None:
         api = Blueprint("flow", __name__)
         self.web = api
+        flow = shared.flow
 
         @api.route("/")
+        @shared.vault.login_required
         def information():
             return {
                 "version": "Flow Protocol Version 2.0"
             }
 
         @api.route("/refresh/<element>", methods=["GET", "POST"])
+        @shared.vault.login_required
         def update_item(element : str):
             path = element.split(".")
 

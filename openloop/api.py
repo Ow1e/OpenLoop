@@ -54,6 +54,7 @@ class API_Handler:
         }
 
         @api.route("/")
+        @shared.vault.login_required
         def api():
             return render_template("blank.jinja", methods = shared.methods, html = api_render(), title= "API")
 

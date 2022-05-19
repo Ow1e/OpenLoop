@@ -35,10 +35,12 @@ class Web_Handler:
         
         # WEB MANIFEST PWA
         @web.route("/manifest.webmanifest")
+        @shared.vault.login_required # You dont want OpenLoop on a targeted attack dont you? :)
         def manifest():
             return MANIFEST
 
         @web.route("/sw.js")
+        @shared.vault.login_required
         def service_worker():
             return send_from_directory(shared.app.static_folder, 'sw.js')
 
@@ -47,22 +49,27 @@ class Web_Handler:
         shared.flow["defaults"]["navbar"] = navbar
 
         @web.route("/")
+        @shared.vault.login_required
         def index():
             return render_template("blank.jinja", methods=methods, html = serv_index(), title= "Dashboard", active=True)
         
         @web.route("/about")
+        @shared.vault.login_required
         def about():
             return render_template("blank.jinja", methods=methods, html = serv_about(), title= "About" )
 
         @web.route("/client")
+        @shared.vault.login_required
         def offline():
             return render_template("debug.jinja", methods=methods, title = "Client Debug")
 
         @web.route("/plugins")
+        @shared.vault.login_required
         def list_plugins():
             return render_template("blank.jinja", methods=methods, html = serv_plugins(), title="Plugins")
 
         @web.route("/plugin/<name>")
+        @shared.vault.login_required
         def view_plugin_index(name):
             plugin = self.get_plugin(name)
             if plugin:
@@ -74,6 +81,7 @@ class Web_Handler:
                 return render_template("404.jinja", methods=methods, code=404, text=f"{name} is not a plugin")
 
         @web.route("/plugin/<name>/<page>")
+        @shared.vault.login_required
         def view_plugin_age(name, page):
             plugin = self.get_plugin(name)
             if plugin:
@@ -86,6 +94,13 @@ class Web_Handler:
             else:
                 return render_template("404.jinja", methods=methods, code=404, text=f"{name} is not a plugin")
 
+
+        @web.route("/reload")
+        @shared.vault.login_required
+        def reload():
+            # This is for reauth (when someone forgets to have a secret or a password is changed)
+            # DO NOT CACHE THIS (IT BREAKS EVERYTHING)
+            return render_template("reload.html")
 
     def get_plugin(self, name : str):
         chosen = None

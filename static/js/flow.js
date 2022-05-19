@@ -31,7 +31,7 @@ function hide_net(){
 async function flow(req, type, elem){
     try {
         let response = await fetch("/flow/refresh/"+req);
-        if (response.ok) {
+        if (response.ok){
             let json = await response.json();
             if (type=="innerHTML"){
                 elem.innerHTML = json["value"]
@@ -40,8 +40,11 @@ async function flow(req, type, elem){
             } else {
                 return json["value"]
             }
-          } else {
-            console.error("HTTP-Error: " + response.status);
+        } else {
+            if (response.status == 401){
+                window.location.href = "/reload"
+            } else {console.error("HTTP-Error: " + response.status);}
+            
         }
         show_net()
     } catch (error) {
