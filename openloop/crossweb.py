@@ -203,6 +203,13 @@ class Input(Element):
         super().__init__()
         self.outer = f'<input class="form-control" type="{type}" placeholder="{placeholder}" name="{name}" />'
 
+class Form_Button(Element):
+    def __init__(self, text="Submit", color="primary"):
+        super().__init__()
+        self.outer = '<button class="btn btn-{} btn-sm" type="submit" style="margin-top: 10px;">{}</button>'.format(color, "{}")
+        if text!=None:
+            self.append(text)
+
 class Image(Element):
     """HTML image"""
     def __init__(self, src, height, width=None):

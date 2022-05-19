@@ -34,13 +34,11 @@ class Flow_Serve:
                 else:
                     current = {}
 
+            func = [BuiltinFunctionType, MethodType, FunctionType]
+
             if current == {}:
                 current = None
-            elif type(current) == BuiltinFunctionType:
-                current = str(current())
-            elif type(current) == MethodType:
-                current = str(current())
-            elif type(current) == FunctionType:
+            elif type(current) in func:
                 if request.method == "POST":
                     current = current(request.form)
                     if request.form.get("formLocation")!=None:

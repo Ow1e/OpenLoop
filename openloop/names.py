@@ -5,7 +5,6 @@ Generates device names used by the API
 from random import randint
 
 flowers = """Achillea
-Adam's-needle
 Agapanthus
 Ageratum
 Alpina
@@ -46,7 +45,6 @@ Dahlia
 Dendrobium
 Drumstick
 Enthusiasm
-Farewell-To-Spring
 Feverfew
 Freesia
 Gardenia
@@ -68,10 +66,8 @@ Lavender
 Liatris
 Lilac
 Lily
-Lilly-of-the-Valley
 Limonium
 Lisianthus
-Love-lies-bleeding
 Melaleuca
 Memosa
 Mimosa
