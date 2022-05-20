@@ -42,6 +42,7 @@ async function flow(req, type, elem){
             }
         } else {
             if (response.status == 401){
+                console.error("Switching...")
                 window.location.href = "/reload"
             } else {console.error("HTTP-Error: " + response.status);}
             
