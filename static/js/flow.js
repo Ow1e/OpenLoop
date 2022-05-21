@@ -145,3 +145,13 @@ document.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 console.log("Completed FlowJS Start")
+
+console.log(
+    "%cStop!",
+    "color:#4E73DF;font-family:system-ui;font-size:4rem;-webkit-text-stroke: 1px black;font-weight:bold"
+);
+
+console.log(
+    "%cNever put something in the console unless you are a Developer and know what your doing. The console could allow attackers to use a XSS vulneralbility and hack your OpenLoop account.",
+    "font-family:system-ui;font-size:large;"
+)

@@ -1,5 +1,21 @@
-<script>
-    window.history.back();
-</script>
-<h1>Please enable javascript</h1>
-<p>This page will make you go back a page while resetting your auth key</p>
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include "headers.jinja" %}
+    <title>Client Reload - OpenLoop</title>
+    <script>
+        window.history.back();
+    </script>
+</head>
+<body style="background: var(--bs-primary);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h1 style="color: white;" id="text">Enable JavaScript</h1>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</body>

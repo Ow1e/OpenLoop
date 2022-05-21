@@ -179,6 +179,14 @@ class Form(Element):
         self.outer = '<form action="/flow/refresh/{}" method="post">{}</form>'.format(flow_path, "{}")
         self.append('<input type="hidden" location name="formLocation" value="">')
 
+class HTML_Form(Element):
+    """HTML CrossWeb Form, use with a Row and a Form Element"""
+
+    def __init__(self, path):
+        super().__init__()
+        self.flow_enabled = False
+        self.outer = '<form action="{}" method="post">{}</form>'.format(path, "{}")
+        self.append('<input type="hidden" location name="formLocation" value="">')
 
 class Form_Element(Element):
     """Element that wraps around Label/Input"""
@@ -201,16 +209,31 @@ class Label(Element):
 
 class Input(Element):
     """Input for form"""
-    def __init__(self, name, type="text", placeholder=""):
+    def __init__(self, name, type="text", placeholder="", required = False):
         super().__init__()
-        self.outer = f'<input class="form-control" type="{type}" placeholder="{placeholder}" name="{name}" />'
+        if required == True:
+            required = "required"
+        else:
+            required = ""
+        self.outer = f'<input class="form-control" type="{type}" placeholder="{placeholder}" name="{name}" {required} />'
 
 class Form_Button(Element):
+    """Button for Form"""
     def __init__(self, text="Submit", color="primary"):
         super().__init__()
         self.outer = '<button class="btn btn-{} btn-sm" type="submit" style="margin-top: 10px;">{}</button>'.format(color, "{}")
         if text!=None:
             self.append(text)
+
+class Form_Check(Element):
+    """Check Button for form"""
+    def __init__(self, text, name, checked):
+        super().__init__()
+        if checked == True:
+            checked = "checked"
+        else:
+            checked = ""
+        self.outer = '<div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="{}" {} /><label class="form-check-label"><strong>{}</strong></label></div>'.format(name, checked, text)
 
 class Image(Element):
     """HTML image"""

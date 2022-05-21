@@ -102,6 +102,12 @@ class Web_Handler:
             # DO NOT CACHE THIS (IT BREAKS EVERYTHING)
             return render_template("reload.html")
 
+        @web.route("/logout")
+        @shared.vault.login_required
+        def logout():
+            # DO NOT CACHE THIS (IT BREAKS EVERYTHING)
+            return render_template("reload.html"), 401
+
     def get_plugin(self, name : str):
         chosen = None
         for i in self.shared.plugins.enviroments:

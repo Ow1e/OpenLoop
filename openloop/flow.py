@@ -11,6 +11,7 @@ class Flow(dict):
             "builtin": {}
         }
         self["plugins"] = {} # This is for plugins
+        self["void"] = None
 
 class Flow_Serve:
     def __init__(self, shared) -> None:
