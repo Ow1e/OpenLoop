@@ -4,7 +4,6 @@ import secrets
 import sched
 import time
 import requests
-import pip_api
 import openloop.crossweb as crossweb
 
 class Enviroment:

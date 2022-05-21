@@ -154,17 +154,17 @@ class Icon(Element):
 class Button(Element):
     """Button with Flow Support"""
 
-    def __init__(self, color="primary", icon="fas fa-flag", flow="", text=""):
+    def __init__(self, color="primary", icon="fas fa-flag", flow="", text="", href=""):
         super().__init__()
         self.flow_enabled = False
         self.html = '''
-<a class="btn btn-{} btn-icon-split" role="button" flow-click="{}">
+<a class="btn btn-{} btn-icon-split" role="button" flow-click="{}" href="{}">
     <span class="text-white-50 icon">
         <i class="{}"></i>
     </span>
     <span class="text-white text">{}</span>
 </a>
-'''.format(color, flow, icon, "{}")
+'''.format(color, flow, href, icon, "{}")
         self.outer = condense(self.html)
         if text != "":
             self.append(text)
