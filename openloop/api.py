@@ -3,8 +3,9 @@ Includes backend api and CrossWeb code
 """
 
 from openloop.crossweb import *
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from openloop.names import generate
+from flask_httpauth import HTTPBasicAuth
 import secrets
 
 def api_render():
@@ -46,6 +47,30 @@ class API_Handler:
         api = Blueprint("api", __name__)
         self.shared = shared
         self.api = api
+        devices_db = shared.database.db["devices"]
+        stream_db = shared.database.db["streams"]
+        database_on = shared.database.working
+        api_auth = HTTPBasicAuth()
+
+        @api_auth.verify_password
+        def verify_password(username, password):
+            if database_on:
+                account = devices_db.find_one({"name": username})
+                if account != None and account["key"] == password:
+                    return account
+
+        @api.route("/stream", methods=["POST"])
+        @api_auth.login_required
+        def stream():
+            device = api_auth.current_user()
+            data = request.form
+            package = {
+                "device": device["_id"]
+            }
+            for i in data:
+                package[i] = data[i]
+            stream_db.insert_one(package)
+            return {"status": "complete"}
 
         shared.flow["api"] = {
             "api_keys": self.api_keys,
@@ -56,7 +81,7 @@ class API_Handler:
         @api.route("/")
         @shared.vault.login_required
         def api():
-            return render_template("blank.jinja", methods = shared.methods, html = api_render(), title= "API")
+            return render_template("blank.jinja", methods = shared.methods, html = api_render(), title = "API")
 
 
     def api_keys(self):
@@ -103,7 +128,8 @@ class API_Handler:
                     device = {
                         "label": args.get("name", ""),
                         "name": uuid,
-                        "key": secrets.token_urlsafe(32)
+                        "key": secrets.token_urlsafe(32),
+                        "status": None
                     }
                     checking = False
                     devices.insert_one(device)
