@@ -80,7 +80,7 @@ def plugins(plugin_list):
         row.append(Table_Cell(i.name))
         row.append(Table_Cell(i.path))
         btn_cell = Table_Cell()
-        btn_cell.append(Button(text="Enter Page", flow=f"redirects.plugins.{i.name}", icon="fas fa-sitemap"))
+        btn_cell.append(Button(text="Enter Page", flow="void", href=f"/plugin/{i.name}", icon="fas fa-sitemap"))
         row.append(btn_cell)
         body.append(row)
 

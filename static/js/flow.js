@@ -37,6 +37,8 @@ async function flow(req, type, elem){
                 elem.innerHTML = json["value"]
             } else if (type=="width"){
                 elem.style.width = json["value"]
+            } else if (type=="graph"){
+                Plotly.newPlot(elem, json["value"]["data"], json["value"]["layout"])
             } else {
                 return json["value"]
             }
