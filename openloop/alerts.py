@@ -38,23 +38,26 @@ class AlertManager:
     def __init__(self, shared):
         self.db = shared.database.db["alerts"]
         shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
+        self.database_on = shared.database.working
         #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
 
     def exp_html(self):
         contents = ""
-        for i in self.db.find():
-            contents += alert.format(i["link"], i["color"], i["icon"], convert_zones(i["date"]), i["text"])
+        if self.database_on:
+            for i in self.db.find():
+                contents += alert.format(i["link"], i["color"], i["icon"], convert_zones(i["date"]), i["text"])
         return contents
 
     def add(self, text, link = "#", color = "primary", icon = "fas fa-tachometer-alt", date = datetime.utcnow()):
-        pkg = {
-            "text": text,
-            "link": link,
-            "color": color,
-            "icon": icon,
-            "date": date
-        }
-        self.db.insert_one(pkg)
+        if self.database_on:
+            pkg = {
+                "text": text,
+                "link": link,
+                "color": color,
+                "icon": icon,
+                "date": date
+            }
+            self.db.insert_one(pkg)
 
     def exp_len(self):
         x = len(list(self.db.find()))
