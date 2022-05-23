@@ -7,6 +7,7 @@ from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
 from openloop.api import API_Handler
 from openloop.methods import Methods
+from openloop.remote import Remote_Manager
 import logging
 
 def load_data(app):
@@ -30,6 +31,7 @@ def load_data(app):
 
             app.register_blueprint(self.auth.web, url_prefix="/auth")
             app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
+            app.register_blueprint(Remote_Manager(self).web, url_prefix="/remote")
             app.register_blueprint(API_Handler(self).api, url_prefix="/api")
             app.register_blueprint(Web_Handler(self).web)
 
