@@ -44,7 +44,7 @@ class Remote_Manager:
         @web.route("/")
         def index():
             p = Page()
-            p.append(Heading("Remote Management Page"))
+            p.append(Heading("Remote Management Page (BETA)"))
             c = Card("Remote Window", 12)
             terminal = Code()
             terminal.add_flow("remote.get")
