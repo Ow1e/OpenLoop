@@ -7,6 +7,8 @@ from flask import Blueprint, render_template, request
 from openloop.names import generate
 from flask_httpauth import HTTPBasicAuth
 import secrets
+import datetime
+
 
 def api_render():
     p = Page()
@@ -23,9 +25,10 @@ def api_render():
     form_elem = Form_Element()
     form_elem.append(Label("Label Name"))
     form_elem.append(Input("name", placeholder="My Sensor"))
-    form_elem.append(Form_Button("Register"))
     row.append(form_elem)
     form.append(row)
+    form.append(Form_Check("Enable OpenLite on device", "lite", False))
+    form.append(Form_Button("Register"))
     form_card.append(form)
 
     form = Form("api.keys_delete")
@@ -42,6 +45,7 @@ def api_render():
     p.append(form_card)
     return p.export()
 
+
 class API_Handler:
     def __init__(self, shared):
         api = Blueprint("api", __name__)
@@ -51,6 +55,7 @@ class API_Handler:
         stream_db = shared.database.db["streams"]
         database_on = shared.database.working
         api_auth = HTTPBasicAuth()
+        self.api_auth = api_auth
 
         @api_auth.verify_password
         def verify_password(username, password):
@@ -65,7 +70,8 @@ class API_Handler:
             device = api_auth.current_user()
             data = request.form
             package = {
-                "device": device["_id"]
+                "device": device["_id"],
+                "time": datetime.datetime.utcnow()
             }
             for i in data:
                 package[i] = data[i]
@@ -81,8 +87,7 @@ class API_Handler:
         @api.route("/")
         @shared.vault.login_required
         def api():
-            return render_template("blank.jinja", methods = shared.methods, html = api_render(), title = "API")
-
+            return render_template("blank.jinja", methods=shared.methods, html=api_render(), title="API")
 
     def api_keys(self):
         if self.shared.database.working:
@@ -94,6 +99,7 @@ class API_Handler:
             head_row.append(Table_Cell("IoT ID"))
             head_row.append(Table_Cell("IoT Key"))
             head_row.append(Table_Cell("Label"))
+            head_row.append(Table_Cell("OpenLite"))
 
             head.append(head_row)
             table.append(head)
@@ -105,6 +111,10 @@ class API_Handler:
                 row.append(Table_Cell(device['name']))
                 row.append(Table_Cell(device['key']))
                 row.append(Table_Cell(device['label']))
+                if device["lite"] == True:
+                    row.append(Table_Cell("Enabled"))
+                else:
+                    row.append(Table_Cell("Disabled"))
                 body.append(row)
 
             table.append(body)
@@ -124,12 +134,18 @@ class API_Handler:
             while checking:
                 uuid = generate()
                 query = devices.find_one({"uuid": uuid})
-                if query == None or len(query)==0:
+                if query == None or len(query) == 0:
+
+                    lite = args.get("lite", False)
+                    if lite == "on":
+                        lite = True
+
                     device = {
                         "label": args.get("name", ""),
                         "name": uuid,
-                        "key": secrets.token_urlsafe(32),
-                        "status": None
+                        "key": secrets.token_urlsafe(16),
+                        "status": None,
+                        "lite": lite
                     }
                     checking = False
                     devices.insert_one(device)

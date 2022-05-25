@@ -9,7 +9,7 @@ class Database:
         settings = dict(shared.config["MongoDB"])
         default = "mongodb://localhost:27017"
         try:
-            client = pymongo.MongoClient(settings.get("uri"), serverSelectionTimeoutMS=5000)
+            client = pymongo.MongoClient(settings.get("uri", default), serverSelectionTimeoutMS=5000)
         except:
             sys.exit("Invalid URI")
 

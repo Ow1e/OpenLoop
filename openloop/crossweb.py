@@ -227,7 +227,7 @@ class Form_Button(Element):
 
 class Form_Check(Element):
     """Check Button for form"""
-    def __init__(self, text, name, checked):
+    def __init__(self, text, name, checked = False):
         super().__init__()
         if checked == True:
             checked = "checked"
