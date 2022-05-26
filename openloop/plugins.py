@@ -25,7 +25,8 @@ class Enviroment:
             "plugin": self,
             "crossweb": crossweb,
             "requests": requests,
-            "flow": self.flow
+            "flow": self.flow,
+            "server": True
         }
         
         for i in dir(crossweb):

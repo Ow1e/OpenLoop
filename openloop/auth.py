@@ -36,6 +36,26 @@ class Auth_Handler:
                         "password": INCASE_HASH
                     }
 
+        def get_user():
+            user = auth.current_user()
+            user.pop("_id")
+            user.pop("password")
+            user.pop("admin")
+            return user
+
+        def username():
+            user = get_user()
+            return user["username"]
+
+        def fullname():
+            user = get_user()
+            return user["fullname"]
+
+        shared.flow["auth"] = {
+            "username": username,
+            "fullname": fullname
+        }
+
         @web.route("/")
         @auth.login_required
         def index_users():
