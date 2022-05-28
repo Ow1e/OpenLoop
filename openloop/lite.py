@@ -8,6 +8,7 @@ class Lite_API:
         self.web = Blueprint("lite", __name__)
         web = self.web
         self.orders = {}
+        self.cameras = {}
         self.auth = HTTPBasicAuth()
         database_on = shared.database.working
         devices_db = shared.database.db["devices"]
@@ -22,7 +23,7 @@ class Lite_API:
 
         config = (shared.config)
 
-        @web.route("/login")
+        @web.route("/check")
         @self.auth.login_required
         def register():
             return {
