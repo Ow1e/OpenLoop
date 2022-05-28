@@ -59,7 +59,6 @@ class Deployer:
         for i in os.listdir("plugins"): # Lists plugins and read them all, then sends them in a dict
             with open(f"plugins/{i}") as f:
                 sources[i] = f.read()
-                globals()
 
         logging.info("Initializing Plugins")
         for i in sources:
