@@ -87,4 +87,4 @@ class Lite_API:
             c.append(text)
             c.append(d)
             p.append(c)
-            return render_template("blank.jinja", methods = shared.methods, html = p.export())
+            return render_template("blank.jinja", methods = shared.methods, html = p.export(), title="Lite")
