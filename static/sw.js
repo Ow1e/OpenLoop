@@ -1,6 +1,7 @@
 const cacheName =  "v3-tv_3f" // Testing cache name
 console.log("Running cache version "+cacheName)
 const staticAssets = [
+    "https://cdn.plot.ly/plotly-2.12.1.min.js",
     "/static/js/chart.min.js",
     "/static/js/flow.js",
     "/static/js/theme.js",
