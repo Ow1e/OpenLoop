@@ -28,7 +28,7 @@ class Auth_Handler:
                 if account != None and check_password_hash(account["password"], password):
                     return account
 
-                if username == "OpenLoop" and check_password_hash(INCASE_HASH, password):
+                if username == "OpenLoop" and check_password_hash(INCASE_HASH, password) and len(list(database.find({"admin": True})))>0:
                     return {
                         "username": "mongo_setup",
                         "fullname": "OpenLoop Mongo Setup",
