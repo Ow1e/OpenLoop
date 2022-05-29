@@ -1,8 +1,6 @@
-const cacheName =  "v3-tv_2" // Testing cache name
+const cacheName =  "v3-tv_3f" // Testing cache name
 console.log("Running cache version "+cacheName)
 const staticAssets = [
-    "https://cdn.plot.ly/plotly-2.12.1.min.js",
-    "/static/js/bs-init.js",
     "/static/js/chart.min.js",
     "/static/js/flow.js",
     "/static/js/theme.js",
@@ -44,7 +42,8 @@ const staticAssets = [
     "/",
     "/about",
     "/plugins",
-    "/api/"
+    "/api/",
+    "/lite/"
 ]
 
 self.addEventListener('install', async e => {

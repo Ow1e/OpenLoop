@@ -273,3 +273,9 @@ class Code(Element):
     def __init__(self):
         super().__init__()
         self.outer = '<div style="background: var(--bs-gray);padding: 10px;border-radius: 5px;margin-bottom:10px;"><code style="color: var(--bs-white);" flow>{}</code></div>'
+
+class Integrate(Element):
+    def __init__(self, flow):
+        super().__init__()
+        self.flow_enabled = False
+        self.outer = f'<div flow="{flow}"></div>'

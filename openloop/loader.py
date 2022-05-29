@@ -9,6 +9,7 @@ from openloop.api import API_Handler
 from openloop.methods import Methods
 from openloop.remote import Remote_Manager
 from openloop.lite import Lite_API
+from openloop.dash import Dash_Manager
 import logging
 
 def load_data(app):
@@ -18,6 +19,7 @@ def load_data(app):
     class SharePoint:
         def __init__(self) -> None:
             self.app = app
+
             self.config = configCheck()
             self.database = Database(self)
 
@@ -29,6 +31,8 @@ def load_data(app):
 
             self.auth = Auth_Handler(self)
             self.vault = self.auth.auth
+
+            Dash_Manager(self)
 
             app.register_blueprint(self.auth.web, url_prefix="/auth")
             app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")

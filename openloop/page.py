@@ -56,6 +56,7 @@ def index():
         fet.add_flow(i["flow"], 1000)
         row.append(fet)
     p.append(row)
+    p.append(Integrate("dash")) # Links to dash.py via flow
     return p.export()
 
 def set_pl_redirects(plugin_list, flow):
