@@ -55,10 +55,13 @@ class Page(Element):
 
 
 class Heading(Element):
-    def __init__(self, title="", size=1):
+    def __init__(self, title="", size=1, color=None):
         super().__init__()
         if size != 0:
-            self.outer = '<h{} flow>{}</h{}>'.format(size, "{}", size)
+            if color:
+                self.outer = '<h{} flow class="text-{}">{}</h{}>'.format(size, color, "{}", size)
+            else:
+                self.outer = '<h{} flow>{}</h{}>'.format(size, "{}", size)
         else:
             self.outer = '<div class="d-sm-flex justify-content-between align-items-center mb-4"><h3 class="text-dark mb-0" flow>{}</h3></div>'
 
@@ -274,9 +277,12 @@ class Image(Element):
             self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;">'
 
 class Text(Element):
-    def __init__(self, text=None):
+    def __init__(self, text=None, color=None):
         super().__init__()
-        self.outer = "{}"
+        if color:
+            self.outer = '<text class="text-{}">{}</text>'.format(color, "{}")
+        else:
+            self.outer = "{}"
         if text!=None:
             self.append(text)
 
