@@ -36,7 +36,6 @@ def load_data(app):
 
             app.register_blueprint(self.auth.web, url_prefix="/auth")
             app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
-            app.register_blueprint(Remote_Manager(self).web, url_prefix="/remote")
             app.register_blueprint(API_Handler(self).api, url_prefix="/api")
             app.register_blueprint(Lite_API(self).web, url_prefix="/lite")
             app.register_blueprint(Web_Handler(self).web)
