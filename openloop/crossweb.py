@@ -313,4 +313,4 @@ class Integrate(Element):
     def __init__(self, flow):
         super().__init__()
         self.flow_enabled = False
-        self.outer = f'<div flow="{flow}"></div>'
+        self.outer = f'<div flow="{flow}" class="row"></div>'

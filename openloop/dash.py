@@ -9,7 +9,7 @@ class Dash_Manager:
         self.vault = shared.vault
     
     def generate(self):
-        dash = Row()
+        dash = Div()
         dash.append(self.create_welcome())
         dash.append(self.create_system())
         return dash.export()
