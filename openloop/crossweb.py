@@ -111,7 +111,7 @@ class Feature(Element):
                     <div class="text-uppercase text-{} fw-bold text-xs mb-1"><span>{}</span></div>
                     <div class="row g-0 align-items-center">
                         <div class="col-auto">
-                            <div class="text-dark fw-bold h5 mb-0 me-3"><span flot>Wow</span></div>
+                            <div class="text-dark fw-bold h5 mb-0 me-3"><span flot></span></div>
                         </div>
                         <div class="col">
                             <div class="progress progress-sm">
