@@ -13,7 +13,7 @@ MANIFEST = {
     "id": "/",
     "theme_color": "#4e73df",
     "background_color": "#4e73df",
-    "start_url": ".",
+    "start_url": "/",
     "display": "standalone",
     "icons": [
         {
