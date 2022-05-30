@@ -25,12 +25,5 @@ class Dash_Manager:
     def create_system(self):
         c = Card("System Information", 7)
         c.append(Heading("System Information", 3))
-        if os.getenv("I_AM_HEROKU"):
-            c.append(Text("<b>Running on Heroku Web Server</b>", color="primary"))
-        elif os.getenv("CYCLONE_MANUFACTURE"):
-            c.append(Text("<b>Running on a supported device from Cyclone</b>", color="info"))
-        elif os.getenv("OPENLOOP_MANUFACTURE"):
-            c.append(Text("<b>Running on a 3rd party supported device</b>", color="warning"))
-        else:
-            c.append(Text("<b>Running on a self hosted device</b>", color="danger"))
+        c.append("Running on a self hosted device.")
         return c
