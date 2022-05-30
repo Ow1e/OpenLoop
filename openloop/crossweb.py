@@ -115,7 +115,7 @@ class Feature(Element):
                         </div>
                         <div class="col">
                             <div class="progress progress-sm">
-                                <div class="progress-bar bg-info" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" flow><span class="visually-hidden"></span></div>
+                                <div class="progress-bar bg-primary" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%;" flow><span class="visually-hidden"></span></div>
                             </div>
                         </div>
                     </div>
