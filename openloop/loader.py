@@ -7,7 +7,6 @@ from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
 from openloop.api import API_Handler
 from openloop.methods import Methods
-from openloop.remote import Remote_Manager
 from openloop.lite import Lite_API
 from openloop.dash import Dash_Manager
 import logging
