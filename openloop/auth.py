@@ -5,7 +5,7 @@ from openloop.crossweb import *
 import secrets
 import os
 
-INCASE_HASH = os.environ.get("OPENLOOP_EMERGENCY")
+INCASE_HASH = os.environ.get("OPENLOOP_EMERGENCY", "")
 
 class Auth_Handler:
     def __init__(self, shared) -> None:

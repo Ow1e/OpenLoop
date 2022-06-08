@@ -7,9 +7,10 @@ import requests
 import openloop.crossweb as crossweb
 
 class Enviroment:
-    def __init__(self, path, src, shared) -> None:
+    def __init__(self, path, src, shared, memory) -> None:
         self.name = path.split(".")[0]
         self.path = path
+        self.hidden = False
         
         self.secret = secrets.token_urlsafe(16) # This is so other plugins cannot edit/transmit to others
 
@@ -26,7 +27,8 @@ class Enviroment:
             "crossweb": crossweb,
             "requests": requests,
             "flow": self.flow,
-            "server": True
+            "server": True,
+            "shared": memory
         }
         
         for i in dir(crossweb):
@@ -53,6 +55,7 @@ class Deployer:
             os.mkdir("plugins")
 
         sources = {}
+        self.dealer = {} # For memory share between different plugins
         self.enviroments = []
 
         logging.info("Reading Plugins")
@@ -62,4 +65,4 @@ class Deployer:
 
         logging.info("Initializing Plugins")
         for i in sources:
-            self.enviroments.append(Enviroment(i, sources[i], shared))
+            self.enviroments.append(Enviroment(i, sources[i], shared, memory))

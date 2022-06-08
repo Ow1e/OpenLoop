@@ -10,9 +10,10 @@ class Methods:
     def plugins(self):
         pr = {"PLUGINS": []}
         for i in self.shared.plugins.enviroments:
-            if len(i.pages)>1:
-                pr[str(i.name).capitalize()] = list(i.pages)
-            else:
-                for l in i.pages:
-                    pr["PLUGINS"].append(i.name)
+            if not i.hidden:
+                if len(i.pages)>1:
+                    pr[str(i.name).capitalize()] = list(i.pages)
+                else:
+                    for l in i.pages:
+                        pr["PLUGINS"].append(i.name)
         return pr
