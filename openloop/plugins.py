@@ -54,15 +54,21 @@ class Deployer:
         if not os.path.exists("plugins"): # Creates plugins folder if not done already
             os.mkdir("plugins")
 
-        sources = {}
+        plugins = {} # Plugin Sources
+        dealers = {} # Plugin Extentions
         self.dealer = {} # For memory share between different plugins
         self.enviroments = []
 
         logging.info("Reading Plugins")
         for i in os.listdir("plugins"): # Lists plugins and read them all, then sends them in a dict
             with open(f"plugins/{i}") as f:
-                sources[i] = f.read()
+                if i.endswith(".pyr"):
+                    dealers[i] = f.read()
+                else:
+                    plugins[i] = f.read()
 
-        logging.info("Initializing Plugins")
-        for i in sources:
-            self.enviroments.append(Enviroment(i, sources[i], shared, memory))
+        logging.info("Initializing Dealers/Plugins")
+        for i in dealers:
+            self.enviroments.append(Enviroment(i, plugins[i], shared, self.dealer))
+        for i in plugins:
+            self.enviroments.append(Enviroment(i, plugins[i], shared, self.dealer))
