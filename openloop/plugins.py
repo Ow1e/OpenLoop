@@ -69,6 +69,6 @@ class Deployer:
 
         logging.info("Initializing Dealers/Plugins")
         for i in dealers:
-            self.enviroments.append(Enviroment(i, plugins[i], shared, self.dealer))
+            self.enviroments.append(Enviroment(i, dealers[i], shared, self.dealer))
         for i in plugins:
             self.enviroments.append(Enviroment(i, plugins[i], shared, self.dealer))
