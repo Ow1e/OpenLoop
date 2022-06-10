@@ -6,6 +6,8 @@ import time
 import requests
 import openloop.crossweb as crossweb
 
+logging.basicConfig(filename='plugins.log', filemode="a", format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+
 class Enviroment:
     def __init__(self, path, src, shared, memory) -> None:
         self.name = path.split(".")[0]
@@ -34,8 +36,10 @@ class Enviroment:
         for i in dir(crossweb):
             if not i.startswith("_"):
                 env[i] = getattr(crossweb, i)
-
-        exec(compile(src, path, "exec"), env, {})
+        try:
+            exec(compile(src, path, "exec"), env, {})
+        except Exception as e:
+            logging.error("A error occured in {}".format(self.name), exc_info=e)
 
     def crossweb_example(self):
         p = crossweb.Page()
