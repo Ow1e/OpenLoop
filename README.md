@@ -5,5 +5,3 @@
 
 
 A IoT Dashboard/Manager and Progressive Web App made for the future. Capable of being expandable to fit any need.
-## Note:
-OpenLoop is not in a experimental stage yet and is mainly testing ideas on how to build a great IOT Platform. 
