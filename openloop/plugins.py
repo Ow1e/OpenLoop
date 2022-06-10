@@ -6,8 +6,6 @@ import time
 import requests
 import openloop.crossweb as crossweb
 
-logging.basicConfig(filename='plugins.log', filemode="a", format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
-
 class Enviroment:
     def __init__(self, path, src, shared, memory) -> None:
         self.name = path.split(".")[0]
