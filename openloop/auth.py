@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, redirect, render_template, request, url_for
 from openloop.crossweb import *
 import secrets
+import logging
 import os
 
 INCASE_HASH = os.environ.get("OPENLOOP_EMERGENCY", "")
@@ -28,12 +29,13 @@ class Auth_Handler:
                 if account != None and check_password_hash(account["password"], password):
                     return account
 
-                if username == "OpenLoop" and check_password_hash(INCASE_HASH, password) and len(list(database.find({"admin": True})))>0:
+                if username == "OpenLoop" and len(list(database.find()))==0:
+                    logging.warning("User logged in as mongo_setup because no users could be found")
                     return {
                         "username": "mongo_setup",
                         "fullname": "OpenLoop Mongo Setup",
                         "admin": True,
-                        "password": INCASE_HASH
+                        "password": "pbkdf2:sha256:260000$4gjFBJGJUyO86CGu$056afb0ffb137c93d1a8e55e1e3a7c572f5f29919b89e5f14145d1ae6d76904d" # 12345678
                     }
             else:
                 if username == "OpenLoop" and check_password_hash(INCASE_HASH, password):
