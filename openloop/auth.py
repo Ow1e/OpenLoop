@@ -29,7 +29,7 @@ class Auth_Handler:
                 if account != None and check_password_hash(account["password"], password):
                     return account
 
-                if username == "OpenLoop" and len(list(database.find()))==0:
+                if username == "OpenLoop" and len(list(database.find({"admin": True})))==0:
                     logging.warning("User logged in as mongo_setup because no users could be found")
                     return {
                         "username": "mongo_setup",
