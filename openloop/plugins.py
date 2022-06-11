@@ -1,9 +1,10 @@
-import os, sys
+import os
 import logging
 import secrets
 import sched
 import time
 import requests
+import datetime
 import openloop.crossweb as crossweb
 
 class Enviroment:
@@ -11,6 +12,8 @@ class Enviroment:
         self.name = path.split(".")[0]
         self.path = path
         self.hidden = False
+        self._devicedb = shared.database.db["devices"]
+        self._streamdb = shared.database.db["streams"]
         if "Plugins" in shared.config:
             self.globalconfig = dict(shared.config["Plugins"])
         else:
@@ -54,6 +57,29 @@ class Enviroment:
     def create_loop(self):
         # Thanks to https://stackoverflow.com/questions/474528/what-is-the-best-way-to-repeatedly-execute-a-function-every-x-seconds
         return sched.scheduler(time.time, time.sleep)
+
+    def stream(self, id, **kwargs):
+        device = self._devicedb.find_one({"name": id})
+        if device == None:
+            return {"status": "incomplete", "reason": f"Could not find {id}"}
+        else:
+            package = {
+                "device": device["_id"],
+                "time": datetime.datetime.utcnow()
+            }
+            for i in kwargs:
+                package[i] = kwargs[i]
+            self._streamdb.insert_one(package)
+            package["status"] = "complete"
+            return package
+
+    def get_stream(self, id):
+        device = self._devicedb.find_one({"name": id})
+        if device == None:
+            return {"status": "incomplete", "reason": f"Could not find {id}"}
+        else:
+            return self._streamdb.find({"device": device["_id"]})
+
 
 class Deployer:
     def __init__(self, shared) -> None:
