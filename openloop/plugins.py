@@ -11,6 +11,10 @@ class Enviroment:
         self.name = path.split(".")[0]
         self.path = path
         self.hidden = False
+        if "Plugins" in shared.config:
+            self.globalconfig = dict(shared.config["Plugins"])
+        else:
+            self.globalconfig = {"identity": "cloud", "_setup": False}
         
         self.secret = secrets.token_urlsafe(16) # This is so other plugins cannot edit/transmit to others
 
@@ -28,7 +32,7 @@ class Enviroment:
             "requests": requests,
             "flow": self.flow,
             "server": True,
-            "shared": memory
+            "shared": memory,
         }
         
         for i in dir(crossweb):

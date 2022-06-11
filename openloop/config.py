@@ -8,11 +8,14 @@ def check():
     if not os.path.exists("config.ini"):
         config["MongoDB"] = {
             "uri": "mongodb://localhost:27017",
-            "name": "OpenLoop"
+            "name": "OpenLoop",
         }
         config["Customize"] = {
             "name": "OpenLoop",
             "theme": "primary"
+        }
+        config["Plugins"] = {
+            "identity": "cloud"
         }
     
         with open("config.ini", "w") as f:
