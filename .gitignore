@@ -3,3 +3,4 @@ database.db
 config.ini
 plugins
 *.log
+*.pyl

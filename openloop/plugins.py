@@ -12,6 +12,8 @@ class Enviroment:
         self.name = path.split(".")[0]
         self.path = path
         self.hidden = False
+        self.author = "Unknown"
+        self.release = ""
         self._devicedb = shared.database.db["devices"]
         self._streamdb = shared.database.db["streams"]
         if "Plugins" in shared.config:
@@ -98,6 +100,14 @@ class Deployer:
                     dealers[i] = f.read()
                 else:
                     plugins[i] = f.read()
+
+        logging.info("Reading Plugins from Mongo")
+        for i in shared.database.db["plugins"].find():
+            if i["filename"].endswith(".pyr"):
+                dealers[i["filename"]] = i["contents"]
+            else:
+                plugins[i["filename"]] = i["contents"]
+
 
         logging.info("Initializing Dealers/Plugins")
         for i in dealers:
