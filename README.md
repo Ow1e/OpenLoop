@@ -5,3 +5,6 @@
 
 
 A IoT Dashboard/Manager and Progressive Web App made for the future. Capable of being expandable to fit any need.
+
+![OpenLoop 0.3-TestTrack Dashoard](screenshots/Dashboard-OpenLoop.png)
+OpenLoop Dashboard   
