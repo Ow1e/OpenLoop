@@ -1,4 +1,4 @@
-const cacheName =  "v3-tv_3f" // Testing cache name
+const cacheName =  "v3-test-track-rev1" // Testing cache name
 console.log("Running cache version "+cacheName)
 const staticAssets = [
     "https://cdn.plot.ly/plotly-2.12.1.min.js",

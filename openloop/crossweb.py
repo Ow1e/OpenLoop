@@ -24,8 +24,11 @@ class Element(list):
 
     def add_flow(self, serv, time=None, type=None):
         self.flow = "reflow "
-        self.flow += f'flow-serv="'+serv+'"'
-        if time != None:
+        if time==False:
+            self.flow += f'flow="'+serv+'"'
+        else:
+            self.flow += f'flow-serv="'+serv+'"'
+        if time != None and time!=False:
             self.flow += f'flow-time="'+str(time)+'"'
         if type != None:
             self.flow += f'flow-type="'+type+'"'
@@ -34,7 +37,7 @@ class Element(list):
         export = ""
         for i in self:
             if type(i) == int or type(i) == str:
-                export += str(i)
+                export += str(i).replace("\n", "<br>")
             else:
                 export += i.export()
 
@@ -277,12 +280,15 @@ class Image(Element):
             self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;">'
 
 class Text(Element):
-    def __init__(self, text=None, color=None):
+    def __init__(self, text=None, color=None, traditional=False):
         super().__init__()
         if color:
-            self.outer = '<text class="text-{}">{}</text>'.format(color, "{}")
+            self.outer = '<p class="text-{}">{}</p>'.format(color, "{}")
         else:
-            self.outer = "{}"
+            if traditional:
+                self.outer = "<p>{}</p>"
+            else:
+                self.outer = "{}"
         if text!=None:
             self.append(text)
 
@@ -305,9 +311,11 @@ class Graph(Element):
         self.outer = f'<div flow="{flow}" flow-type="graph"></div>'
 
 class Code(Element):
-    def __init__(self):
+    def __init__(self, text=""):
         super().__init__()
         self.outer = '<div style="background: var(--bs-gray);padding: 10px;border-radius: 5px;margin-bottom:10px;"><code style="color: var(--bs-white);" flow>{}</code></div>'
+        if text!="":
+            self.append(text)
 
 class Integrate(Element):
     def __init__(self, flow):

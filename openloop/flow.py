@@ -1,6 +1,7 @@
 from types import BuiltinFunctionType, FunctionType, MethodType
 from flask import Blueprint, jsonify, escape, redirect, request, url_for
 from openloop.defaults import package
+import openloop
 
 class Flow(dict):
     def __init__(self):
@@ -12,6 +13,7 @@ class Flow(dict):
         }
         self["plugins"] = {} # This is for plugins
         self["void"] = None
+        self["version"] = openloop.git_ver
 
 class Flow_Serve:
     def __init__(self, shared) -> None:

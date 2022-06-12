@@ -38,7 +38,24 @@ def about():
     c.append(cyclone)
     row.append(c)
 
+    c = Card("Updates", 6)
+    c.append(Text("By default, OpenLoop does not autoupdate but all versions of OpenLoop are generally compatable.", traditional=True))
+    version = Code()
+    version.add_flow("version", False)
+    c.append(version)
+    c.append("To update on a Linux system, SSH into the system and run a direct git pull from where OpenLoop is located. Then restart the OpenLoop service with systemd.")
+    row.append(c)
+    
+    c = Card("Credits", 6)
+    c.append(Code("""People who worked on and helped out with OpenLoop:
+- Owen Shaule   (Lead Designer)
+- Evan Taylor   (Project Manager)
+- Minh Nyugen   (Help with Flow Defaults)
+- Anthony Libby (Bug Tester)"""))
+
+    row.append(c)
     p.append(row)
+
     return p.export()
 
 def index():
