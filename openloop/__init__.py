@@ -9,4 +9,4 @@ def git_ver():
     if x.stderr.read() == b"":
         return x.stdout.read().decode().removesuffix("\n")
     else:
-        return "There was a error"
+        return "There was a error contacting git"
