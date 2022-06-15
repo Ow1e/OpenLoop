@@ -21,17 +21,19 @@ def convert_zones(datetype : datetime):
     change = now-rel
     ans = ""
     
-    minutes, seconds = div_exponent(change.seconds, 60)
-    hours, none = div_exponent(minutes, 60)
-
-    if minutes == 0 and hours == 0:
-        return f"{seconds} seconds ago."
-    elif minutes == 1 and hours == 0:
-        return f"{minutes} minute ago."
-    elif hours == 0:
-        return f"{minutes} minutes ago."
+    days = change.days
+    if days == 0:
+        secs = change.total_seconds()
+        if secs < 60: # Totals one minute
+            return f"{int(secs)} second ago."
+        elif secs < 3600: # Totals one hour
+            return f"{int(secs/60)} minutes ago."
+        else:
+            return f"{int(secs/3600)} hours ago."
     else:
-        return f"{hours} hours ago."
+        month = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][rel.month]
+        day = ["Monday", "Tuesday", "Wendsday", "Thursday", "Friday", "Saturday", "Sunday"][rel.weekday()]
+        return f"{day}, {month} {rel.day} {rel.year}"
 
 class AlertManager:
     """This is loaded by the loader, it has properties of a list but automatically sets a export function to ReFlow"""
