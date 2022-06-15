@@ -1,10 +1,10 @@
 import os
 import logging
 import secrets
-import sched
-import time
 import requests
 import datetime
+from time import sleep
+from threading import Thread # Multiproccesing does not work, because of a issue with cpick
 import openloop.crossweb as crossweb
 
 class Enviroment:
@@ -19,7 +19,7 @@ class Enviroment:
         if "Plugins" in shared.config:
             self.globalconfig = dict(shared.config["Plugins"])
         else:
-            self.globalconfig = {"identity": "cloud", "_setup": False}
+            self.globalconfig = {"identity": "cloud", "_setup": False, "name": "No Name"}
         
         self.secret = secrets.token_urlsafe(16) # This is so other plugins cannot edit/transmit to others
 
@@ -38,6 +38,7 @@ class Enviroment:
             "flow": self.flow,
             "server": True,
             "shared": memory,
+            "alerts": shared.alerts
         }
         
         for i in dir(crossweb):
@@ -56,9 +57,11 @@ class Enviroment:
         p.append(c)
         return p.export()
 
-    def create_loop(self):
-        # Thanks to https://stackoverflow.com/questions/474528/what-is-the-best-way-to-repeatedly-execute-a-function-every-x-seconds
-        return sched.scheduler(time.time, time.sleep)
+    def build_thread(self, *args, **kwargs):
+        return Thread(*args, **kwargs)
+
+    def sleep_agent(self, num):
+        sleep(num)
 
     def stream(self, id, **kwargs):
         device = self._devicedb.find_one({"name": id})
