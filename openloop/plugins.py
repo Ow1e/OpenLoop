@@ -4,8 +4,32 @@ import secrets
 import requests
 import datetime
 from time import sleep
+import ctypes
 from threading import Thread # Multiproccesing does not work, because of a issue with cpick
+import threading
 import openloop.crossweb as crossweb
+
+class CoreThread(Thread):
+    """Thread for plugins with stop functionality"""
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+    def get_id(self):
+ 
+        if hasattr(self, '_thread_id'):
+            return self._thread_id
+        for id, thread in threading._active.items():
+            if thread is self:
+                return id
+
+    def stop(self, plugin = "Default"):
+        thread_id = self.get_id()
+        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
+              ctypes.py_object(SystemExit))
+        if res > 1:
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
+        logging.warning(f"The plugin thread was remotely turned off thread#{thread_id}/{plugin}")
+    
 
 class Enviroment:
     def __init__(self, path, src, shared, memory) -> None:
@@ -14,6 +38,7 @@ class Enviroment:
         self.hidden = False
         self.author = "Unknown"
         self.release = ""
+        self._threads = []
         self._devicedb = shared.database.db["devices"]
         self._streamdb = shared.database.db["streams"]
         if "Plugins" in shared.config:
@@ -58,7 +83,14 @@ class Enviroment:
         return p.export()
 
     def build_thread(self, *args, **kwargs):
-        return Thread(*args, **kwargs)
+        thread = CoreThread(*args, **kwargs)
+        self._threads.append(thread)
+        return thread
+
+    def stop_threads(self):
+        for i in self._threads:
+            i.stop(self.name)
+            self._threads.remove(i)
 
     def sleep_agent(self, num):
         sleep(num)
