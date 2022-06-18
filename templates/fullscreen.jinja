@@ -1,0 +1,9 @@
+{% extends "fullscreen.html" %}
+
+{% block title %}{{title}} - OpenLoop{% endblock %}
+
+{% block content %}
+<div style="height:100vh;padding:10px;">
+    {{html | safe}}
+</div>
+{% endblock %}

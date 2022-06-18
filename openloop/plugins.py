@@ -139,9 +139,9 @@ class Deployer:
         logging.info("Reading Plugins from Mongo")
         for i in shared.database.db["plugins"].find():
             if i["filename"].endswith(".pyr"):
-                dealers[i["filename"]] = i["contents"]
+                dealers["openloop://"+i["filename"]] = i["contents"]
             else:
-                plugins[i["filename"]] = i["contents"]
+                plugins["openloop://"+i["filename"]] = i["contents"]
 
 
         logging.info("Initializing Dealers/Plugins")
