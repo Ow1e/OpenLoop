@@ -61,7 +61,7 @@ class Enviroment:
             "crossweb": crossweb,
             "requests": requests,
             "flow": self.flow,
-            "server": True,
+            "server": (not "OpenLite" in shared.config),
             "shared": memory,
             "alerts": shared.alerts
         }

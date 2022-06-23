@@ -1,5 +1,7 @@
 num = 0.3
 code = "Medway"
+st_code = "2"
+comb_code = str(num)+st_code
 lite_api = "v1"
 
 import subprocess

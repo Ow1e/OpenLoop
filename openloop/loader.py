@@ -16,30 +16,34 @@ def load_data(app):
     Applys blueprints and loads everything in one central class
     """
     class SharePoint:
-        def __init__(self) -> None:
+        def __init__(self, config = configCheck()) -> None:
             self.app = app
 
-            self.config = configCheck()
+            self.config = config
             self.database = Database(self)
 
-            self.flow = Flow()
+            self.flow = Flow() # Only used when in OpenLoop
             self.alerts = AlertManager(self)
             self.plugins = Deployer(self)
 
             self.methods = Methods(self)
 
-            self.auth = Auth_Handler(self)
-            self.vault = self.auth.auth
 
             Dash_Manager(self)
 
-            app.register_blueprint(self.auth.web, url_prefix="/auth")
-            app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
-            app.register_blueprint(API_Handler(self).api, url_prefix="/api")
-            app.register_blueprint(Lite_API(self).web, url_prefix="/lite")
-            app.register_blueprint(Web_Handler(self).web)
+            if not "OpenLite" in config:
+                self.auth = Auth_Handler(self)
+                self.vault = self.auth.auth
+
+                app.register_blueprint(self.auth.web, url_prefix="/auth")
+                app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
+                app.register_blueprint(API_Handler(self).api, url_prefix="/api")
+                app.register_blueprint(Lite_API(self).web, url_prefix="/lite")
+                app.register_blueprint(Web_Handler(self).web)
 
             logging.info("Completed imports in Sharepoint")
 
     logging.info("Loading Sharepoint")
     share = SharePoint()
+    logging.info("Completed Sharepoint")
+    return share
