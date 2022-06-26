@@ -38,9 +38,11 @@ class Enviroment:
         self.hidden = False
         self.author = "Unknown"
         self.release = ""
+        self.dash = shared.dash.customs
         self._threads = []
         self._devicedb = shared.database.db["devices"]
         self._streamdb = shared.database.db["streams"]
+
         if "Plugins" in shared.config:
             self.globalconfig = dict(shared.config["Plugins"])
         else:
