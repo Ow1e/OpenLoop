@@ -11,12 +11,12 @@ from openloop.lite import Lite_API
 from openloop.dash import Dash_Manager
 import logging
 
-def load_data(app):
+def load_data(app, config = configCheck()):
     """
     Applys blueprints and loads everything in one central class
     """
     class SharePoint:
-        def __init__(self, config = configCheck()) -> None:
+        def __init__(self) -> None:
             self.app = app
 
             self.config = config
@@ -29,7 +29,7 @@ def load_data(app):
 
             self.plugins = Deployer(self)
 
-            if not "OpenLite" in config:
+            if "lite" in config:
                 self.auth = Auth_Handler(self)
                 self.vault = self.auth.auth
 
