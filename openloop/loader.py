@@ -24,12 +24,12 @@ def load_data(app, config = configCheck()):
 
             self.flow = Flow() # Only used when in OpenLoop
             self.alerts = AlertManager(self)
-            self.methods = Methods(self)
             self.dash = Dash_Manager(self)
 
             self.plugins = Deployer(self)
 
-            if "lite" in config:
+            if not "lite" in config:
+                self.methods = Methods(self)
                 self.auth = Auth_Handler(self)
                 self.vault = self.auth.auth
 
