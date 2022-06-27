@@ -11,10 +11,13 @@ from openloop.lite import Lite_API
 from openloop.dash import Dash_Manager
 import logging
 
-def load_data(app, config = configCheck()):
+def load_data(app, config = None):
     """
     Applys blueprints and loads everything in one central class
     """
+
+    if config == None:
+        config = configCheck()
     class SharePoint:
         def __init__(self) -> None:
             self.app = app
