@@ -139,11 +139,14 @@ class Deployer:
                     plugins[i] = f.read()
 
         logging.info("Reading Plugins from Mongo")
-        for i in shared.database.db["plugins"].find():
-            if i["filename"].endswith(".pyr"):
-                dealers["openloop://"+i["filename"]] = i["contents"]
-            else:
-                plugins["openloop://"+i["filename"]] = i["contents"]
+        if shared.database.working:
+            for i in shared.database.db["plugins"].find():
+                if i["filename"].endswith(".pyr"):
+                    dealers["openloop://"+i["filename"]] = i["contents"]
+                else:
+                    plugins["openloop://"+i["filename"]] = i["contents"]
+        else:
+            logging.warning("OpenLoop Core could not load MongoDB plugins")
 
 
         logging.info("Initializing Dealers/Plugins")
