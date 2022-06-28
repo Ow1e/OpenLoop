@@ -117,7 +117,7 @@ def plugins_view():
     c = Card("Plugins", 7)
     chart = Div()
     chart.add_flow("pages.builtin.plugins")
-    c.append("Plugin metadata updates every time a OpenLoop instance is restarted")
+    c.append("Plugin metadata updates every time a OpenLoop Core instance is restarted or a manual restart occurs")
     c.append(chart)
     c.append(Button(icon="fas fa-redo", color="danger", flow="void", text="Restart Plugins", href="/plugins/restart"))
     p.append(c)
