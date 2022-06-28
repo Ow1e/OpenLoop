@@ -5,3 +5,5 @@ plugins
 *.log
 *.pyl
 !examples/*
+.env
+venv
