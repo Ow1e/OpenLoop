@@ -22,4 +22,4 @@ class Database:
         except:
             self.info = {}
             self.working = False
-            logging.error("MongoDB cannot connect")
+            logging.critical("MongoDB cannot connect")

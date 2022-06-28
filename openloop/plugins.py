@@ -93,6 +93,7 @@ class Enviroment:
         for i in self._threads:
             i.stop(self.name)
             self._threads.remove(i)
+            del i
 
     def sleep_agent(self, num):
         sleep(num)
@@ -122,6 +123,10 @@ class Enviroment:
 
 class Deployer:
     def __init__(self, shared) -> None:
+        self._shared = shared
+        self.deploy()
+        
+    def deploy(self) -> None:
         if not os.path.exists("plugins"): # Creates plugins folder if not done already
             os.mkdir("plugins")
 
@@ -139,8 +144,8 @@ class Deployer:
                     plugins[i] = f.read()
 
         logging.info("Reading Plugins from Mongo")
-        if shared.database.working:
-            for i in shared.database.db["plugins"].find():
+        if self._shared.database.working:
+            for i in self._shared.database.db["plugins"].find():
                 if i["filename"].endswith(".pyr"):
                     dealers["openloop://"+i["filename"]] = i["contents"]
                 else:
@@ -148,9 +153,22 @@ class Deployer:
         else:
             logging.warning("OpenLoop Core could not load MongoDB plugins")
 
-
         logging.info("Initializing Dealers/Plugins")
         for i in dealers:
-            self.enviroments.append(Enviroment(i, dealers[i], shared, self.dealer))
+            self.enviroments.append(Enviroment(i, dealers[i], self._shared, self.dealer))
         for i in plugins:
-            self.enviroments.append(Enviroment(i, plugins[i], shared, self.dealer))
+            self.enviroments.append(Enviroment(i, plugins[i], self._shared, self.dealer))
+
+    def shutdown(self):
+        for i in self.enviroments:
+            i.stop_threads()
+            del i
+
+        del self.enviroments
+        del self.dealer
+
+    def restart(self):
+        logging.warning("Restarting OpenLoop plugins")
+        self.shutdown()
+        self.deploy()
+        logging.warning("Restart of Plugins Complete")

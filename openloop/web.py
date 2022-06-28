@@ -68,6 +68,12 @@ class Web_Handler:
         def list_plugins():
             return render_template("blank.jinja", methods=methods, html = serv_plugins(), title="Plugins")
 
+        @web.route("/plugins/restart")
+        @shared.vault.login_required
+        def reload_plugins():
+            shared.plugins.restart()
+            return redirect(url_for(".list_plugins"))
+
         @web.route("/plugin/<name>")
         @shared.vault.login_required
         def view_plugin_index(name):
