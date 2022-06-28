@@ -23,10 +23,10 @@ def check():
 
     config.read("config.ini")
 
-    if os.environ.get("mongodb_uri")!=None:
-        config["MongoDB"]["uri"] = os.environ.get("mongodb_uri")
-    if os.environ.get("mongodb_name")!=None:
-        config["MongoDB"]["name"] = os.environ.get("mongodb_name")
+    if os.environ.get("MONGODB_URI")!=None:
+        config["MongoDB"]["uri"] = os.environ.get("MONGODB_URI")
+    if os.environ.get("MONGODB_NAME")!=None:
+        config["MongoDB"]["name"] = os.environ.get("MONGODB_NAME")
 
     if os.environ.get("customize_name")!=None:
         config["Customize"]["name"] = os.environ.get("customize_name")

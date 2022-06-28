@@ -1,7 +1,9 @@
 from flask import Flask, render_template
+from dotenv import load_dotenv
 import logging
 
 logging.info("Starting OpenLoop")
+load_dotenv() # This is temportary, will change in openloop.config.check
 
 app = Flask(__name__)
 

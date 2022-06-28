@@ -5,4 +5,7 @@ python-dateutil
 dnspython
 pymongo
 requests
-imagezmq
+p2pnetwork
+opencv-python
+numpy
+python-dotenv
