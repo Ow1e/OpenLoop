@@ -1,8 +1,7 @@
 num = 0.3
-code = "Medway"
-st_code = "2"
+code = "Fanshawe"
+st_code = "3"
 comb_code = str(num)+st_code
-lite_api = "v1"
 
 print(f"OpenLoop Core {num*10}:{st_code}")
 
