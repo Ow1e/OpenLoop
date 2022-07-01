@@ -27,7 +27,7 @@ def api_render():
     form_elem.append(Input("name", placeholder="My Sensor"))
     row.append(form_elem)
     form.append(row)
-    form.append(Form_Check("Enable OpenLite on device", "lite", False))
+    form.append(Form_Check("Enable REST API on device", "lite", False))
     form.append(Form_Button("Register"))
     form_card.append(form)
 
@@ -99,7 +99,7 @@ class API_Handler:
             head_row.append(Table_Cell("IoT ID"))
             head_row.append(Table_Cell("IoT Key"))
             head_row.append(Table_Cell("Label"))
-            head_row.append(Table_Cell("OpenLite"))
+            head_row.append(Table_Cell("HTTP "))
 
             head.append(head_row)
             table.append(head)
@@ -152,6 +152,5 @@ class API_Handler:
 
     def keys_delete(self, args):
         if self.shared.database.working:
-            print("Delete")
             devices = self.shared.database.db["devices"]
             devices.delete_one({"name": args.get("id")})

@@ -1,7 +1,6 @@
 flask_httpauth
 psutil
 gunicorn
-python-dateutil
 dnspython
 pymongo
 requests

@@ -2,6 +2,7 @@ from openloop.alerts import AlertManager
 from openloop.auth import Auth_Handler
 from openloop.config import check as configCheck
 from openloop.database import Database
+from openloop.sapphire.web import Sapphire_Manager
 from openloop.web import Web_Handler
 from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
@@ -30,6 +31,7 @@ def load_data(app, config = None):
             self.dash = Dash_Manager(self)
 
             self.plugins = Deployer(self)
+            self.sapphire = Sapphire_Manager(self)
 
             if not "lite" in config:
                 self.methods = Methods(self)
@@ -37,6 +39,7 @@ def load_data(app, config = None):
                 self.vault = self.auth.auth
 
                 app.register_blueprint(self.auth.web, url_prefix="/auth")
+                app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")
                 app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
                 app.register_blueprint(API_Handler(self).api, url_prefix="/api")
                 app.register_blueprint(Lite_API(self).web, url_prefix="/lite")
