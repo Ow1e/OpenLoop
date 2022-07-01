@@ -1,3 +1,10 @@
+import os
+
+if os.getenv("OPENLOOP_FLOWLOW"):
+    flow_time_def = 5000
+else:
+    flow_time_def = 1000
+
 def condense(inp):
     string = ""
     for i in inp.split("\n"):
@@ -11,7 +18,6 @@ def condense(inp):
                 string += new
     return string
 
-
 class Element(list):
     """A Element"""
 
@@ -22,7 +28,7 @@ class Element(list):
         self.flow_enabled = True
         self.flow = ""
 
-    def add_flow(self, serv, time=None, type=None):
+    def add_flow(self, serv, time=flow_time_def, type=None):
         self.flow = "reflow "
         if time==False:
             self.flow += f'flow="'+serv+'"'

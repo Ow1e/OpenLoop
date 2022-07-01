@@ -4,6 +4,7 @@ OpenLoop built-in routes/render functions
 
 from openloop.crossweb import *
 import openloop as openloop
+import os
 
 def about():
     p = Page()
@@ -13,7 +14,7 @@ def about():
 
     c = Card("Version", 5)
     title = Heading("OpenLoop")
-    title.add_flow("defaults.version", 5000)
+    title.add_flow("defaults.version", 10000)
     c.append(title)
     c.append("Made with Flask")
     row.append(c)
@@ -71,9 +72,13 @@ def index():
     for i in data:
         fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"], bar=("bar" in i))
         if "bar" in i:
-            fet.add_flow(i["flow"], 3000, type="width")
+            if not flow_time_def:
+                fet.add_flow(i["flow"], 3000, type="width")
+            else:
+                fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"], bar=False)
+                fet.add_flow(i["flow"])
         else:
-            fet.add_flow(i["flow"], 1000)
+            fet.add_flow(i["flow"])
         row.append(fet)
     p.append(row)
     p.append(Integrate("dash")) # Links to dash.py via flow
