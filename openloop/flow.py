@@ -1,7 +1,8 @@
 from types import BuiltinFunctionType, FunctionType, MethodType
-from flask import Blueprint, jsonify, escape, redirect, request, url_for
+from flask import Blueprint, jsonify, escape, redirect, request, url_for, render_template
 from openloop.defaults import package
 import openloop
+import openloop.crossweb
 
 class Flow(dict):
     def __init__(self):
@@ -20,6 +21,13 @@ class Flow_Serve:
         api = Blueprint("flow", __name__)
         self.web = api
         flow = shared.flow
+
+        @api.errorhandler(500)
+        def error(err):
+            area = openloop.crossweb.Text(traditional=True)
+            area.append(openloop.crossweb.Heading("500"))
+            area.append("Restart OpenLoop and check Mongo :)")
+            return render_template("fullscreen.jinja", html=area.export(), methods=shared.methods, title="Flow Error"), 500
 
         @api.route("/")
         @shared.vault.login_required

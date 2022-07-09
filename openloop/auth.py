@@ -15,7 +15,6 @@ class Auth_Handler:
         self.auth = HTTPBasicAuth()
         auth = self.auth
         methods = shared.methods
-        database_on = shared.database.working
         database = shared.database.db["users"]
 
         """
@@ -24,7 +23,7 @@ class Auth_Handler:
         
         @self.auth.verify_password
         def verify_password(username, password):
-            if database_on:
+            if shared.database.working:
                 account = database.find_one({"username": username})
                 if account != None and check_password_hash(account["password"], password):
                     return account

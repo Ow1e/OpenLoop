@@ -53,7 +53,7 @@ def about():
 - Evan Taylor   (Project Manager)
 - Minh Nyugen   (Help with Flow Defaults)
 - Anthony Libby (Bug Tester)"""))
-
+    c.append("Thanks to any other people helping and supporting this passion project.")
     row.append(c)
     p.append(row)
 

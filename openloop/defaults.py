@@ -48,6 +48,9 @@ def comp_time():
 def version():
     return f"{openloop.num}-{openloop.code}"
 
+def oops():
+    raise Exception()
+
 package = {
     "time": datetime.now,
     "timec": comp_time,
@@ -55,5 +58,6 @@ package = {
     "cpu_temp": cpu_temp.get,
     "ram_used": ram_usage,
     "debug": debug_test,
-    "version": version
+    "version": version,
+    "oops": oops
 }

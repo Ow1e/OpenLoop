@@ -1,7 +1,6 @@
-from datetime import datetime
-from dateutil import tz
+from time import sleep
 import logging
-from werkzeug.security import generate_password_hash, check_password_hash
+from openloop.plugins import CoreThread
 import sys, pymongo
 
 class Database:
@@ -15,11 +14,20 @@ class Database:
 
         self.client = client
         self.db = client[settings.get("name", "OpenLoop")]
+        self.working = self.check()
+        self.live_worker = CoreThread(target=self.worker)
+        self.live_worker.start()
 
+    def check(self):
         try:
-            self.info = client.server_info()
-            self.working = True
+            self.info = self.client.server_info()
+            return True
         except:
             self.info = {}
-            self.working = False
             logging.critical("MongoDB cannot connect")
+            return False
+
+    def worker(self):
+        while True:
+            sleep(10)
+            self.working = self.check()

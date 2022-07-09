@@ -124,3 +124,8 @@ class Web_Handler:
 
     def serv_flow_plugins_cl(self):
         return serv_flow_plugins(self.shared.plugins.enviroments)
+
+    def apply_errors(self, app):
+        @app.errorhandler(500)
+        def error_handl():
+            return redirect("404.jinja", methods = self.shared.methods, code = 500, text="There was a unknown error, check the docs for debugging.")
