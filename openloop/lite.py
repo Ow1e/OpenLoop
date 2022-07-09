@@ -10,32 +10,20 @@ class Lite_API:
         self.orders = {}
         self.cameras = {}
         self.auth = HTTPBasicAuth()
-        database_on = shared.database.working
         devices_db = shared.database.db["devices"]
         camera_db = shared.database.db["cameras"]
 
         @self.auth.verify_password
         def verify_password(username, password):
-            if database_on:
+            if shared.database.working:
                 account = devices_db.find_one({"name": username})
                 if account != None and account["key"] == password and account["lite"] == True:
                     return account
 
         config = (shared.config)
 
-        @web.route("/check")
-        @self.auth.login_required
-        def register():
-            return {
-                "version": lite_api,
-                "login": True,
-                "config": {
-                    "mongo": dict(config["MongoDB"])
-                }
-            }
-
         def devices_flow():
-            if database_on:
+            if shared.database.working:
                 devices = shared.database.db["devices"]
                 table = Table()
                 head = Table_Header()
@@ -69,12 +57,13 @@ class Lite_API:
         }
 
         @web.route("/")
+        @shared.vault.login_required
         def index():
             p = Page()
             p.append(Heading("OpenLite Device Control", 0))
 
             c = Card("About", 7)
-            c.append("OpenLite devices can send videos, use the same <b>Plugin API</b> as OpenLoop and give OpenLite your MongoDB username and password for connectivity.")
+            c.append("OpenLite devices use OpenLoop Core to make a more simple version of OpenLoop. OpenLite uses Sapphire to create proxies as well as hosting plugins.")
             p.append(c)
 
             c = Card("Registered Devices", 5)
