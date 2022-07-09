@@ -11,6 +11,7 @@ class Sapphire_Manager:
         self.run_node()
 
         @web.route("/")
+        @shared.vault.login_required
         def index():
             p = Page()
             p.append(Heading("Sapphire", 0))

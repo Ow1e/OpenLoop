@@ -25,7 +25,7 @@ class Flow_Serve:
         @shared.vault.login_required
         def information():
             return {
-                "version": "Flow Protocol Version 2.0"
+                "version": "Flow Protocol Version 2.1"
             }
 
         @api.route("/refresh/<element>", methods=["GET", "POST"])

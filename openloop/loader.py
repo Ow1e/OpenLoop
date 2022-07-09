@@ -31,12 +31,12 @@ def load_data(app, config = None):
             self.dash = Dash_Manager(self)
 
             self.plugins = Deployer(self)
-            self.sapphire = Sapphire_Manager(self)
 
             if not "lite" in config:
                 self.methods = Methods(self)
                 self.auth = Auth_Handler(self)
                 self.vault = self.auth.auth
+                self.sapphire = Sapphire_Manager(self)
 
                 app.register_blueprint(self.auth.web, url_prefix="/auth")
                 app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")
