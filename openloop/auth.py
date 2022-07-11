@@ -84,7 +84,7 @@ class Auth_Handler:
             row.append(Table_Cell("Methods"))
             header.append(row)
             
-            if database_on:
+            if shared.database.working:
                 for i in database.find():
                     row = Table_Row()
                     row.append(Table_Cell(i['fullname']))
@@ -123,7 +123,7 @@ class Auth_Handler:
         @web.route("/del/<username>")
         @auth.login_required
         def delete_user(username):
-            if database_on:
+            if shared.database.working:
                 user = database.find_one({"username": username})
                 my_user = auth.current_user()
                 if user == None:
@@ -142,7 +142,7 @@ class Auth_Handler:
         @auth.login_required
         def add_user():
             my_user = auth.current_user()
-            if database_on:
+            if shared.database.working:
                 if my_user['admin']==True:
                     if request.method == "GET":
                         p = Page()
