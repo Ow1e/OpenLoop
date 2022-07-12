@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, send_from_directory, redirect
+from flask import Blueprint, render_template, url_for, send_from_directory, redirect, request
 from openloop.page import index as serv_index
 from openloop.page import about as serv_about
 from openloop.page import plugins as serv_flow_plugins
@@ -23,6 +23,12 @@ MANIFEST = {
         }
     ]
 }
+
+def get_template():
+    if "fullscreen" in request.args:
+        return "fullscreen.jinja"
+    else:
+        return "blank.jinja"
 
 class Web_Handler:
     def __init__(self, shared) -> None:
@@ -51,12 +57,12 @@ class Web_Handler:
         @web.route("/")
         @shared.vault.login_required
         def index():
-            return render_template("blank.jinja", methods=methods, html = serv_index(), title= "Dashboard", active=True)
+            return render_template(get_template(), methods=methods, html = serv_index(), title= "Dashboard", active=True)
         
         @web.route("/about")
         @shared.vault.login_required
         def about():
-            return render_template("blank.jinja", methods=methods, html = serv_about(), title= "About" )
+            return render_template(get_template(), methods=methods, html = serv_about(), title= "About" )
 
         @web.route("/client")
         @shared.vault.login_required
@@ -80,7 +86,7 @@ class Web_Handler:
             plugin = self.get_plugin(name)
             if plugin:
                 if "index" in plugin.pages:
-                    return render_template("blank.jinja", methods=methods, html = plugin.pages["index"](), title=plugin.name)    
+                    return render_template(get_template(), methods=methods, html = plugin.pages["index"](), title=plugin.name)    
                 else:
                     return render_template("404.jinja", methods=methods, code=404, text=f"{name} has no index page")
             else:
@@ -94,7 +100,7 @@ class Web_Handler:
                 if page == "index":
                     return redirect(url_for(".view_plugin_index", name=name))
                 elif page in plugin.pages:
-                    return render_template("blank.jinja", methods=methods, html = plugin.pages[page](), title=f"{page} | {plugin.name}")    
+                    return render_template(get_template(), methods=methods, html = plugin.pages[page](), title=f"{page} | {plugin.name}")    
                 else:
                     return render_template("404.jinja", methods=methods, code=404, text=f"{name} has no {page} page")
             else:
