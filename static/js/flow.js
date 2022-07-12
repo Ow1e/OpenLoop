@@ -115,7 +115,7 @@ async function flow_pack(package){
             }
         }
     } else {
-        if (response.status == 401){
+        if (request.status == 401){
             console.error("Switching...")
             window.location.href = "/reload"
         } else {console.error("HTTP-Error: " + response.status);}
