@@ -62,17 +62,22 @@ async function flow(req, type, elem){
 document.addEventListener('DOMContentLoaded', function() {
 
 	var serverd = document.querySelectorAll('[flow]');
+    var front = [];
 
 	for (var serve of serverd) {
         var req = serve.getAttribute("flow")
         var type = serve.getAttribute("flow-type")
-        console.log(serve)
-        if (type==null){
-            var type = "innerHTML"
-        }
+
+        front.push({
+            "serve": req,
+            "type": type,
+            "object": serve
+        })
         
-        flow(req, type, serve)
 	}
+    console.info("Flow logging below")
+    console.log(-1, front)
+    flow_pack(front)
 
     start_flow()
 }, false);
@@ -139,7 +144,7 @@ function start_flow(){
         })
 	}
     for (var key in times){
-        console.log(times[key])
+        console.log(key, times[key])
         flow_pack(times[key])
         setInterval(flow_pack, key, times[key])
     }
@@ -165,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var serverd = document.querySelectorAll('[flow-click]');
 
 	for (var serve of serverd) {
-        console.log(serve)
+        console.log("onclick", serve)
         set_onclick(serve)
 	}
 }, false);
