@@ -4,11 +4,15 @@
 
 {% block content %}
 <div style="height:100vh;padding:10px;margin-top:20px;">
+    <button id="fullscreen" style="margin-bottom:10px;">Go into fullscreen</button>
     {{html | safe}}
 </div>
 {% endblock %}
 {% block js %}
 <script>
-    document.body.requestFullscreen()
+    document.getElementById("fullscreen").onclick = function(){
+        document.body.requestFullscreen()
+        document.getElementById("fullscreen").setAttribute("hidden", true)
+    }
 </script>
 {% endblock %}
