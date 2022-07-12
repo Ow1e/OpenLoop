@@ -73,7 +73,7 @@ def index():
         fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"], bar=("bar" in i))
         if "bar" in i:
             if flow_time_def==1000:
-                fet.add_flow(i["flow"], 3000, type="width")
+                fet.add_flow(i["flow"], 1000, type="width")
             else:
                 fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"], bar=False)
                 fet.add_flow(i["flow"])

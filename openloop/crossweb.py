@@ -49,7 +49,7 @@ class Element(list):
 
         if self.flow_enabled:
             s = self.outer.replace("flow", self.flow).format(export)
-            s = s.replace("flot", self.flow.replace('flow-type="width"', "").replace('flow-time="3000"', 'flow-time="1000"'))
+            s = s.replace("flot", self.flow.replace('flow-type="width"', ""))
             return s
         else:
             return self.outer.format(export)

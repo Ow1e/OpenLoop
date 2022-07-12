@@ -1,6 +1,7 @@
 from types import BuiltinFunctionType, FunctionType, MethodType
 from flask import Blueprint, jsonify, escape, redirect, request, url_for, render_template
 from openloop.defaults import package
+from datetime import datetime
 import openloop
 import openloop.crossweb
 
@@ -21,6 +22,7 @@ class Flow_Serve:
         api = Blueprint("flow", __name__)
         self.web = api
         flow = shared.flow
+        self.flow = flow
 
         @api.errorhandler(500)
         def error(err):
@@ -33,39 +35,60 @@ class Flow_Serve:
         @shared.vault.login_required
         def information():
             return {
-                "version": "Flow Protocol Version 2.1"
+                "version": "Flow Protocol Version 2.2"
             }
 
         @api.route("/refresh/<element>", methods=["GET", "POST"])
         @shared.vault.login_required
         def update_item(element : str):
-            path = element.split(".")
+            start = datetime.now()
 
-            current = flow
-            for i in path:
-                if i in current:
-                    current = current[i]
-                else:
-                    current = {}
+            return self.flow_find(element, True)
 
-            func = [BuiltinFunctionType, MethodType, FunctionType]
-
-            if current == {}:
-                current = None
-            elif type(current) in func:
-                if request.method == "POST":
-                    current = current(request.form)
-                    if request.form.get("formLocation")!=None:
-                        return redirect(request.form.get("formLocation"))
-                    else:
-                        return redirect(url_for("web.index"))
-                else:
-                    current = current()
-
-            if current == None:
-                current = "null"
-
-            return {
-                "item": escape(element),
-                "value": current
+        @api.route("/package", methods=["GET"])
+        @shared.vault.login_required
+        def update_packages():
+            start = datetime.now()
+            package = {
+                "data": {},
+                "request": []
             }
+            arguments = dict(request.args)
+
+            for i in arguments:
+                package["data"][i] = self.flow_find(i)
+                package["request"].append(i)
+
+            package["time"] = (datetime.now() - start).total_seconds()
+
+            return jsonify(package)
+
+    def flow_find(self, element, form_enabled = False):
+        start = datetime.now()
+        path = element.split(".")
+
+        current = self.flow
+        for i in path:
+            if i in current:
+                current = current[i]
+            else:
+                current = {}
+
+        func = [BuiltinFunctionType, MethodType, FunctionType]
+
+        if current == {}:
+            current = None
+        elif type(current) in func:
+            if request.method == "POST" and form_enabled:
+                current = current(request.form)
+                if request.form.get("formLocation")!=None:
+                    return redirect(request.form.get("formLocation"))
+                else:
+                    return redirect(url_for("web.index"))
+            else:
+                current = current()
+
+        if current == None:
+            current = "null"
+
+        return {"value": current}

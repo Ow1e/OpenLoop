@@ -1,4 +1,4 @@
-console.log("Running FlowJS wrapper V1")
+console.log("Running FlowJS wrapper V2.2")
 
 window.addEventListener("load", () => {
     registerSW()
@@ -59,20 +59,6 @@ async function flow(req, type, elem){
     }
 }
 
-if (document.getElementById("page")!=null){
-    console.log("Detected Flow Page...")
-    var page = document.getElementById("page")
-    if (document.getElementById("refresh")!=null){
-        console.log("Found Button")
-        var ref = document.getElementById("refresh")
-        ref.onclick = function(){
-            flow(page.getAttribute("flow"), "innerHTML", page)
-        } 
-    } else {
-        console.log("Could not find button")
-    }
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 
 	var serverd = document.querySelectorAll('[flow]');
@@ -91,25 +77,71 @@ document.addEventListener('DOMContentLoaded', function() {
     start_flow()
 }, false);
 
+async function flow_pack(package){
+    var url = new URL(window.location.origin+"/flow/package");
+
+    var data = [];
+
+    for (var i in package){
+        // Maybe check for duplicates in the future, I dunno
+        data.push(package[i]["serve"])
+    }
+
+    for (let k in data) { url.searchParams.append(data[k], ""); }
+    const request = await fetch(url)
+
+    if (request.ok){
+        const json = await request.json()
+
+        for (var server in package){
+            var concur = package[server]
+            var value = json["data"][concur["serve"]]["value"]
+            var type = concur["type"]
+            var elem = concur["object"]
+
+            if (type=="innerHTML"){
+                elem.innerHTML = value
+            } else if (type=="width"){
+                elem.style.width = value
+            } else if (type=="graph"){
+                Plotly.newPlot(elem, value["data"], value["layout"])
+            } else {
+                elem.innerHTML = value
+            }
+        }
+    } else {
+        if (response.status == 401){
+            console.error("Switching...")
+            window.location.href = "/reload"
+        } else {console.error("HTTP-Error: " + response.status);}
+        
+    }
+}
+
 function start_flow(){
 
 	var serverd = document.querySelectorAll('[flow-serv]');
+    var times = {};
+
+    for (var serve of serverd) {
+        times[serve.getAttribute("flow-time")] = []
+    }
 
 	for (var serve of serverd) {
 		var time = serve.getAttribute("flow-time")
         var req = serve.getAttribute("flow-serv")
         var type = serve.getAttribute("flow-type")
-        console.log(serve)
-        if (type==null){
-            var type = "innerHTML"
-        }
         
-        if (time==null){
-            var time = 1000
-        }
-        flow(req, type, serve)
-        setInterval(flow, time, req, type, serve)
+        times[time].push({
+            "serve": req,
+            "type": type,
+            "object": serve
+        })
 	}
+    for (var key in times){
+        console.log(times[key])
+        setInterval(flow_pack, key, times[key])
+    }
 }
 
 async function set_onclick(serve){
