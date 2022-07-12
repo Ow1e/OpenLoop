@@ -1,6 +1,6 @@
 num = 0.3
-code = "Fanshawe"
-st_code = "3"
+code = "Discovery"
+st_code = "4"
 comb_code = str(num)+st_code
 lite_api = "v1f"
 
