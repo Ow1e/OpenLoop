@@ -140,6 +140,7 @@ function start_flow(){
 	}
     for (var key in times){
         console.log(times[key])
+        flow_pack(times[key])
         setInterval(flow_pack, key, times[key])
     }
 }
