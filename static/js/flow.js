@@ -88,8 +88,7 @@ async function flow_pack(package){
     var data = [];
 
     for (var i in package){
-        // Maybe check for duplicates in the future, I dunno
-        data.push(package[i]["serve"])
+        if (data.indexOf(package[i]["serve"])==-1){data.push(package[i]["serve"])}
     }
 
     for (let k in data) { url.searchParams.append(data[k], ""); }
