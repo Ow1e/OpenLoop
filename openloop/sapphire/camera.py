@@ -18,3 +18,4 @@ def decode(text : str):
     transl = base64.b64decode(text.encode())
     image = np.asarray(bytearray(transl), dtype="uint8")
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    return image

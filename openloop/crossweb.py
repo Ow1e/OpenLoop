@@ -328,3 +328,13 @@ class Integrate(Element):
         super().__init__()
         self.flow_enabled = False
         self.outer = f'<div flow="{flow}" class="row"></div>'
+
+class Collapsable(Element):
+    def __init__(self, title):
+        super().__init__()
+        self.outer = condense('''<div class="shadow card"><a class="btn btn-link text-start card-header fw-bold" data-bs-toggle="collapse" aria-expanded="true" aria-controls="collapse-4" href="#collapse-4" role="button">{}</a>
+                        <div class="collapse show" id="collapse-4" style="">
+                            <div class="card-body" flow>{}</div>
+                        </div>
+                    </div>''').format(title, "{}")
+        
