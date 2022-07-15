@@ -13,3 +13,6 @@ class Dash_Manager:
         for i in self.customs:
             p.append(i())
         return p.export()
+
+    def clear(self):
+        self.customs = []

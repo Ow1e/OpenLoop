@@ -130,6 +130,8 @@ class Deployer:
         if not os.path.exists("plugins"): # Creates plugins folder if not done already
             os.mkdir("plugins")
 
+        self._shared.dash.clear()
+
         plugins = {} # Plugin Sources
         dealers = {} # Plugin Extentions
         self.dealer = {} # For memory share between different plugins
