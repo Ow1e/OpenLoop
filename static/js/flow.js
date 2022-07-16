@@ -77,12 +77,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
     console.info("Flow logging below")
     console.log(-1, front)
-    flow_pack(front)
-
-    start_flow()
+    flow_pack(front, start_flow)
 }, false);
 
-async function flow_pack(package){
+async function flow_pack(package, onend = null){
     var url = new URL(window.location.origin+"/flow/package");
 
     var data = [];
@@ -119,6 +117,9 @@ async function flow_pack(package){
             window.location.href = "/reload"
         } else {console.error("HTTP-Error: " + response.status);}
         
+    }
+    if (onend!=null){
+        onend()
     }
 }
 
