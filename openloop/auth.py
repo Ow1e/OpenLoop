@@ -29,10 +29,8 @@ class Auth_Handler:
         def verify_password(username, password):
             if shared.database.working:
                 if username in self._cache:
-                    print("Using cache")
                     return self._cache[username]
                 else:
-                    print("Storing")
                     account = database.find_one({"username": username})
 
                     if account != None and check_password_hash(account["password"], password):
