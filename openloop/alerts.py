@@ -28,6 +28,8 @@ def convert_zones(datetype : datetime):
             return f"{int(secs)} second ago."
         elif secs < 3600: # Totals one hour
             return f"{int(secs/60)} minutes ago."
+        elif int(secs/3600)==1:
+            return "1 hour ago."
         else:
             return f"{int(secs/3600)} hours ago."
     else:

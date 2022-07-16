@@ -8,6 +8,7 @@ import ctypes
 import openloop
 from threading import Thread # Multiproccesing does not work, because of a issue with cpick
 import threading
+from openloop.alerts import convert_zones
 import openloop.crossweb as crossweb
 
 class CoreThread(Thread):
@@ -67,7 +68,8 @@ class Enviroment:
             "server": (not "OpenLite" in shared.config),
             "shared": memory,
             "alerts": shared.alerts,
-            "bootup": openloop.bootup
+            "bootup": openloop.bootup,
+            "convert_zones": convert_zones
         }
         
         for i in dir(crossweb):

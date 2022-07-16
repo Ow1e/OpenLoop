@@ -5,7 +5,7 @@ code = "Discovery"
 st_code = "4"
 comb_code = str(num)+st_code
 lite_api = "v1f"
-bootup = datetime.now()
+bootup = datetime.utcnow()
 
 print(f"OpenLoop Core {num*10}:{st_code}")
 
