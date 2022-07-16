@@ -154,7 +154,9 @@ function start_flow(){
     for (var key in times){
         console.log(key, times[key])
         flow_pack(times[key])
-        setInterval(flow_pack, key, times[key])
+        if (key!=(-1)){
+            setInterval(flow_pack, key, times[key])
+        }
     }
 }
 

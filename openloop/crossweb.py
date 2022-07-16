@@ -316,8 +316,7 @@ class Div(Element):
 class Graph(Element):
     def __init__(self, flow):
         super().__init__()
-        self.flow_enabled = False
-        self.outer = f'<div flow="{flow}" flow-type="graph"></div>'
+        self.outer = f'<div flow></div>'
 
 class Code(Element):
     def __init__(self, text=""):
