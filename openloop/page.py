@@ -62,25 +62,6 @@ def about():
 def index():
     p = Page()
     p.append(Heading("Dashboard", 0))
-    row = Row()
-    data = [
-        {"title": "CPU USAGE", "flow": "defaults.cpu", "color": "primary", "icon": "fas fa-microchip", "bar": True},
-        {"title": "RAM USAGE", "flow": "defaults.ram_used", "color": "success", "icon": "fab fa-superpowers", "bar": True},
-        {"title": "CPU TEMPERATURE", "flow": "defaults.cpu_temp", "color": "danger", "icon": "fas fa-fire-alt"},
-        {"title": "SERVER TIME", "flow": "defaults.timec", "color": "info", "icon": "fas fa-hourglass"},
-    ]
-    for i in data:
-        fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"], bar=("bar" in i))
-        if "bar" in i:
-            if flow_time_def==1000:
-                fet.add_flow(i["flow"], 1000, type="width")
-            else:
-                fet = Feature(i["title"], color=i["color"], inner="", icon=i["icon"], bar=False)
-                fet.add_flow(i["flow"])
-        else:
-            fet.add_flow(i["flow"])
-        row.append(fet)
-    p.append(row)
     p.append(Integrate("dash")) # Links to dash.py via flow
     return p.export()
 
