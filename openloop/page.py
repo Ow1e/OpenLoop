@@ -61,7 +61,6 @@ def about():
 
 def index():
     p = Page()
-    p.append(Heading("Dashboard", 0))
     p.append(Integrate("dash")) # Links to dash.py via flow
     return p.export()
 

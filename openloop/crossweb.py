@@ -54,6 +54,9 @@ class Element(list):
         else:
             return self.outer.format(export)
 
+    def __repr__(self) -> str:
+        return f"(CrossWeb -> {type(self).__name__})"
+
 
 class Page(Element):
     """This will organize Cards and export them, no html actually defined"""

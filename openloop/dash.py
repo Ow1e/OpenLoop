@@ -11,6 +11,7 @@ class Dash_Manager:
         print(self.customs)
     
     def template(self):
+        self.customs.append(Heading("Dashboard", 0))
         data = [
             {"title": "CPU USAGE", "flow": "defaults.cpu", "color": "primary", "icon": "fas fa-microchip", "bar": True},
             {"title": "RAM USAGE", "flow": "defaults.ram_used", "color": "success", "icon": "fab fa-superpowers", "bar": True},
@@ -23,13 +24,22 @@ class Dash_Manager:
                 fet.add_flow(i["flow"], 1000, type="width")
             else:
                 fet.add_flow(i["flow"])
-            self.customs.append(fet.export)
+            self.customs.append(fet)
 
     def generate(self):
-        p = Text()
+        export = ""
         for i in self.customs:
-            p.append(i())
-        return p.export()
+            if type(i) == int or type(i) == str:
+                export += str(i).replace("\n", "<br>")
+            else:
+                if "export" in dir(i):
+                    export += i.export()
+                else:
+                    call = i()
+                    if "export" in dir(call):
+                        call = call.export()
+                    export += call
+        return export
 
     def clear(self):
         self.customs = []
