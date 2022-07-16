@@ -74,6 +74,7 @@ class Enviroment:
         try:
             exec(compile(src, path, "exec"), env, {})
         except Exception as e:
+            shared.alerts.add(f"There was a error in {self.name}", "", "danger")
             logging.error("A error occured in {}".format(self.name), exc_info=e)
 
     def crossweb_example(self):
