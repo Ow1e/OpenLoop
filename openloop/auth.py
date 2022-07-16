@@ -58,13 +58,8 @@ class Auth_Handler:
 
         def wiper():
             while True:
-                sleep(10)
-                for i in self._cache:
-                    sel = database.find_one({"username": i["username"]})
-                    if sel != None and dict(sel)==i:
-                        pass
-                    else:
-                        self._cache.pop(i)
+                sleep(30)
+                self._cache = {}
 
         wiper_thread = CoreThread(target=wiper)
         wiper_thread.start()
