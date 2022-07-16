@@ -5,6 +5,7 @@ import requests
 import datetime
 from time import sleep
 import ctypes
+import openloop
 from threading import Thread # Multiproccesing does not work, because of a issue with cpick
 import threading
 import openloop.crossweb as crossweb
@@ -65,7 +66,8 @@ class Enviroment:
             "flow": self.flow,
             "server": (not "OpenLite" in shared.config),
             "shared": memory,
-            "alerts": shared.alerts
+            "alerts": shared.alerts,
+            "bootup": openloop.bootup
         }
         
         for i in dir(crossweb):

@@ -289,10 +289,10 @@ class Text(Element):
     def __init__(self, text=None, color=None, traditional=False):
         super().__init__()
         if color:
-            self.outer = '<p class="text-{}">{}</p>'.format(color, "{}")
+            self.outer = '<p class="text-{}" flow>{}</p>'.format(color, "{}")
         else:
             if traditional:
-                self.outer = "<p>{}</p>"
+                self.outer = "<p flow>{}</p>"
             else:
                 self.outer = "{}"
         if text!=None:
