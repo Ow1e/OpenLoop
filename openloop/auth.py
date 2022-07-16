@@ -2,9 +2,11 @@ from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, redirect, render_template, request, url_for
 from openloop.crossweb import *
-import secrets
+from time import sleep
 import logging
 import os
+
+from openloop.plugins import CoreThread
 
 INCASE_HASH = os.environ.get("OPENLOOP_EMERGENCY", "")
 
@@ -17,6 +19,8 @@ class Auth_Handler:
         methods = shared.methods
         database = shared.database.db["users"]
 
+        self._cache = {}
+
         """
         Auth Handler does not use Flow or any other functionality for security
         """
@@ -24,9 +28,16 @@ class Auth_Handler:
         @self.auth.verify_password
         def verify_password(username, password):
             if shared.database.working:
-                account = database.find_one({"username": username})
-                if account != None and check_password_hash(account["password"], password):
-                    return account
+                if username in self._cache:
+                    print("Using cache")
+                    return self._cache[username]
+                else:
+                    print("Storing")
+                    account = database.find_one({"username": username})
+
+                    if account != None and check_password_hash(account["password"], password):
+                        self._cache[username] = account
+                        return account
 
                 if username == "OpenLoop" and len(list(database.find({"admin": True})))==0:
                     logging.warning("User logged in as mongo_setup because no users could be found")
@@ -44,6 +55,19 @@ class Auth_Handler:
                         "admin": True,
                         "password": INCASE_HASH
                     }
+
+        def wiper():
+            while True:
+                sleep(10)
+                for i in self._cache:
+                    sel = database.find_one({"username": i["username"]})
+                    if sel != None and dict(sel)==i:
+                        pass
+                    else:
+                        self._cache.pop(i)
+
+        wiper_thread = CoreThread(target=wiper)
+        wiper_thread.start()
 
         def get_user():
             user = auth.current_user()

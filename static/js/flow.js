@@ -90,36 +90,44 @@ async function flow_pack(package, onend = null){
     }
 
     for (let k in data) { url.searchParams.append(data[k], ""); }
-    const request = await fetch(url)
-
-    if (request.ok){
-        const json = await request.json()
-
-        for (var server in package){
-            var concur = package[server]
-            var value = json["data"][concur["serve"]]["value"]
-            var type = concur["type"]
-            var elem = concur["object"]
-
-            if (type=="innerHTML"){
-                elem.innerHTML = value
-            } else if (type=="width"){
-                elem.style.width = value
-            } else if (type=="graph"){
-                Plotly.newPlot(elem, value["data"], value["layout"])
-            } else {
-                elem.innerHTML = value
+    try {
+        const request = await fetch(url)
+        show_net()
+        if (request.ok){
+            const json = await request.json()
+    
+            for (var server in package){
+                var concur = package[server]
+                var value = json["data"][concur["serve"]]["value"]
+                var type = concur["type"]
+                var elem = concur["object"]
+    
+                if (type=="innerHTML"){
+                    elem.innerHTML = value
+                } else if (type=="width"){
+                    elem.style.width = value
+                } else if (type=="graph"){
+                    Plotly.newPlot(elem, value["data"], value["layout"])
+                } else {
+                    elem.innerHTML = value
+                }
             }
+        } else {
+            if (request.status == 401){
+                console.error("Switching...")
+                window.location.href = "/reload"
+            } else {console.error("HTTP-Error: " + response.status);}
+            
         }
-    } else {
-        if (request.status == 401){
-            console.error("Switching...")
-            window.location.href = "/reload"
-        } else {console.error("HTTP-Error: " + response.status);}
-        
-    }
-    if (onend!=null){
-        onend()
+        if (onend!=null){
+            onend()
+        }
+    } catch (error){
+        hide_net()
+        var offline = true;
+        console.warn("OpenLoop tried to update via Flow, but is offline = "+offline)
+        await new Promise(r => setTimeout(r, 2000));
+        location.reload()
     }
 }
 

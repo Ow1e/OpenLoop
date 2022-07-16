@@ -3,6 +3,9 @@ Manage alerts with db
 """
 
 from datetime import datetime
+from time import sleep
+
+from openloop.plugins import CoreThread
 
 alert = """<a class="dropdown-item d-flex align-items-center" href="{}"><div class="me-3"><div class="bg-{} icon-circle"><i class="{} text-white"></i></div></div><div><span class="small text-gray-500">{}</span><p>{}</p></div></a>"""
 
@@ -43,14 +46,21 @@ class AlertManager:
         self.db = shared.database.db["alerts"]
         shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
         self.database_on = shared.database.working
+        self._cache = {}
+        self.worker_thread = CoreThread(target=self.worker)
+        self.worker_thread.start()
         #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
 
     def exp_html(self):
         contents = ""
         if self.database_on:
-            for i in self.db.find():
+            for i in self._cache:
                 contents += alert.format(i["link"], i["color"], i["icon"], convert_zones(i["date"]), i["text"])
         return contents
+
+    def worker(self):
+        sleep(10)
+        self._cache = dict(self.db.find())
 
     def add(self, text, link = "#", color = "primary", icon = "fas fa-tachometer-alt", date = datetime.utcnow()):
         if self.database_on:
@@ -64,7 +74,7 @@ class AlertManager:
             self.db.insert_one(pkg)
 
     def exp_len(self):
-        x = len(list(self.db.find()))
+        x = len(self._cache)
         if x == 0:
             x = ""
         elif x > 9:

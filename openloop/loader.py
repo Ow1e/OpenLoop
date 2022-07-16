@@ -22,6 +22,8 @@ def load_data(app, config = None):
     class SharePoint:
         def __init__(self) -> None:
             self.app = app
+            self.app.jinja_env.cache = {}
+            self.app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
 
             self.config = config
             self.database = Database(self)
