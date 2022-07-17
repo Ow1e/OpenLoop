@@ -60,7 +60,7 @@ class AlertManager:
 
     def worker(self):
         sleep(10)
-        self._cache = dict(self.db.find())
+        self._cache = list(self.db.find())
 
     def add(self, text, link = "#", color = "primary", icon = "fas fa-tachometer-alt", date = datetime.utcnow()):
         if self.database_on:

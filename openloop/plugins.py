@@ -134,7 +134,7 @@ class Enviroment:
         else:
             package = {
                 "device": device["_id"],
-                "time": datetime.datetime.utcnow()
+                "time": datetime.utcnow()
             }
             for i in kwargs:
                 package[i] = kwargs[i]
