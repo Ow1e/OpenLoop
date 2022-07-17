@@ -46,7 +46,8 @@ class AlertManager:
         self.db = shared.database.db["alerts"]
         shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
         self.database_on = shared.database.working
-        self._cache = {}
+        if self.database_on:
+            self._cache = list(self.db.find())
         self.worker_thread = CoreThread(target=self.worker)
         self.worker_thread.start()
         #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
@@ -59,8 +60,9 @@ class AlertManager:
         return contents
 
     def worker(self):
-        sleep(10)
-        self._cache = list(self.db.find())
+        sleep(1)
+        if self.database_on:
+            self._cache = list(self.db.find())
 
     def add(self, text, link = "#", color = "primary", icon = "fas fa-tachometer-alt", date = datetime.utcnow()):
         if self.database_on:
