@@ -38,7 +38,7 @@ async function flow(req, type, elem){
             } else if (type=="width"){
                 elem.style.width = json["value"]
             } else if (type=="graph"){
-                Plotly.newPlot(elem, json["value"]["data"], json["value"]["layout"])
+                Plotly.newPlot(elem, json["value"]["data"], json["value"]["layout"], {responsive: true})
             } else {
                 return json["value"]
             }
@@ -107,7 +107,7 @@ async function flow_pack(package, onend = null){
                 } else if (type=="width"){
                     elem.style.width = value
                 } else if (type=="graph"){
-                    Plotly.newPlot(elem, value["data"], value["layout"])
+                    Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
                 } else {
                     elem.innerHTML = value
                 }

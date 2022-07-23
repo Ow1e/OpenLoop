@@ -78,6 +78,8 @@ class Flow_Serve:
 
         if current == {}:
             current = None
+        elif type(current) == dict:
+            current = None
         elif type(current) in func:
             if request.method == "POST" and form_enabled:
                 current = current(request.form)

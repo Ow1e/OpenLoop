@@ -65,10 +65,11 @@ class AlertManager:
         return contents
 
     def worker(self):
-        sleep(1)
-        if self.database_on:
-            self._cache = self.exp_html()
-            self._length = len(list(self.db.find()))
+        while True:
+            sleep(1)
+            if self.database_on:
+                self._cache = self.exp_html()
+                self._length = len(list(self.db.find()))
 
     def add(self, text, link = "#", color = "primary", icon = "fas fa-tachometer-alt", date = datetime.utcnow()):
         if self.database_on:
