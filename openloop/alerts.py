@@ -44,10 +44,10 @@ class AlertManager:
     """This is loaded by the loader, it has properties of a list but automatically sets a export function to ReFlow"""
     def __init__(self, shared):
         self.db = shared.database.db["alerts"]
-        shared.flow["alerts"] = {"inner": self.exp_html, "length": self.exp_len, "clear": self.clear}
+        self._cache = ""
+        self._length = 0
+        shared.flow["alerts"] = {"inner": self.get, "length": self.get_len, "clear": self.clear}
         self.database_on = shared.database.working
-        if self.database_on:
-            self._cache = list(self.db.find())
         self.worker_thread = CoreThread(target=self.worker)
         self.worker_thread.start()
         #self.append(Alert("#", "primary", "fas fa-tachometer-alt", "Today", "Wow it updated!!!!"))
@@ -55,14 +55,20 @@ class AlertManager:
     def exp_html(self):
         contents = ""
         if self.database_on:
-            for i in self._cache:
-                contents += alert.format(i["link"], i["color"], i["icon"], convert_zones(i["date"]), i["text"])
+            try:
+                for i in self.db.find():
+                    contents += alert.format(i["link"], i["color"], i["icon"], convert_zones(i["date"]), i["text"])
+            except:
+                contents += alert.format("", "danger", i["icon"], "Right now", "Alerts error!")
+        else:
+            contents += alert.format("", "danger", i["icon"], "Right now", "MongoDB is not online!")
         return contents
 
     def worker(self):
         sleep(1)
         if self.database_on:
-            self._cache = list(self.db.find())
+            self._cache = self.exp_html()
+            self._length = len(list(self.db.find()))
 
     def add(self, text, link = "#", color = "primary", icon = "fas fa-tachometer-alt", date = datetime.utcnow()):
         if self.database_on:
@@ -75,13 +81,16 @@ class AlertManager:
             }
             self.db.insert_one(pkg)
 
-    def exp_len(self):
-        x = len(self._cache)
+    def get_len(self):
+        x = self._length
         if x == 0:
             x = ""
         elif x > 9:
             x = "9+"
         return x
+
+    def get(self):
+        return self._cache
 
     def clear(self):
         self.db.delete_many({})

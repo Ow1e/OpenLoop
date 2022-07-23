@@ -8,7 +8,6 @@ class Dash_Manager:
         shared.flow["dash"] = self.generate
         self.customs = []
         self.template()
-        print(self.customs)
     
     def template(self):
         self.customs.append(Heading("Dashboard", 0))
