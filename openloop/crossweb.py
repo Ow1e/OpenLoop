@@ -198,7 +198,7 @@ class Icon(Element):
 class Button(Element):
     """Button with Flow Support"""
 
-    def __init__(self, color="primary", icon="fas fa-flag", flow="", text="", href=""):
+    def __init__(self, color="primary", icon="fas fa-flag", flow="void", text="", href=""):
         super().__init__()
         self.flow_enabled = False
         self.html = '''
