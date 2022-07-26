@@ -66,6 +66,7 @@ class Enviroment:
         self.release = ""
         self.dash = shared.dash.customs
         self._threads = []
+        self._events = [] # New timer design :)
         self._devicedb = shared.database.db["devices"]
         self._streamdb = shared.database.db["streams"]
 
@@ -114,6 +115,7 @@ class Enviroment:
         return p.export()
 
     def build_thread(self, *args, **kwargs):
+        """NOT ADVISED!!!!!!"""
         thread = CoreThread(*args, **kwargs)
         self._threads.append(thread)
         return thread
@@ -124,8 +126,27 @@ class Enviroment:
             self._threads.remove(i)
             del i
 
+    def stop_events(self):
+        """Threads will be destroyed at the time period they are triggered"""
+        for i in self._events:
+            if not i.is_set():
+                i.set()
+
+        del self._events
+        self._events = []
+
     def sleep_agent(self, num):
+        """DO NOT USE WITH TIMERS"""
         sleep(num)
+
+    def sleep_timer(self, time, func, stop_event):
+        if not stop_event.is_set(): # Protects OpenLoop from stupid programmers
+            threading.Timer(time, func, [stop_event]).start()
+
+    def event(self):
+        ev = threading.Event()
+        self._events.append(ev)
+        return ev
 
     def stream(self, id, **kwargs):
         device = self._devicedb.find_one({"name": id})
@@ -193,6 +214,7 @@ class Deployer:
     def shutdown(self):
         for i in self.enviroments:
             i.stop_threads()
+            i.stop_events()
             del i
 
         del self.enviroments
