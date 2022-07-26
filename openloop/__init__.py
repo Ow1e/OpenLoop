@@ -12,7 +12,7 @@ print(f"OpenLoop Core {num*10}:{st_code}")
 import subprocess
 def git_ver():
     try:
-        x = subprocess.Popen(["git", "describe", "--tags"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        x = subprocess.Popen("git describe --tags", stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         x.wait()
         if x.stderr.read() == b"":
             return x.stdout.read().decode().removesuffix("\n")
