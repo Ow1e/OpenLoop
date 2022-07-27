@@ -109,6 +109,8 @@ async function flow_pack(package, onend = null){
                     elem.style.width = value
                 } else if (type=="graph"){
                     Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
+                } else if (type=="image"){
+                    elem.src = "data:image/jpg;base64,"+value
                 } else {
                     elem.innerHTML = value
                 }

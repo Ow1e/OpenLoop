@@ -1,5 +1,5 @@
 """
-Tools for OpenCV and Sapphire
+Encode and Decode tools for OpenLoop
 """
 
 import cv2
@@ -19,3 +19,11 @@ def decode(text : str):
     image = np.asarray(bytearray(transl), dtype="uint8")
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
     return image
+
+if __name__ == "__main__":
+    camera = capture(0)
+
+    ret, frame = camera.read()
+    encoded = encode(frame)
+    with open("hey.bjng", "w") as f:
+        f.write(encoded)

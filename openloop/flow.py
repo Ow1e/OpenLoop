@@ -46,7 +46,6 @@ class Flow_Serve:
             return self.flow_find(element, True)
 
         @api.route("/package", methods=["GET"])
-        @shared.vault.login_required
         def update_packages():
             start = datetime.now()
             package = {

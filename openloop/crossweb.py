@@ -284,9 +284,9 @@ class Image(Element):
     def __init__(self, src, height, width=None):
         super().__init__()
         if width==None:
-            self.outer = f'<img src="{src}" height="{height}" style="margin: 10px;">'
+            self.outer = f'<img src="{src}" height="{height}" style="margin: 10px;" flow>'
         else:
-            self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;">'
+            self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;" flow>'
 
 class Text(Element):
     def __init__(self, text=None, color=None, traditional=False):
