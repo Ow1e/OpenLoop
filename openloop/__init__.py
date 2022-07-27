@@ -1,8 +1,8 @@
 from datetime import datetime
 
-num = 0.3
-code = "Marine"
-st_code = "5"
+num = 0.4
+code = "Saturn"
+st_code = "1"
 comb_code = str(num)+st_code
 lite_api = "v1f"
 bootup = datetime.utcnow()
