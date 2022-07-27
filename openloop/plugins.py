@@ -66,7 +66,8 @@ class Enviroment:
         self.release = ""
         self.dash = shared.dash.customs
         self._threads = []
-        self._events = [] # New timer design :)
+        self._events = []
+        self._timers = []
         self._devicedb = shared.database.db["devices"]
         self._streamdb = shared.database.db["streams"]
 
@@ -132,8 +133,13 @@ class Enviroment:
             if not i.is_set():
                 i.set()
 
+        for i in self._timers:
+            i.cancel()
+        
         del self._events
+        del self._timers
         self._events = []
+        self._timers = []
 
     def sleep_agent(self, num):
         """DO NOT USE WITH TIMERS"""
@@ -141,7 +147,9 @@ class Enviroment:
 
     def sleep_timer(self, time, func, stop_event):
         if not stop_event.is_set(): # Protects OpenLoop from stupid programmers
-            threading.Timer(time, func, [stop_event]).start()
+            tm = threading.Timer(time, func, [stop_event])
+            self._timers.append(tm)
+            tm.start()
 
     def event(self):
         ev = threading.Event()

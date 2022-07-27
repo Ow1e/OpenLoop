@@ -1,5 +1,6 @@
 console.log("Running FlowJS wrapper V2.2")
 
+
 window.addEventListener("load", () => {
     registerSW()
 })

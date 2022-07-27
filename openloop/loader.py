@@ -2,7 +2,6 @@ from openloop.alerts import AlertManager
 from openloop.auth import Auth_Handler
 from openloop.config import check as configCheck
 from openloop.database import Database
-from openloop.sapphire.web import Sapphire_Manager
 from openloop.web import Web_Handler
 from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
@@ -35,6 +34,8 @@ def load_data(app, config = None):
             self.plugins = Deployer(self)
 
             if not "lite" in config:
+                from openloop.sapphire.web import Sapphire_Manager
+
                 self.methods = Methods(self)
                 self.auth = Auth_Handler(self)
                 self.vault = self.auth.auth
