@@ -25,7 +25,7 @@ setuptools.setup(
  
     url="",
     
-    packages=["openloop"],
+    packages=["openloop", "openloop.sapphire"],
  
     install_requires=req,
  
