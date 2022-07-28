@@ -288,6 +288,12 @@ class Image(Element):
         else:
             self.outer = f'<img src="{src}" width="{width}" height="{height}" style="margin: 10px;" flow>'
 
+class Capture(Element):
+    """Video Capture"""
+    def __init__(self):
+        super().__init__()
+        self.outer = f'<img src="/static/img/OpenLoop512.png" width="100%" height="100%" flow style="border-radius:5px;"><p>OpenLoop Capturing is experimental</p>'
+
 class Text(Element):
     def __init__(self, text=None, color=None, traditional=False):
         super().__init__()
