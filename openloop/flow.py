@@ -46,6 +46,7 @@ class Flow_Serve:
             return self.flow_find(element, True)
 
         @api.route("/package", methods=["GET"])
+        @shared.vault.login_required
         def update_packages():
             start = datetime.now()
             package = {
@@ -61,6 +62,12 @@ class Flow_Serve:
             package["time"] = (datetime.now() - start).total_seconds()
 
             return jsonify(package)
+
+        @api.route("/raw/<element>", methods=["GET"])
+        @shared.vault.login_required
+        def raw_request(element):
+            d = self.flow_find(element)
+            return d["value"]
 
     def flow_find(self, element, form_enabled = False):
         start = datetime.now()
