@@ -1,5 +1,12 @@
-console.log("Running FlowJS wrapper V2.2")
+console.log("Running FlowJS wrapper V2.3 + Nebula")
 
+import { io } from "socket.io-client";
+
+const socket = io()
+
+socket.on("connect", () => {
+    console.info("Connected to Nebula"); // true
+});
 
 window.addEventListener("load", () => {
     registerSW()
@@ -81,57 +88,42 @@ document.addEventListener('DOMContentLoaded', function() {
     flow_pack(front, start_flow)
 }, false);
 
-async function flow_pack(package, onend = null){
-    var url = new URL(window.location.origin+"/flow/package");
+async function flow_pack(packs, onend = null){
+    //var url = new URL(window.location.origin+"/flow/package");
 
     var data = [];
 
-    for (var i in package){
-        if (data.indexOf(package[i]["serve"])==-1){data.push(package[i]["serve"])}
+    for (var i in packs){
+        if (data.indexOf(packs[i]["serve"])==-1){data.push(packs[i]["serve"])}
     }
 
-    for (let k in data) { url.searchParams.append(data[k], ""); }
-    try {
-        const request = await fetch(url)
-        show_net()
-        if (request.ok){
-            const json = await request.json()
-    
-            for (var server in package){
-                var concur = package[server]
-                var value = json["data"][concur["serve"]]["value"]
-                var type = concur["type"]
-                var elem = concur["object"]
-    
-                if (type=="innerHTML"){
-                    elem.innerHTML = value
-                } else if (type=="width"){
-                    elem.style.width = value
-                } else if (type=="graph"){
-                    Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
-                } else if (type=="image"){
-                    elem.src = "data:image/jpg;base64,"+value
-                } else {
-                    elem.innerHTML = value
-                }
+    show_net()
+    socket.emit("resource", data, (json) => {    
+        console.log(json)
+        for (var server in packs){
+            var concur = packs[server]
+            var value = json["data"][concur["serve"]]
+            var type = concur["type"]
+            var elem = concur["object"]
+
+            if (type=="innerHTML"){
+                elem.innerHTML = value
+            } else if (type=="width"){
+                elem.style.width = value
+            } else if (type=="graph"){
+                Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
+            } else if (type=="image"){
+                elem.src = "data:image/jpg;base64,"+value
+            } else {
+                elem.innerHTML = value
             }
-        } else {
-            if (request.status == 401){
-                console.error("Switching...")
-                window.location.href = "/reload"
-            } else {console.error("HTTP-Error: " + response.status);}
-            
         }
         if (onend!=null){
+            console.info("Onend triggering")
             onend()
         }
-    } catch (error){
-        hide_net()
-        var offline = true;
-        console.warn("OpenLoop tried to update via Flow, but is offline = "+offline)
-        await new Promise(r => setTimeout(r, 2000));
-        location.reload()
-    }
+    })
+
 }
 
 function start_flow(){

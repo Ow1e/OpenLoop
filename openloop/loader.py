@@ -10,6 +10,8 @@ from openloop.api import API_Handler
 from openloop.methods import Methods
 from openloop.lite import Lite_API
 from openloop.dash import Dash_Manager
+from openloop.nebula import Nebula
+import secrets
 import logging
 
 def load_data(app, config = None):
@@ -24,6 +26,7 @@ def load_data(app, config = None):
             self.app = app
             self.app.jinja_env.cache = {}
             self.app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
+            self.app.config["SECRET_KEY"] = secrets.token_urlsafe(16)
 
             self.config = config
             self.database = Database(self)
@@ -39,6 +42,7 @@ def load_data(app, config = None):
                 self.auth = Auth_Handler(self)
                 self.vault = self.auth.auth
                 self.sapphire = Sapphire_Manager(self)
+                self.nebula = Nebula(self)
 
                 app.register_blueprint(self.auth.web, url_prefix="/auth")
                 app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")

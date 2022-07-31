@@ -8,3 +8,6 @@ p2pnetwork
 opencv-python
 numpy
 python-dotenv
+gevent
+Flask-SocketIO
+gevent-websocket
