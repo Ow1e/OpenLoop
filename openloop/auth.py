@@ -2,19 +2,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, redirect, render_template, request, url_for
 from openloop.crossweb import *
 from time import sleep
-from flask_login import LoginManager, login_required, login_user, login_url
+from flask_login import LoginManager, login_required, login_user, login_url, current_user
 import os
 
 from openloop.plugins import CoreThread
 
 INCASE_HASH = os.environ.get("OPENLOOP_EMERGENCY", "")
-
-class Authenticator(LoginManager):
-    def __init__(self, app=None, add_context_processor=True):
-        super().__init__(app, add_context_processor)
-
-    def login_required(self, *args, **kwargs):
-        return login_required(*args, **kwargs)
 
 class User:
     def __init__(self, username) -> None:
@@ -30,12 +23,8 @@ class Auth_Handler:
     def __init__(self, shared) -> None:
         self.web = Blueprint("auth", __name__)
         web = self.web
-        self.auth = Authenticator(shared.app)
-        auth = self.auth
         methods = shared.methods
         database = shared.database.db["users"]
-
-        login_url("/login")
 
         self._cache = {}
 
@@ -43,6 +32,21 @@ class Auth_Handler:
         Auth Handler does not use Flow or any other functionality for security
         """
         
+        class Authenticator(LoginManager):
+            def __init__(self, app=None, add_context_processor=True):
+                super().__init__(app, add_context_processor)
+
+            def login_required(self, *args, **kwargs):
+                return login_required(*args, **kwargs)
+
+            def current_user(self):
+                user = current_user
+                return database.find_one({"username": user.user_id})
+
+        self.auth = Authenticator(shared.app)
+        auth = self.auth
+        login_url("/login")
+
         @auth.user_loader
         def load_user(user_id):
             if database.find_one({"username": user_id}):
