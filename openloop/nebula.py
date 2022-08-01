@@ -1,4 +1,5 @@
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, ConnectionRefusedError, disconnect
+import functools
 from types import BuiltinFunctionType, FunctionType, MethodType
 
 # A replacement to Flow, made with SocketIO instead of normal HTTP
@@ -7,6 +8,7 @@ class Nebula:
     def __init__(self, shared) -> None:
         self.socket = SocketIO(shared.app)
         self._flow = shared.flow
+        self._auth = shared.vault
 
         @self.socket.on("resource")
         def get_data(data):

@@ -98,8 +98,8 @@ async function flow_pack(packs, onend = null){
     }
 
     show_net()
-    socket.emit("resource", data, (json) => {    
-        console.log(json)
+    socket.emit("resource", data, (json) => {  
+        console.log(json)  
         for (var server in packs){
             var concur = packs[server]
             var value = json["data"][concur["serve"]]
