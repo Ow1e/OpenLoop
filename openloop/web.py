@@ -4,6 +4,8 @@ from openloop.page import about as serv_about
 from openloop.page import plugins as serv_flow_plugins
 from openloop.page import set_pl_redirects
 from openloop.page import plugins_view as serv_plugins
+from openloop.page import login_page as serv_login
+from flask_login import logout_user
 import os
 
 MANIFEST = {
@@ -106,6 +108,9 @@ class Web_Handler:
             else:
                 return render_template("404.jinja", methods=methods, code=404, text=f"{name} is not a plugin")
 
+        @web.route("/login")
+        def login():
+            return render_template("login.jinja", methods=methods, html = serv_login(), title="Login")
 
         @web.route("/reload")
         @shared.vault.login_required
@@ -117,8 +122,8 @@ class Web_Handler:
         @web.route("/logout")
         @shared.vault.login_required
         def logout():
-            # DO NOT CACHE THIS (IT BREAKS EVERYTHING)
-            return render_template("reload.html"), 401
+            logout_user()
+            return redirect(".login")
 
     def get_plugin(self, name : str):
         chosen = None

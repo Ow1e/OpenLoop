@@ -5,7 +5,15 @@ import { io } from "socket.io-client";
 const socket = io()
 
 socket.on("connect", () => {
-    console.info("Connected to Nebula"); // true
+    console.info("Connected to Nebula");
+});
+
+socket.on("login_request", (none) => {
+    if (window.location.pathname!="/login"){
+        window.location.href = "/login"
+    } else {
+        console.warn("Nebula is not working, due to NO_AUTH")
+    }
 });
 
 window.addEventListener("load", () => {
@@ -97,33 +105,34 @@ async function flow_pack(packs, onend = null){
         if (data.indexOf(packs[i]["serve"])==-1){data.push(packs[i]["serve"])}
     }
 
-    show_net()
-    socket.emit("resource", data, (json) => {  
-        console.log(json)  
-        for (var server in packs){
-            var concur = packs[server]
-            var value = json["data"][concur["serve"]]
-            var type = concur["type"]
-            var elem = concur["object"]
+    if (document.hidden == false){
+        show_net()
+        socket.emit("resource", data, (json) => {  
+            console.log(json)  
+            for (var server in packs){
+                var concur = packs[server]
+                var value = json["data"][concur["serve"]]
+                var type = concur["type"]
+                var elem = concur["object"]
 
-            if (type=="innerHTML"){
-                elem.innerHTML = value
-            } else if (type=="width"){
-                elem.style.width = value
-            } else if (type=="graph"){
-                Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
-            } else if (type=="image"){
-                elem.src = "data:image/jpg;base64,"+value
-            } else {
-                elem.innerHTML = value
+                if (type=="innerHTML"){
+                    elem.innerHTML = value
+                } else if (type=="width"){
+                    elem.style.width = value
+                } else if (type=="graph"){
+                    Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
+                } else if (type=="image"){
+                    elem.src = "data:image/jpg;base64,"+value
+                } else {
+                    elem.innerHTML = value
+                }
             }
-        }
-        if (onend!=null){
-            console.info("Onend triggering")
-            onend()
-        }
-    })
-
+            if (onend!=null){
+                console.info("Onend triggering")
+                onend()
+            }
+        })
+    }
 }
 
 function start_flow(){

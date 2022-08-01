@@ -1,4 +1,5 @@
 from flask_socketio import SocketIO, emit, ConnectionRefusedError, disconnect
+from flask_login import current_user
 import functools
 from types import BuiltinFunctionType, FunctionType, MethodType
 
@@ -11,12 +12,23 @@ class Nebula:
         self._auth = shared.vault
 
         @self.socket.on("resource")
+        @self.authenticated_only
         def get_data(data):
             package = {}
             for i in data:
                 package[i] = (self.find(i))
 
             return {"data": package}
+
+    def authenticated_only(self, f):
+        @functools.wraps(f)
+        def wrapped(*args, **kwargs):
+            if not current_user.is_authenticated:
+                emit("login_request", None)
+                disconnect()
+            else:
+                return f(*args, **kwargs)
+        return wrapped
 
     def find(self, element):
         current = self._flow

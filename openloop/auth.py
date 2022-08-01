@@ -1,23 +1,41 @@
-from flask_httpauth import HTTPBasicAuth
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Blueprint, redirect, render_template, request, url_for
 from openloop.crossweb import *
 from time import sleep
-import logging
+from flask_login import LoginManager, login_required, login_user, login_url
 import os
 
 from openloop.plugins import CoreThread
 
 INCASE_HASH = os.environ.get("OPENLOOP_EMERGENCY", "")
 
+class Authenticator(LoginManager):
+    def __init__(self, app=None, add_context_processor=True):
+        super().__init__(app, add_context_processor)
+
+    def login_required(self, *args, **kwargs):
+        return login_required(*args, **kwargs)
+
+class User:
+    def __init__(self, username) -> None:
+        self.is_authenticated = True
+        self.is_active = True
+        self.is_anonymous = False
+        self.user_id = username
+    
+    def get_id(self):
+        return self.user_id
+
 class Auth_Handler:
     def __init__(self, shared) -> None:
         self.web = Blueprint("auth", __name__)
         web = self.web
-        self.auth = HTTPBasicAuth()
+        self.auth = Authenticator(shared.app)
         auth = self.auth
         methods = shared.methods
         database = shared.database.db["users"]
+
+        login_url("/login")
 
         self._cache = {}
 
@@ -25,62 +43,27 @@ class Auth_Handler:
         Auth Handler does not use Flow or any other functionality for security
         """
         
-        @self.auth.verify_password
-        def verify_password(username, password):
-            if shared.database.working:
-                if username in self._cache:
-                    return self._cache[username]
-                else:
-                    account = database.find_one({"username": username})
+        @auth.user_loader
+        def load_user(user_id):
+            if database.find_one({"username": user_id}):
+                return User(user_id)
 
-                    if account != None and check_password_hash(account["password"], password):
-                        self._cache[username] = account
-                        return account
+        @web.route("/handle", methods=["POST"])
+        def handle_login():
+            username = request.form.get("username")
+            password = request.form.get("password")
 
-                if username == "OpenLoop" and len(list(database.find({"admin": True})))==0:
-                    logging.warning("User logged in as mongo_setup because no users could be found")
-                    return {
-                        "username": "mongo_setup",
-                        "fullname": "OpenLoop Mongo Setup",
-                        "admin": True,
-                        "password": "pbkdf2:sha256:260000$4gjFBJGJUyO86CGu$056afb0ffb137c93d1a8e55e1e3a7c572f5f29919b89e5f14145d1ae6d76904d" # 12345678
-                    }
-            else:
-                if username == "OpenLoop" and check_password_hash(INCASE_HASH, password):
-                    return {
-                        "username": "OpenLoop",
-                        "fullname": "OpenLoop Emergency",
-                        "admin": True,
-                        "password": INCASE_HASH
-                    }
+            uid = database.find_one({"username": username})
+            if uid != None:
+                check = check_password_hash(uid["password"], password)
+                if check == True:
+                    login_user(User(uid["username"]))
+                    return redirect("/")
+            return redirect(url_for("web.login"))
 
-        def wiper():
-            while True:
-                sleep(30)
-                self._cache = {}
-
-        wiper_thread = CoreThread(target=wiper)
-        wiper_thread.start()
-
-        def get_user():
-            user = auth.current_user()
-            user.pop("_id")
-            user.pop("password")
-            user.pop("admin")
-            return user
-
-        def username():
-            user = get_user()
-            return user["username"]
-
-        def fullname():
-            user = get_user()
-            return user["fullname"]
-
-        shared.flow["auth"] = {
-            "username": username,
-            "fullname": fullname
-        }
+        @auth.unauthorized_handler
+        def redirect_login():
+            return redirect(url_for("web.login"))
 
         @web.route("/")
         @auth.login_required

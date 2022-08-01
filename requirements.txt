@@ -11,3 +11,4 @@ python-dotenv
 gevent
 Flask-SocketIO
 gevent-websocket
+flask-login

@@ -112,3 +112,26 @@ def plugins_view():
     c.append(Link("https://docs.cyclone.biz", "here"))
     p.append(c)
     return p.export()
+
+def login_page():
+    p = Page()
+    p.append(Heading("OpenLoop Dashboard", 0))
+    c = Card("Login Prompt", 6)
+
+    form = HTML_Form("/auth/handle") # Goes to auth.py to manage
+    
+    username = Form_Element()
+    username.append(Label("Username"))
+    username.append(Input("username"))
+
+    password = Form_Element()
+    password.append(Label("Password"))
+    password.append(Input("password", "password"))
+
+    form.append(username)
+    form.append(password)
+    form.append(Form_Button("Login"))
+
+    c.append(form)
+    p.append(c)
+    return p.export()

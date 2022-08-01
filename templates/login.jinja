@@ -1,33 +1,9 @@
-{% extends "base.html" %}
+{% extends "fullscreen.html" %}
 
-{% block title %}Setup - OpenLoop{% endblock %}
+{% block title %}{{title}} - OpenLoop{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-6">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="text-primary m-0 fw-bold">Starting</h6>
-            </div>
-            <div class="card-body">
-                {% if unclaimed %}
-                <div class="p-5">
-                    <div class="text-center">
-                        <h4 class="text-dark mb-2">Welcome to OpenLoop</h4>
-                        <p class="mb-4">Please register a password</p>
-                    </div>
-                    <form class="user">
-                        <div class="mb-3"><input class="form-control form-control-user" type="password" name="password" placeholder="Enter password" /></div><button class="btn btn-primary d-block btn-user w-100" type="submit">Go to OpenLoop</button>
-                    </form>
-                    <div class="text-center"><a class="small" href="login.html"></a></div>
-                </div>
-                {% else %}
-                <h1 class="text-danger">Its Claimed!</h1>
-                <p>You can enable a flag in your config to accept a emergency one use password, use SSH or FTP to change config if its not already set.</p>
-                {% endif %}
-
-            </div>
-        </div>
-    </div>
+<div style="height:100vh;padding:10px;margin-top:20px;">
+    {{html | safe}}
 </div>
 {% endblock %}
