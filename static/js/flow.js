@@ -105,7 +105,7 @@ async function flow_pack(packs, onend = null){
         if (data.indexOf(packs[i]["serve"])==-1){data.push(packs[i]["serve"])}
     }
 
-    if (document.hidden == false){
+    if (document.hidden == false || onend!=null){
         show_net()
         socket.emit("resource", data, (json) => {  
             console.log(json)  
