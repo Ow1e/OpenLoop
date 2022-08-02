@@ -176,7 +176,10 @@ class Enviroment:
             return self._streamdb.find({"device": device["_id"]})
 
     def sapphire(self):
-        return Sapphire(self._sapphire)
+        return Sapphire(self._sapphire.node)
+
+    def getflow(self, path : str):
+        return self.flow_path+"."+path
 
 
 class Deployer:

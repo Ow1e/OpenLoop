@@ -150,7 +150,7 @@ class Table(Element):
 
     def __init__(self):
         super().__init__()
-        self.outer = '<div id="dataTable" class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info"><table id="dataTable" class="table my-0">{}</table></div>'
+        self.outer = '<div id="dataTable" class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info"><table id="dataTable" class="table my-0" flow>{}</table></div>'
 
 
 class Table_Header(Element):
@@ -158,7 +158,7 @@ class Table_Header(Element):
 
     def __init__(self):
         super().__init__()
-        self.outer = '<thead>{}</thead>'
+        self.outer = '<thead flow>{}</thead>'
 
 
 class Table_Body(Element):
@@ -166,7 +166,7 @@ class Table_Body(Element):
 
     def __init__(self):
         super().__init__()
-        self.outer = '<tbody>{}</tbody>'
+        self.outer = '<tbody flow>{}</tbody>'
 
 
 class Table_Row(Element):
@@ -290,9 +290,12 @@ class Image(Element):
 
 class Capture(Element):
     """Video Capture"""
-    def __init__(self):
+    def __init__(self, image = False):
         super().__init__()
-        self.outer = '<canvas flow style="border-radius:5px;"></canvas><p>OpenLoop Capturing is experimental</p>'
+        if image:
+            self.outer = '<img flow style="border-radius:5px;"><p>OpenLoop Capturing is experimental</p>'
+        else:
+            self.outer = '<canvas flow style="border-radius:5px;"></canvas><p>OpenLoop Capturing is experimental</p>'
 
 class Text(Element):
     def __init__(self, text=None, color=None, traditional=False):
@@ -320,7 +323,7 @@ class Div(Element):
         self.outer = "<div flow>{}</div>"
 
 class Graph(Element):
-    def __init__(self, flow):
+    def __init__(self):
         super().__init__()
         self.outer = f'<div flow></div>'
 
