@@ -61,7 +61,7 @@ class Sapphire_Manager:
 
     def run_node(self):
         if os.getenv("SAPPHIRE_ENABLED", False):
-            self.node = Sapphire("0.0.0.0", 1519, (os.getenv("SAPPHIRE_USERNAME", ""), os.getenv("SAPPHIRE_PASSWORD", "")), check=self.auth)
+            self.node = Sapphire("0.0.0.0", int(os.getenv("SAPPHIRE_PORT", 1519)), (os.getenv("SAPPHIRE_USERNAME", ""), os.getenv("SAPPHIRE_PASSWORD", "")), check=self.auth)
             logging.warning("Sapphire is experimental!")
             self.node.start()
             if os.getenv("SAPPHIRE_POINT", False)!=False:
