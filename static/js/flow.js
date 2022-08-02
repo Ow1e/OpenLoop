@@ -5,7 +5,13 @@ import { io } from "socket.io-client";
 const socket = io()
 
 socket.on("connect", () => {
+    socket.sendBuffer = [];
     console.info("Connected to Nebula");
+});
+
+socket.on("disconnect", () => {
+    console.info("Disconnected to Nebula")
+    hide_net()
 });
 
 socket.on("login_request", (none) => {
@@ -34,6 +40,10 @@ async function registerSW(){
         console.info("PWA is disabled, Service Workers only work with HTTPS and Localhost")
     }
 }
+
+function sleepPromise(ms){ 
+  return new Promise(resolve => setTimeout(resolve, ms)); 
+} 
 
 function show_net(){
     document.getElementById('offline').style.display='none'
@@ -96,6 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
     flow_pack(front, start_flow)
 }, false);
 
+async function flow_worker(time, packs){
+    while (true){
+        await flow_pack(packs)
+        await sleepPromise(time)
+    }
+}
+
 async function flow_pack(packs, onend = null){
     //var url = new URL(window.location.origin+"/flow/package");
 
@@ -108,7 +125,6 @@ async function flow_pack(packs, onend = null){
     if (document.hidden == false || onend!=null){
         show_net()
         socket.emit("resource", data, (json) => {  
-            console.log(json)  
             for (var server in packs){
                 var concur = packs[server]
                 var value = json["data"][concur["serve"]]
@@ -123,6 +139,15 @@ async function flow_pack(packs, onend = null){
                     Plotly.newPlot(elem, value["data"], value["layout"], {responsive: true})
                 } else if (type=="image"){
                     elem.src = "data:image/jpg;base64,"+value
+                } else if (type=="canvas"){
+                    var ctx = elem.getContext("2d")
+
+                    var image = new Image();
+                    image.onload = function() {
+                        ctx.drawImage(image, 0, 0, elem.width, elem.height);
+                    };
+
+                    image.src = "data:image/jpg;base64,"+value;
                 } else {
                     elem.innerHTML = value
                 }
@@ -157,9 +182,10 @@ function start_flow(){
 	}
     for (var key in times){
         console.log(key, times[key])
-        flow_pack(times[key])
-        if (key!=(-1)){
-            setInterval(flow_pack, key, times[key])
+        if (key==(-1)){
+            flow_pack(times[key])
+        } else {
+            flow_worker(key, times[key])
         }
     }
 }

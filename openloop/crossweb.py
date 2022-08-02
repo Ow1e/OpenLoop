@@ -292,7 +292,7 @@ class Capture(Element):
     """Video Capture"""
     def __init__(self):
         super().__init__()
-        self.outer = f'<img src="/static/img/OpenLoop512.png" width="100%" height="100%" flow style="border-radius:5px;"><p>OpenLoop Capturing is experimental</p>'
+        self.outer = '<canvas flow style="border-radius:5px;"></canvas><p>OpenLoop Capturing is experimental</p>'
 
 class Text(Element):
     def __init__(self, text=None, color=None, traditional=False):
