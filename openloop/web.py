@@ -80,6 +80,7 @@ class Web_Handler:
         @shared.vault.login_required
         def reload_plugins():
             shared.plugins.restart()
+            shared.sapphire.destroy_filters()
             return redirect(url_for(".list_plugins"))
 
         @web.route("/plugin/<name>")

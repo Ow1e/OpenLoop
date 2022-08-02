@@ -1,7 +1,22 @@
 from flask import Blueprint, render_template
 from openloop.sapphire.node import Sapphire
+from openloop.sapphire.package import packet, finalize
 import os, logging
 from openloop.crossweb import *
+
+class Interactor:
+    def __init__(self, node : Sapphire) -> None:
+        self._node = node
+
+    def add_filter(self, type, caller):
+        if type in self._node.filters:
+            self._node.filters[type].append(caller)
+        else:
+            self._node.filters[type] = [caller]
+
+    def publish(self, type, data):
+        self._node.send_pointer(type, data)
+        return True
 
 class Sapphire_Manager:
     def __init__(self, shared) -> None:
@@ -14,7 +29,7 @@ class Sapphire_Manager:
         @shared.vault.login_required
         def index():
             p = Page()
-            p.append(Heading("Sapphire", 0))
+            p.append(Heading("Sapphire Viewer", 0))
             
             if self.node == None:
                 c = Card("Sapphire Prompt", 6)
@@ -53,3 +68,7 @@ class Sapphire_Manager:
                 self.node.connect_with_node(os.getenv("SAPPHIRE_POINT"), int(os.getenv("SAPPHIRE_POINTPORT", 1519)), reconnect=True)
         else:
             self.node = None
+
+    def destroy_filters(self):
+        if self.node!=None:
+            self.node.filters = {}

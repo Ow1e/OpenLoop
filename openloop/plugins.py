@@ -9,6 +9,7 @@ import openloop
 from threading import Thread # Multiproccesing does not work, because of a issue with cpick
 import threading
 from datetime import datetime
+from openloop.sapphire.web import Interactor as Sapphire
 import openloop.crossweb as crossweb
 
 def convert_zones(datetype : datetime):
@@ -70,11 +71,7 @@ class Enviroment:
         self._timers = []
         self._devicedb = shared.database.db["devices"]
         self._streamdb = shared.database.db["streams"]
-
-        if "Plugins" in shared.config:
-            self.globalconfig = dict(shared.config["Plugins"])
-        else:
-            self.globalconfig = {"identity": "cloud", "_setup": False, "name": "No Name"}
+        self._sapphire = shared.sapphire
         
         self.secret = secrets.token_urlsafe(16) # This is so other plugins cannot edit/transmit to others
 
@@ -177,6 +174,9 @@ class Enviroment:
             return {"status": "incomplete", "reason": f"Could not find {id}"}
         else:
             return self._streamdb.find({"device": device["_id"]})
+
+    def sapphire(self):
+        return Sapphire(self._sapphire)
 
 
 class Deployer:
