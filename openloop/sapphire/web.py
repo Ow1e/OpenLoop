@@ -19,14 +19,18 @@ class Interactor:
         return True
 
 class Sapphire_Manager:
-    def __init__(self, shared) -> None:
-        web = Blueprint("sapphire", __name__)
+    def __init__(self, shared, web=False) -> None:
         self._shared = shared
-        self.web = web
         self.run_node()
 
-        @web.route("/")
-        @shared.vault.login_required
+        if web:
+            self.do_web()
+
+    def do_web(self):
+        web = Blueprint("sapphire", __name__)
+        self.web = web
+        @self.web.route("/")
+        @self._shared.vault.login_required
         def index():
             p = Page()
             p.append(Heading("Sapphire Viewer", 0))
@@ -46,7 +50,7 @@ class Sapphire_Manager:
 
             p.append(c)
             
-            return render_template("blank.jinja", methods=shared.methods, html = p.export(), title = "Sapphire")
+            return render_template("blank.jinja", methods=self._shared.methods, html = p.export(), title = "Sapphire")
 
     def auth(self, cridentials : tuple):
         if self._shared.database.working:

@@ -34,17 +34,18 @@ def load_data(app, config = None):
             self.flow = Flow() # Only used when in OpenLoop
             self.alerts = AlertManager(self)
             self.dash = Dash_Manager(self)
-
+            
+            self.sapphire = Sapphire_Manager(self)
             self.plugins = Deployer(self)
 
             if not "lite" in config:
                 self.methods = Methods(self)
                 self.auth = Auth_Handler(self)
                 self.vault = self.auth.auth
-                self.sapphire = Sapphire_Manager(self)
                 self.nebula = Nebula(self)
 
                 app.register_blueprint(self.auth.web, url_prefix="/auth")
+                self.sapphire.do_web()
                 app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")
                 app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
                 app.register_blueprint(API_Handler(self).api, url_prefix="/api")
