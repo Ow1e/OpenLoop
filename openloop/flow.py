@@ -90,10 +90,7 @@ class Flow_Serve:
             elif type(current) in func:
                 if request.method == "POST" and form_enabled:
                     current = current(request.form)
-                    if request.form.get("formLocation")!=None:
-                        return redirect(request.form.get("formLocation"))
-                    else:
-                        return redirect(url_for("web.index"))
+                    return render_template("reload.html")
                 else:
                     current = current()
 
