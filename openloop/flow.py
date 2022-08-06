@@ -16,6 +16,7 @@ class Flow(dict):
         self["plugins"] = {} # This is for plugins
         self["void"] = None
         self["version"] = openloop.git_ver()
+        self.admin_only = [] # List of functions to blacklist, not paths to increase security. Introducing strings could lead toa vulneralbility.
 
 class Flow_Serve:
     def __init__(self, shared) -> None:
@@ -81,22 +82,24 @@ class Flow_Serve:
                 current = {}
 
         func = [BuiltinFunctionType, MethodType, FunctionType]
-
-        if current == {}:
-            current = None
-        elif type(current) == dict:
-            current = None
-        elif type(current) in func:
-            if request.method == "POST" and form_enabled:
-                current = current(request.form)
-                if request.form.get("formLocation")!=None:
-                    return redirect(request.form.get("formLocation"))
+        if not current in self.flow.admin_only:
+            if current == {}:
+                current = None
+            elif type(current) == dict:
+                current = None
+            elif type(current) in func:
+                if request.method == "POST" and form_enabled:
+                    current = current(request.form)
+                    if request.form.get("formLocation")!=None:
+                        return redirect(request.form.get("formLocation"))
+                    else:
+                        return redirect(url_for("web.index"))
                 else:
-                    return redirect(url_for("web.index"))
-            else:
-                current = current()
+                    current = current()
 
-        if current == None:
-            current = "null"
+            if current == None:
+                current = "null"
 
-        return {"value": current}
+            return {"value": current}
+        else:
+            return {"value": None, "error": "Admin Only Object!"}
