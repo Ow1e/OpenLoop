@@ -139,5 +139,11 @@ class Web_Handler:
 
     def apply_errors(self, app):
         @app.errorhandler(500)
+        @self._shared.vault.login_required
         def error_handl():
             return redirect("404.jinja", methods = self.shared.methods, code = 500, text="There was a unknown error, check the docs for debugging.")
+
+        @app.errorhandler(404)
+        @self._shared.vault.login_required
+        def error_handl():
+            return redirect("404.jinja", methods = self.shared.methods, code = 404, text="This path is not part of OpenLoop Web")

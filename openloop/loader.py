@@ -6,9 +6,7 @@ from openloop.sapphire.web import Sapphire_Manager
 from openloop.web import Web_Handler
 from openloop.flow import Flow, Flow_Serve
 from openloop.plugins import Deployer
-from openloop.api import API_Handler
 from openloop.methods import Methods
-from openloop.lite import Lite_API
 from openloop.dash import Dash_Manager
 from openloop.nebula import Nebula
 import secrets
@@ -48,8 +46,6 @@ def load_data(app, config = None):
                 self.sapphire.do_web()
                 app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")
                 app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
-                app.register_blueprint(API_Handler(self).api, url_prefix="/api")
-                app.register_blueprint(Lite_API(self).web, url_prefix="/lite")
                 app.register_blueprint(Web_Handler(self).web)
 
             logging.info("Completed imports in Sharepoint")

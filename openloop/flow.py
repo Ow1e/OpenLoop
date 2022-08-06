@@ -15,7 +15,7 @@ class Flow(dict):
         }
         self["plugins"] = {} # This is for plugins
         self["void"] = None
-        self["version"] = openloop.git_ver
+        self["version"] = openloop.git_ver()
 
 class Flow_Serve:
     def __init__(self, shared) -> None:
