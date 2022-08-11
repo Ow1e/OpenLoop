@@ -25,3 +25,14 @@ def view_groups():
     c.append(table)
     p.append(c)
     return p.export()
+
+def prompt():
+    p = Page()
+    c = Card("Prompt", 6)
+    c.append(Heading("Are you sure you want to delete this group?", 4))
+    c.append(Text("This cannot be undone and can only be operated by admins.", "danger"))
+    form = HTML_Form("")
+    form.append(Form_Button("Confirm", "danger"))
+    c.append(form)
+    p.append(c)
+    return p.export()

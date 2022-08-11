@@ -2,10 +2,12 @@
 Web API View for OpenLoop Web
 """
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for
+from openloop.time import convert_zones
 from openloop.crossweb import *
 from openloop.devices.web import (
-    view_groups
+    view_groups,
+    prompt
 )
 
 class API_Handler:
@@ -23,10 +25,23 @@ class API_Handler:
         flow["groups"] = self.group_list
 
         @web.route("/")
+        @shared.vault.login_required
         def group_view():
             return render_template("blank.jinja", methods=shared.methods, html = view_groups(), title="Device Groups")
 
+        @web.route("/group/<group>/delete", methods=["GET", "POST"])
+        @shared.vault.login_required
+        def delete_group(group):
+            if request.method == "GET":
+                return render_template("blank.jinja", methods=shared.methods, html = prompt(), title="Device Groups")
+            else:
+                myuser = shared.vault.current_user()
+                if myuser['admin']==True:
+                    self.device_groups.delete_one({"name": group})
+                return redirect(url_for(".group_view"))
+
         @web.route("/group/<group>")
+        @shared.vault.login_required
         def device_view(group : str):
             query = self.device_groups.find_one({"name": group})
             if query!=None:
@@ -79,6 +94,7 @@ class API_Handler:
                 for i in self.instances.find({"group": query["_id"]}):
                     row = Table_Row()
                     row.append(Table_Cell(i["name"]))
+                    row.append(Table_Cell(convert_zones(i["ping"])))
                     row.append(Table_Cell("None"))
                     body.append(row)
                 table.append(body)
@@ -115,7 +131,7 @@ class API_Handler:
             buttons = Void()
             buttons.append(Button("success", icon="fas fa-eye", text="View", href="/api/group/"+i['name']))
             if devices == 0 and instances == 0:
-                buttons.append(Button("danger", icon="fas fa-trash-alt", text="Archive", href="#", push=10))
+                buttons.append(Button("danger", icon="fas fa-trash-alt", text="Delete", href=f"/api/group/{i['name']}/delete", push=10))
             row.append(Table_Cell(buttons))
 
             void += row.export()

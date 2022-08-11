@@ -1,6 +1,7 @@
 from time import sleep
 import logging
 from openloop.plugins import CoreThread
+from datetime import datetime
 import sys, pymongo
 
 class Database:
@@ -15,12 +16,34 @@ class Database:
         self.client = client
         self.db = client[settings.get("name", "OpenLoop")]
         self.working = self.check()
+
+        if self.working:
+            identity = shared.config["Identity"]
+
+            group = self.db["groups"].find_one({"name": identity["group"]})
+            if group == None:
+                group = self.db["groups"].insert_one({"name": identity["group"]})
+                group = group.inserted_id
+            else:
+                group = group["_id"]
+
+            self.myquery = query = {"name": identity["name"], "group": group}
+            res = self.db["instances"].find_one(query)
+            if res == None:
+                self.db["instances"].insert_one({"name": identity["name"], "group": group, "ping": datetime.utcnow()})
+                res = self.db["instances"].find_one(query)
+
+            self.identity = res
+
         self.live_worker = CoreThread(target=self.worker)
         self.live_worker.start()
 
-    def check(self):
+    def check(self, thread = False):
         try:
             self.info = self.client.server_info()
+
+            if thread:
+                self.db["instances"].update_one(self.myquery, {"$set": {"ping": datetime.utcnow()}})
             return True
         except:
             self.info = {}
@@ -30,4 +53,4 @@ class Database:
     def worker(self):
         while True:
             sleep(10)
-            self.working = self.check()
+            self.working = self.check(True)
