@@ -41,6 +41,7 @@ const staticAssets = [
     "/static/fonts/fa-brands-400.ttf",
     "/static/fonts/fontawesome-webfont.eot",
     "/static/fonts/fa-regular-400.eot",
+    "/static/css/main.css",
     "/",
     "/about",
     "/plugins",
