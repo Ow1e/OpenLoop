@@ -9,7 +9,9 @@ from openloop.plugins import Deployer
 from openloop.methods import Methods
 from openloop.dash import Dash_Manager
 from openloop.nebula import Nebula
+from openloop.devices import API_Handler
 import secrets
+import os
 import logging
 
 def load_data(app, config = None):
@@ -24,7 +26,12 @@ def load_data(app, config = None):
             self.app = app
             self.app.jinja_env.cache = {}
             self.app.config["JSONIFY_PRETTYPRINT_REGULAR"] = False
-            self.app.config["SECRET_KEY"] = secrets.token_urlsafe(16)
+
+            if not os.path.exists("Keyfile"):
+                self.app.config["SECRET_KEY"] = secrets.token_urlsafe(16)
+            else:
+                with open("Keyfile") as f:
+                    self.app.config["SECRET_KEY"] = f.read()
 
             self.config = config
             self.database = Database(self)
@@ -45,6 +52,7 @@ def load_data(app, config = None):
                 app.register_blueprint(self.auth.web, url_prefix="/auth")
                 self.sapphire.do_web()
                 app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")
+                app.register_blueprint(API_Handler(self).web, url_prefix="/api")
                 app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
                 app.register_blueprint(Web_Handler(self).web)
 

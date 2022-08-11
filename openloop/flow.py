@@ -11,7 +11,8 @@ class Flow(dict):
         self["defaults"] = package
         self["redirects"] = {}
         self["pages"] = {
-            "builtin": {}
+            "builtin": {},
+            "devices": {}
         }
         self["plugins"] = {} # This is for plugins
         self["void"] = None

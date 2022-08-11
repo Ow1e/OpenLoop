@@ -99,6 +99,7 @@ def plugins(plugin_list):
 
 def plugins_view():
     p = Page()
+    p.append(Heading("Plugins", 0))
     c = Card("Plugins", 7)
     chart = Div()
     chart.add_flow("pages.builtin.plugins")

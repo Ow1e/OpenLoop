@@ -44,8 +44,7 @@ const staticAssets = [
     "/",
     "/about",
     "/plugins",
-    "/api/",
-    "/lite/"
+    "/api/"
 ]
 
 self.addEventListener('install', async e => {
