@@ -11,7 +11,6 @@ socket.on("connect", () => {
 
 socket.on("disconnect", () => {
     console.info("Disconnected to Nebula")
-    hide_net()
 });
 
 socket.on("login_request", (none) => {

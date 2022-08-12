@@ -5,6 +5,8 @@ from openloop.page import plugins as serv_flow_plugins
 from openloop.page import set_pl_redirects
 from openloop.page import plugins_view as serv_plugins
 from openloop.page import login_page as serv_login
+from openloop.page import welcome_page as serv_welcome
+
 from flask_login import logout_user
 import os
 
@@ -43,7 +45,7 @@ class Web_Handler:
         
         # WEB MANIFEST PWA
         @web.route("/manifest.webmanifest")
-        @shared.vault.login_required # You dont want OpenLoop on a targeted attack dont you? :)
+        @shared.vault.login_required # So PWA does not fail on Login Screen, as it caches some pages
         def manifest():
             return MANIFEST
 
@@ -111,6 +113,8 @@ class Web_Handler:
 
         @web.route("/login")
         def login():
+            if shared.database.db["users"].find_one({"admin": True})==None:
+                return render_template("login.jinja", methods=methods, html = serv_welcome(), title="Wizzard")
             return render_template("login.jinja", methods=methods, html = serv_login(), title="Login")
 
         @web.route("/reload")
@@ -124,7 +128,7 @@ class Web_Handler:
         @shared.vault.login_required
         def logout():
             logout_user()
-            return redirect(".login")
+            return redirect(url_for(".login"))
 
     def get_plugin(self, name : str):
         chosen = None

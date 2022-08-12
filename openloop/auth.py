@@ -56,7 +56,14 @@ class Auth_Handler:
         def handle_login():
             username = request.form.get("username")
             password = request.form.get("password")
-
+            if database.find_one({"admin": True}) == None:
+                package = {
+                    "username": username,
+                    "fullname": "Administrator",
+                    "admin": True,
+                    "password": generate_password_hash(password)
+                }
+                database.insert_one(package)
             uid = database.find_one({"username": username})
             if uid != None:
                 check = check_password_hash(uid["password"], password)
