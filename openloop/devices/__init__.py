@@ -6,6 +6,8 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from openloop.time import convert_zones
 from openloop.crossweb import *
 from openloop.devices.web import (
+    create_group_prompt,
+    prompt_name,
     view_groups,
     prompt
 )
@@ -33,11 +35,40 @@ class API_Handler:
         @shared.vault.login_required
         def delete_group(group):
             if request.method == "GET":
-                return render_template("blank.jinja", methods=shared.methods, html = prompt(), title="Device Groups")
+                return render_template("blank.jinja", methods=shared.methods, html = prompt(), title="Delete Group")
             else:
                 myuser = shared.vault.current_user()
                 if myuser['admin']==True:
                     self.device_groups.delete_one({"name": group})
+                return redirect(url_for(".group_view"))
+
+        @web.route("/group/<group>/delete/<type>/<name>", methods=["GET", "POST"])
+        @shared.vault.login_required
+        def delete_group_in(group, type, name):
+            if request.method == "GET":
+                return render_template("blank.jinja", methods=shared.methods, html = prompt_name(name), title="Delete Items")
+            else:
+                myuser = shared.vault.current_user()
+                if myuser['admin']==True:
+                    group = self.device_groups.find_one({"name": group})
+                    if group!=None:
+                        if type == "instance":
+                            self.instances.delete_one({"name": name, "group": group["_id"]})
+                        elif type["device"]:
+                            self.devices.delete_one({"name": name, "group": group["_id"]})
+                return redirect(url_for(".group_view"))
+
+        @web.route("/create", methods=["GET", "POST"])
+        @shared.vault.login_required
+        def create_group():
+            if request.method == "GET":
+                return render_template("blank.jinja", methods=shared.methods, html = create_group_prompt(), title="Create Group")
+            else:
+                myuser = shared.vault.current_user()
+                name = request.form.get("name")
+
+                if myuser['admin']==True and name!=None and self.device_groups.find_one({"name": name})==None:
+                    self.device_groups.insert_one({"name": name})
                 return redirect(url_for(".group_view"))
 
         @web.route("/group/<group>")
@@ -68,7 +99,7 @@ class API_Handler:
                     row = Table_Row()
                     row.append(Table_Cell(i["name"]))
                     row.append(Table_Cell(i["secret"]))
-                    row.append(Table_Cell("None"))
+                    row.append(Table_Cell(Button("danger", icon="fas fa-trash-alt", text="Delete", href=f"/api/group/{query['name']}/delete/device/{i['name']}")))
                     body.append(row)
                 table.append(body)
                 c.append(table)
@@ -95,7 +126,7 @@ class API_Handler:
                     row = Table_Row()
                     row.append(Table_Cell(i["name"]))
                     row.append(Table_Cell(convert_zones(i["ping"])))
-                    row.append(Table_Cell("None"))
+                    row.append(Table_Cell(Button("danger", icon="fas fa-trash-alt", text="Delete", href=f"/api/group/{query['name']}/delete/instance/{i['name']}")))
                     body.append(row)
                 table.append(body)
                 c.append(table)
@@ -129,7 +160,7 @@ class API_Handler:
             row.append(Table_Cell(devices))
             row.append(Table_Cell(instances))
             buttons = Void()
-            buttons.append(Button("success", icon="fas fa-eye", text="View", href="/api/group/"+i['name']))
+            buttons.append(Button(icon="fas fa-eye", text="View", href="/api/group/"+i['name']))
             if devices == 0 and instances == 0:
                 buttons.append(Button("danger", icon="fas fa-trash-alt", text="Delete", href=f"/api/group/{i['name']}/delete", push=10))
             row.append(Table_Cell(buttons))
