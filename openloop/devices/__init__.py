@@ -4,8 +4,10 @@ Web API View for OpenLoop Web
 
 from flask import Blueprint, render_template, request, redirect, url_for
 from openloop.time import convert_zones
+import secrets
 from openloop.crossweb import *
 from openloop.devices.web import (
+    create_api_prompt,
     create_group_prompt,
     prompt_name,
     view_groups,
@@ -23,6 +25,7 @@ class API_Handler:
         self.device_groups = shared.database.db["groups"]
         self.devices = shared.database.db["devices"]
         self.instances = shared.database.db["instances"]
+        self.myid = shared.database.identity["_id"]
 
         flow["groups"] = self.group_list
 
@@ -53,8 +56,11 @@ class API_Handler:
                     group = self.device_groups.find_one({"name": group})
                     if group!=None:
                         if type == "instance":
-                            self.instances.delete_one({"name": name, "group": group["_id"]})
-                        elif type["device"]:
+                            query = {"name": name, "group": group["_id"]}
+                            obj = self.instances.find_one(query)
+                            if obj!=None and obj["_id"]!=self.myid:
+                                self.instances.delete_one(query)
+                        elif type == "device":
                             self.devices.delete_one({"name": name, "group": group["_id"]})
                 return redirect(url_for(".group_view"))
 
@@ -70,6 +76,36 @@ class API_Handler:
                 if myuser['admin']==True and name!=None and self.device_groups.find_one({"name": name})==None:
                     self.device_groups.insert_one({"name": name})
                 return redirect(url_for(".group_view"))
+
+        @web.route("/group/<group>/create", methods=["GET", "POST"])
+        def create_device(group):
+            if request.method == "GET":
+                return render_template("blank.jinja", methods=shared.methods, html = create_api_prompt(), title="Create Device")
+            else:
+                myuser = shared.vault.current_user()
+
+                name = request.form.get("name")
+                store = request.form.get("store", "off") == "on"
+                endpoints = request.form.get("endpoints", "off") == "on"
+                plugins = request.form.get("plugins", "off") == "on"
+                apis = request.form.get("apis", "off") == "on"
+
+                group = self.device_groups.find_one({"name": group})
+
+                if group!=None and myuser["admin"]==True:
+                        pkg = {
+                            "name": name,
+                            "store": store,
+                            "endpoints": endpoints,
+                            "plugins": plugins,
+                            "apis": apis,
+                            "group": group["_id"],
+                            "secret": secrets.token_urlsafe(16)
+                        }
+                        self.devices.insert_one(pkg)
+
+                return redirect(url_for(".group_view"))
+
 
         @web.route("/group/<group>")
         @shared.vault.login_required
@@ -90,7 +126,7 @@ class API_Handler:
                 row = Table_Row()
                 row.append(Table_Cell("Name"))
                 row.append(Table_Cell("Secret"))
-                row.append(Table_Cell("Archive"))
+                row.append(Table_Cell("Options"))
                 head.append(row)
                 table.append(head)
 
@@ -103,6 +139,7 @@ class API_Handler:
                     body.append(row)
                 table.append(body)
                 c.append(table)
+                c.append(Button("success", "fas fa-plus", href=f"/api/group/{group}/create", text="Create"))
 
                 fullrow.append(c)
 
@@ -117,7 +154,7 @@ class API_Handler:
                 row = Table_Row()
                 row.append(Table_Cell("Name"))
                 row.append(Table_Cell("Last Ping"))
-                row.append(Table_Cell("Archive"))
+                row.append(Table_Cell("Options"))
                 head.append(row)
                 table.append(head)
 
@@ -126,7 +163,10 @@ class API_Handler:
                     row = Table_Row()
                     row.append(Table_Cell(i["name"]))
                     row.append(Table_Cell(convert_zones(i["ping"])))
-                    row.append(Table_Cell(Button("danger", icon="fas fa-trash-alt", text="Delete", href=f"/api/group/{query['name']}/delete/instance/{i['name']}")))
+                    if self.myid != i["_id"]:
+                        row.append(Table_Cell(Button("danger", icon="fas fa-trash-alt", text="Delete", href=f"/api/group/{query['name']}/delete/instance/{i['name']}")))
+                    else:
+                        row.append(Table_Cell("None"))
                     body.append(row)
                 table.append(body)
                 c.append(table)
@@ -145,7 +185,7 @@ class API_Handler:
                 p.append(fullrow)
 
                 return render_template("blank.jinja", methods=shared.methods, html = p.export(), title=query['name'])
-            return "nerd"
+            return redirect("/api/")
 
 
     def group_list(self):

@@ -70,13 +70,21 @@ def create_api_prompt():
     p = Page()
     p.append(Heading("Create Device", 0))
 
-    c = Card("Create Device")
-    form = Form()
+    c = Card("Create Device", 6)
+    form = HTML_Form("")
     
     name = Form_Element()
     name.append(Label("Name"))
     name.append(Input("name"))
     form.append(name)
 
-    
+    form.append(Form_Check("Allow Storing", "store", True))
+    form.append(Form_Check("Allow Endpoints", "endpoints", False))
+    form.append(Form_Check("Allow Plugins", "plugins", True))
+    form.append(Form_Check("Allow External APIs", "apis", True))
+    form.append(Form_Button("Create"))
+
+    c.append(form)
+    p.append(c)
+    return p.export()
     
