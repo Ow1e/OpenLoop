@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, url_for, send_from_directory, redirect, request
-from openloop.page import index as serv_index
+from openloop.page import index as serv_index, login_nomongo
 from openloop.page import about as serv_about
 from openloop.page import plugins as serv_flow_plugins
 from openloop.page import set_pl_redirects
@@ -113,9 +113,11 @@ class Web_Handler:
 
         @web.route("/login")
         def login():
-            if shared.database.db["users"].find_one({"admin": True})==None:
-                return render_template("login.jinja", methods=methods, html = serv_welcome(), title="Wizzard")
-            return render_template("login.jinja", methods=methods, html = serv_login(), title="Login")
+            if shared.database.working:
+                if shared.database.db["users"].find_one({"admin": True})==None:
+                    return render_template("login.jinja", methods=methods, html = serv_welcome(), title="Wizzard")
+                return render_template("login.jinja", methods=methods, html = serv_login(), title="Login")
+            return render_template("login.jinja", methods=methods, html = login_nomongo(), title="Offline")
 
         @web.route("/reload")
         @shared.vault.login_required

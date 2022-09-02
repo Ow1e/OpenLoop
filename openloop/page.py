@@ -154,7 +154,7 @@ def welcome_page():
 
     form.append(username)
     form.append(password)
-    form.append(Form_Button("Login"))
+    form.append(Form_Button("Register"))
 
     c.append(form)
     p.append(c)
@@ -173,4 +173,10 @@ OpenLoop {openloop.num}-{openloop.code}
 Making the world a better place.
 </code>""")
 
+    return p.export()
+
+def login_nomongo():
+    p = Page()
+    p.append(Heading("MongoDB is offline", 3))
+    p.append(Text("OpenLoop is disabled until a conection is reached", traditional=True))
     return p.export()
