@@ -1,0 +1,56 @@
+<nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-{{methods.theme}} p-0">
+    <div class="container-fluid d-flex flex-column p-0">
+        <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="/about">
+            <div class="sidebar-brand-icon"><img src="/static/img/OpenLoop.png" width="60px" style="margin-top: -5px;"></div>
+            <div class="sidebar-brand-text mx-3"><span style="margin-right: 0px;">{{ methods.name }}</span></div>
+        </a>
+        <hr class="sidebar-divider my-0" />
+        <ul id="accordionSidebar" class="navbar-nav text-light">
+            <li class="nav-item"><a class="nav-link {% if active %}active{% endif %}" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <hr class="sidebar-divider" />
+            <div class="sidebar-heading">
+                <p class="mb-0">INTERFACE</p>
+            </div>
+            <li class="nav-item">
+                <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-1" href="#collapse-1" role="button"><i class="fas fa-cog"></i><span>Settings</span></a>
+                    <div id="collapse-1" class="collapse">
+                        <div class="bg-white border rounded py-2 collapse-inner">
+                            <h6 class="collapse-header">SETTINGS</h6><a class="collapse-item" href="/about">About</a><a class="collapse-item" href="/plugins">Plugins</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-2" href="#collapse-2" role="button"><i class="fas fa-wrench"></i><span>Utilities</span></a>
+                    <div id="collapse-2" class="collapse">
+                        <div class="bg-white border rounded py-2 collapse-inner">
+                            <h6 class="collapse-header">DEBUGGING</h6>
+                            <a class="collapse-item" href="/client">Client Info</a>
+                            <h6 class="collapse-header">INTERFACE</h6>
+                            <a class="collapse-item" href="/api/">
+                                <p style="margin:0;padding:0;" class="rainbow_text_animated">Network</p>
+                            </a>
+                            <a class="collapse-item text-primary" href="/sapphire">Sapphire (BETA)</a>
+                            <h6 class="collapse-header">MANAGEMENT</h6>
+                            <a class="collapse-item" href="/auth/">Users</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider" />
+            <div class="sidebar-heading">
+                <p class="mb-0">Addons</p>
+            </div>
+            <li class="nav-item">
+                <div><a class="btn btn-link nav-link" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse-3" href="#collapse-3" role="button"><i class="fas fa-box-open"></i><span>Plugins</span></a>
+                    <div id="collapse-3" class="collapse">
+                        <div class="bg-white border rounded py-2 collapse-inner" flow="defaults.navbar">
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <hr class="sidebar-divider" />
+        </ul>
+        <div class="text-center d-none d-md-inline"><button id="sidebarToggle" class="btn rounded-circle border-0" type="button"></button></div>
+    </div>
+</nav>

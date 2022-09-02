@@ -187,9 +187,9 @@ class Deployer:
         if self._shared.database.working:
             for i in self._shared.database.db["plugins"].find():
                 if i["filename"].endswith(".pyr"):
-                    dealers["mongodb:"+i["filename"]] = i["contents"]
+                    dealers["(MONGODB) "+i["filename"]] = i["contents"]
                 else:
-                    plugins["mongodb:"+i["filename"]] = i["contents"]
+                    plugins["(MONGODB) "+i["filename"]] = i["contents"]
         else:
             logging.warning("OpenLoop Core could not load MongoDB plugins")
 
