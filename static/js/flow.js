@@ -1,6 +1,6 @@
 console.log("Running FlowJS wrapper V2.3 + Nebula")
 
-import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+import { io } from "/static/libs/4.4.1/socket.io.esm.min.js";
 
 const socket = io()
 

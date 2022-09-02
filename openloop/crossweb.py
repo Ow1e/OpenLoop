@@ -107,7 +107,7 @@ class Feature(Element):
         if not bar:
             html = """
 <div class="col-md-{} col-xl-3 mb-4">
-    <div class="card shadow border-start-primary py-2">
+    <div class="card shadow border-start-primary py-2 border-bottom-{}">
         <div class="card-body">
             <div class="row align-items-center no-gutters">
                 <div class="col me-2">
@@ -120,11 +120,11 @@ class Feature(Element):
     </div>
 </div>
 """
-            self.outer = condense(html).format(size, color, title, inner, icon)
+            self.outer = condense(html).format(size, color, color, title, inner, icon)
         else:
             html = """
 <div class="col-md-{} col-xl-3 mb-4">
-    <div class="card shadow border-start-info py-2">
+    <div class="card shadow border-start-info py-2 border-bottom-{}">
         <div class="card-body">
             <div class="row align-items-center no-gutters">
                 <div class="col me-2">
@@ -146,7 +146,7 @@ class Feature(Element):
     </div>
 </div>
 """
-            self.outer = condense(html).format(size, color, title, inner, color, icon)
+            self.outer = condense(html).format(size, color, color, title, inner, color, icon)
 
 
 class Table(Element):
