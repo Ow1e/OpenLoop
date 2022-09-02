@@ -1,7 +1,7 @@
 from datetime import datetime
 
-num = 0.4
-code = "Saturn"
+num = 0.5
+code = "Kepler"
 st_code = "1"
 comb_code = str(num)+st_code
 lite_api = "v1f"
