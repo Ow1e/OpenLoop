@@ -17,13 +17,14 @@ class Flow(dict):
         self["plugins"] = {} # This is for plugins
         self["void"] = None
         self["version"] = openloop.git_ver()
-        self.admin_only = [] # List of functions to blacklist, not paths to increase security. Introducing strings could lead toa vulneralbility.
+        self.admin_only = [] # List of functions to blacklist, not paths to increase security. Introducing strings could lead to a vulneralbility.
 
 class Flow_Serve:
     def __init__(self, shared) -> None:
         api = Blueprint("flow", __name__)
         self.web = api
         flow = shared.flow
+        self.auth = shared.auth
         self.flow = flow
 
         @api.errorhandler(500)
@@ -71,6 +72,25 @@ class Flow_Serve:
             d = self.flow_find(element)
             return d["value"]
 
+    def flow_transit(self, current, forms = False):
+        func = [BuiltinFunctionType, MethodType, FunctionType]
+        if current == {}:
+            current = None
+        elif type(current) == dict:
+            current = None
+        elif type(current) in func:
+            if forms and request.method == "POST":
+                current = current(request.form)
+                return render_template("reload.html")
+            else:
+                current = current()
+
+        if current == None:
+            current = "null"
+
+        return {"value": current}
+
+
     def flow_find(self, element, form_enabled = False):
         start = datetime.now()
         path = element.split(".")
@@ -82,22 +102,12 @@ class Flow_Serve:
             else:
                 current = {}
 
-        func = [BuiltinFunctionType, MethodType, FunctionType]
-        if not current in self.flow.admin_only:
-            if current == {}:
-                current = None
-            elif type(current) == dict:
-                current = None
-            elif type(current) in func:
-                if request.method == "POST" and form_enabled:
-                    current = current(request.form)
-                    return render_template("reload.html")
-                else:
-                    current = current()
-
-            if current == None:
-                current = "null"
-
-            return {"value": current}
+        if not element in self.flow.admin_only:
+            return self.flow_transit(current, form_enabled)
         else:
-            return {"value": None, "error": "Admin Only Object!"}
+            user = self.auth.auth.current_user()
+            if user['admin']:
+                pack = self.flow_transit(current, form_enabled)
+                pack['authed'] = True
+                return pack
+            return {"value": None, "error": "Admin Only Object!", "user": user["username"]}

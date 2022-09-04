@@ -63,6 +63,7 @@
             <hr class="sidebar-divider" />
         </ul>
         <div class="text-center d-none d-md-inline"><button id="sidebarToggle" class="btn rounded-circle border-0" type="button"></button></div>
+        {% if methods.experimental %}
         <div class="sidebar-card d-none d-lg-flex" style="
     display: flex;
     flex-direction: column;
@@ -76,8 +77,9 @@
     padding: 1rem;
     background-color: rgba(0,0,0,.1);
 ">
-                <p class="text-center mb-2"><strong>OpenLoop Betas</strong> are not production ready.</p>
+                <p class="text-center mb-2"><strong class="text-uppercase">{{methods.version}}</strong>'s PWA is labeled as experimental.</p>
                 <a class="btn btn-success text-white btn-sm" href="https://docs.cyclone.biz/info/versions">Learn about Versions</a>
             </div>
+        {% endif %}
     </div>
 </nav>

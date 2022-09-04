@@ -70,16 +70,7 @@ def set_pl_redirects(plugin_list, flow):
         flow["redirects"]["plugins"][i.name] = f"/plugin/{i.name}"
             
 def plugins(plugin_list):
-    table = Table()
-
-    header = Table_Header()
     body = Table_Body()
-
-    header_row = Table_Row()
-    header_row.append(Table_Cell("Plugin Name"))
-    header_row.append(Table_Cell("Plugin Location"))
-    header_row.append(Table_Cell("Plugin Page"))
-    header.append(header_row)
 
     for i in plugin_list:
         row = Table_Row()
@@ -90,28 +81,32 @@ def plugins(plugin_list):
         row.append(btn_cell)
         body.append(row)
 
-    table.append(header)
-    table.append(body)
-    if len(body) > 9:
-        table.append(header)
-    
-    return table.export()
+    return body.export()
 
 def plugins_view():
     p = Page()
     p.append(Heading("Plugins", 0))
-    c = Card("Plugins", 7)
-    chart = Div()
-    chart.add_flow("pages.builtin.plugins")
+    c = Card("Plugins Online", 7)
+    table = Table()
+    header = Table_Header()
+    body = Table_Body()
+
+    header_row = Table_Row()
+    header_row.append(Table_Cell("Plugin Name"))
+    header_row.append(Table_Cell("Plugin Location"))
+    header_row.append(Table_Cell("Plugin Page"))
+    header.append(header_row)
+
+    body.add_flow("plugins.mylist")
+
+    table.append(body)
+    table.append(header)
+
     c.append("Plugin metadata updates every time a OpenLoop Core instance is restarted or a manual restart occurs")
-    c.append(chart)
-    c.append(Button(icon="fas fa-redo", color="danger", flow="void", text="Restart Plugins", href="/plugins/restart"))
+    c.append(table)
+    c.append(Button(icon="fas fa-redo", color="danger", flow="plugins.restart", text="Restart Plugins"))
     p.append(c)
 
-    c = Card("Plugin API", 5)
-    c.append(Text("See documentation "))
-    c.append(Link("https://docs.cyclone.biz", "here"))
-    p.append(c)
     return p.export()
 
 def login_page():

@@ -6,6 +6,7 @@ st_code = "1"
 comb_code = str(num)+st_code
 lite_api = "v1f"
 bootup = datetime.utcnow()
+experimental = True
 
 ascii = """________                            .____                             
 \_____  \  ______    ____    ____   |    |     ____    ____  ______   

@@ -2,6 +2,7 @@ from openloop.alerts import AlertManager
 from openloop.auth import Auth_Handler
 from openloop.config import check as configCheck
 from openloop.database import Database
+from openloop.maintain import Maintain_Handler
 from openloop.sapphire.web import Sapphire_Manager
 from openloop.web import Web_Handler
 from openloop.flow import Flow, Flow_Serve
@@ -53,6 +54,7 @@ def load_data(app, config = None):
                 self.sapphire.do_web()
                 app.register_blueprint(self.sapphire.web, url_prefix="/sapphire")
                 app.register_blueprint(API_Handler(self).web, url_prefix="/api")
+                app.register_blueprint(Maintain_Handler(self).web, url_prefix="/plugins")
                 app.register_blueprint(Flow_Serve(self).web, url_prefix="/flow")
                 app.register_blueprint(Web_Handler(self).web)
 

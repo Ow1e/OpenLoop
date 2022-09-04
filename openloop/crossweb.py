@@ -202,7 +202,7 @@ class Icon(Element):
 class Button(Element):
     """Button with Flow Support"""
 
-    def __init__(self, color="primary", icon="fas fa-flag", flow="void", text="", href="", push : int= 0):
+    def __init__(self, color="primary", icon="fas fa-flag", flow="void", text="", href="#", push : int= 0):
         super().__init__()
         self.flow_enabled = False
         self.html = '''
@@ -282,6 +282,11 @@ class Form_Check(Element):
         else:
             checked = ""
         self.outer = '<div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="{}" {} /><label class="form-check-label"><strong>{}</strong></label></div>'.format(name, checked, text)
+
+class Form_File(Element):
+    def __init__(self, name):
+        super().__init__()
+        self.outer = '<input class="form-control form-control-sm" type="file" name="{name}" style="margin: 10px 0px;" multiple />'.format(name)
 
 class Image(Element):
     """HTML image"""

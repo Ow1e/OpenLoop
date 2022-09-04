@@ -1,4 +1,4 @@
-const cacheName =  "v3-kepler-rev1" // Testing cache name
+const cacheName =  "v5-kepler-rev1" // Testing cache name
 console.log("Running cache version "+cacheName)
 const staticAssets = [
     "/static/libs/plotly-2.12.1.min.js",
@@ -44,7 +44,7 @@ const staticAssets = [
     "/static/css/main.css",
     "/",
     "/about",
-    "/plugins",
+    "/plugins/",
     "/api/"
 ]
 

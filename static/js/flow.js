@@ -31,7 +31,7 @@ async function registerSW(){
     if ("serviceWorker" in navigator){
         console.info("PWA is enabled. With this URL you can access full PWA\nhttps://docs.cyclone.biz/using-pwas")
         try {
-            await navigator.serviceWorker.register("./sw.js")
+            await navigator.serviceWorker.register("/sw.js")
         } catch (e) {
             console.log("Flow Service Worker Failed")
         }

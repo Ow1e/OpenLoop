@@ -2,13 +2,11 @@ from flask import Blueprint, render_template, url_for, send_from_directory, redi
 from openloop.page import index as serv_index, login_nomongo
 from openloop.page import about as serv_about
 from openloop.page import plugins as serv_flow_plugins
-from openloop.page import set_pl_redirects
 from openloop.page import plugins_view as serv_plugins
 from openloop.page import login_page as serv_login
 from openloop.page import welcome_page as serv_welcome
 
 from flask_login import logout_user
-import os
 
 MANIFEST = {
     "name": "OpenLoop",
@@ -40,8 +38,6 @@ class Web_Handler:
         self.web = web
         methods = shared.methods
         self.shared = shared
-        shared.flow["pages"]["builtin"]["plugins"] = self.serv_flow_plugins_cl
-        set_pl_redirects(shared.plugins.enviroments, shared.flow)
         
         # WEB MANIFEST PWA
         @web.route("/manifest.webmanifest")
@@ -72,18 +68,6 @@ class Web_Handler:
         @shared.vault.login_required
         def offline():
             return render_template("debug.jinja", methods=methods, title = "Client Debug")
-
-        @web.route("/plugins")
-        @shared.vault.login_required
-        def list_plugins():
-            return render_template("blank.jinja", methods=methods, html = serv_plugins(), title="Plugins")
-
-        @web.route("/plugins/restart")
-        @shared.vault.login_required
-        def reload_plugins():
-            shared.plugins.restart()
-            shared.sapphire.destroy_filters()
-            return redirect(url_for(".list_plugins"))
 
         @web.route("/plugin/<name>")
         @shared.vault.login_required
@@ -139,9 +123,6 @@ class Web_Handler:
                 chosen = i
                 break
         return chosen
-
-    def serv_flow_plugins_cl(self):
-        return serv_flow_plugins(self.shared.plugins.enviroments)
 
     def apply_errors(self, app):
         @app.errorhandler(500)
