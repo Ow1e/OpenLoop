@@ -38,13 +38,15 @@ class Nebula:
             else:
                 current = {}
 
-        func = [BuiltinFunctionType, MethodType, FunctionType]
-
-        if current == {}:
-            current = None
-        elif type(current) == dict:
-            current = None
-        elif type(current) in func:
-            current = current()
+        if not element in self.flow.admin_only:
+            current = self._flow.flow_transit(current)
+        else:
+            user = self.auth.auth.current_user()
+            if user['admin']:
+                pack = self.flow_transit(current)
+                pack['authed'] = True
+                current = pack
+            else:
+                current = {"value": None, "error": "Admin Only Object!", "user": user["username"]}
         
         return current
