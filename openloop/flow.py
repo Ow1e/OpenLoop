@@ -5,6 +5,24 @@ from datetime import datetime
 import openloop
 import openloop.crossweb
 
+def flow_transit(current, forms = False):
+    func = [BuiltinFunctionType, MethodType, FunctionType]
+    if current == {}:
+        current = None
+    elif type(current) == dict:
+        current = None
+    elif type(current) in func:
+        if forms and request.method == "POST":
+            current = current(request.form)
+            return render_template("reload.html")
+        else:
+            current = current()
+
+    if current == None:
+        current = "null"
+
+    return {"value": current}
+
 class Flow(dict):
     def __init__(self):
         super().__init__()
@@ -18,6 +36,7 @@ class Flow(dict):
         self["void"] = None
         self["version"] = openloop.git_ver()
         self.admin_only = [] # List of functions to blacklist, not paths to increase security. Introducing strings could lead to a vulneralbility.
+        self.flow_transit = flow_transit
 
 class Flow_Serve:
     def __init__(self, shared) -> None:
@@ -26,6 +45,7 @@ class Flow_Serve:
         flow = shared.flow
         self.auth = shared.auth
         self.flow = flow
+        self.flow_transit = flow_transit
 
         @api.errorhandler(500)
         def error(err):
@@ -71,25 +91,6 @@ class Flow_Serve:
         def raw_request(element):
             d = self.flow_find(element)
             return d["value"]
-
-    def flow_transit(self, current, forms = False):
-        func = [BuiltinFunctionType, MethodType, FunctionType]
-        if current == {}:
-            current = None
-        elif type(current) == dict:
-            current = None
-        elif type(current) in func:
-            if forms and request.method == "POST":
-                current = current(request.form)
-                return render_template("reload.html")
-            else:
-                current = current()
-
-        if current == None:
-            current = "null"
-
-        return {"value": current}
-
 
     def flow_find(self, element, form_enabled = False):
         start = datetime.now()

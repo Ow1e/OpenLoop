@@ -38,7 +38,7 @@ class Nebula:
             else:
                 current = {}
 
-        if not element in self.flow.admin_only:
+        if not element in self._flow.admin_only:
             current = self._flow.flow_transit(current)
         else:
             user = self.auth.auth.current_user()
@@ -49,4 +49,4 @@ class Nebula:
             else:
                 current = {"value": None, "error": "Admin Only Object!", "user": user["username"]}
         
-        return current
+        return current["value"]

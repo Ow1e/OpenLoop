@@ -99,8 +99,8 @@ class Web_Handler:
         def login():
             if shared.database.working:
                 if shared.database.db["users"].find_one({"admin": True})==None:
-                    return render_template("login.jinja", methods=methods, html = serv_welcome(), title="Wizzard")
-                return render_template("login.jinja", methods=methods, html = serv_login(), title="Login")
+                    return render_template("blank.jinja", methods=methods, html = serv_welcome(), title="Wizzard")
+                return render_template("login.jinja", methods=methods)
             return render_template("login.jinja", methods=methods, html = login_nomongo(), title="Offline")
 
         @web.route("/reload")
