@@ -13,6 +13,10 @@ def check():
     config["Plugins"] = {
         "identity": "cloud"
     }
+    config["Identity"] = {
+        "name": os.getenv("OPENLOOP", "OpenLoop"),
+        "group": os.getenv("OPENLOOP_GROUP", "Default")
+    }
 
     return config
 

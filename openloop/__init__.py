@@ -1,11 +1,20 @@
 from datetime import datetime
 
-num = 0.4
-code = "Saturn"
+num = 0.5
+code = "Kepler"
 st_code = "1"
 comb_code = str(num)+st_code
 lite_api = "v1f"
 bootup = datetime.utcnow()
+experimental = True
+
+ascii = """________                            .____                             
+\_____  \  ______    ____    ____   |    |     ____    ____  ______   
+ /   |   \ \____ \ _/ __ \  /    \  |    |    /  _ \  /  _ \ \____ \  
+/    |    \|  |_> >\  ___/ |   |  \ |    |___(  <_> )(  <_> )|  |_> > 
+\_______  /|   __/  \___  >|___|  / |_______ \\____/  \____/ |   __/  
+        \/ |__|         \/      \/          \/               |__|     
+To learn more about OpenLoop, check out the docs https://docs.cyclone.biz"""
 
 print(f"OpenLoop Core {num*10}:{st_code}")
 
@@ -20,3 +29,5 @@ def git_ver():
             return "There was a error contacting git"
     except:
         return "There was a error calling the shell"
+
+cache_gitver = git_ver()

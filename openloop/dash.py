@@ -14,7 +14,7 @@ class Dash_Manager:
         data = [
             {"title": "CPU USAGE", "flow": "defaults.cpu", "color": "primary", "icon": "fas fa-microchip", "bar": True},
             {"title": "RAM USAGE", "flow": "defaults.ram_used", "color": "success", "icon": "fab fa-superpowers", "bar": True},
-            {"title": "CPU TEMPERATURE", "flow": "defaults.cpu_temp", "color": "danger", "icon": "fas fa-fire-alt"},
+            {"title": "CPU TEMPERATURE", "flow": "defaults.cpu_temp", "color": "warning", "icon": "fas fa-fire-alt"},
             {"title": "SERVER TIME", "flow": "defaults.timec", "color": "info", "icon": "fas fa-hourglass"},
         ]
         for i in data:

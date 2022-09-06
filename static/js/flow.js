@@ -1,6 +1,6 @@
 console.log("Running FlowJS wrapper V2.3 + Nebula")
 
-import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+import { io } from "/static/libs/4.4.1/socket.io.esm.min.js";
 
 const socket = io()
 
@@ -11,7 +11,6 @@ socket.on("connect", () => {
 
 socket.on("disconnect", () => {
     console.info("Disconnected to Nebula")
-    hide_net()
 });
 
 socket.on("login_request", (none) => {
@@ -32,7 +31,7 @@ async function registerSW(){
     if ("serviceWorker" in navigator){
         console.info("PWA is enabled. With this URL you can access full PWA\nhttps://docs.cyclone.biz/using-pwas")
         try {
-            await navigator.serviceWorker.register("./sw.js")
+            await navigator.serviceWorker.register("/sw.js")
         } catch (e) {
             console.log("Flow Service Worker Failed")
         }

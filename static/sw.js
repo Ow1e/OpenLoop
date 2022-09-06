@@ -1,8 +1,8 @@
-const cacheName =  "v3-kepler-rev1" // Testing cache name
+const cacheName =  "v5-kepler-rev1" // Testing cache name
 console.log("Running cache version "+cacheName)
 const staticAssets = [
-    "https://cdn.plot.ly/plotly-2.12.1.min.js",
-    "https://cdn.socket.io/4.4.1/socket.io.esm.min.js",
+    "/static/libs/plotly-2.12.1.min.js",
+    "/static/libs/4.4.1/socket.io.esm.min.js",
     "/static/js/chart.min.js",
     "/static/js/flow.js",
     "/static/js/theme.js",
@@ -41,11 +41,11 @@ const staticAssets = [
     "/static/fonts/fa-brands-400.ttf",
     "/static/fonts/fontawesome-webfont.eot",
     "/static/fonts/fa-regular-400.eot",
+    "/static/css/main.css",
     "/",
     "/about",
-    "/plugins",
-    "/api/",
-    "/lite/"
+    "/plugins/",
+    "/api/"
 ]
 
 self.addEventListener('install', async e => {

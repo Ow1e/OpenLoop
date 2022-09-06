@@ -5,24 +5,48 @@ from datetime import datetime
 import openloop
 import openloop.crossweb
 
+def flow_transit(current, forms = False):
+    func = [BuiltinFunctionType, MethodType, FunctionType]
+    if current == {}:
+        current = None
+    elif type(current) == dict:
+        current = None
+    elif type(current) in func:
+        if forms and request.method == "POST":
+            current = current(request.form)
+            return render_template("reload.html")
+        else:
+            current = current()
+
+    if current == None:
+        current = "null"
+
+    return {"value": current}
+
 class Flow(dict):
     def __init__(self):
         super().__init__()
         self["defaults"] = package
         self["redirects"] = {}
         self["pages"] = {
-            "builtin": {}
+            "builtin": {},
+            "devices": {},
+            "plugins": {}
         }
         self["plugins"] = {} # This is for plugins
         self["void"] = None
-        self["version"] = openloop.git_ver
+        self["version"] = openloop.git_ver()
+        self.admin_only = [] # List of functions to blacklist, not paths to increase security. Introducing strings could lead to a vulneralbility.
+        self.flow_transit = flow_transit
 
 class Flow_Serve:
     def __init__(self, shared) -> None:
         api = Blueprint("flow", __name__)
         self.web = api
         flow = shared.flow
+        self.auth = shared.auth
         self.flow = flow
+        self.flow_transit = flow_transit
 
         @api.errorhandler(500)
         def error(err):
@@ -80,23 +104,12 @@ class Flow_Serve:
             else:
                 current = {}
 
-        func = [BuiltinFunctionType, MethodType, FunctionType]
-
-        if current == {}:
-            current = None
-        elif type(current) == dict:
-            current = None
-        elif type(current) in func:
-            if request.method == "POST" and form_enabled:
-                current = current(request.form)
-                if request.form.get("formLocation")!=None:
-                    return redirect(request.form.get("formLocation"))
-                else:
-                    return redirect(url_for("web.index"))
-            else:
-                current = current()
-
-        if current == None:
-            current = "null"
-
-        return {"value": current}
+        if not element in self.flow.admin_only:
+            return self.flow_transit(current, form_enabled)
+        else:
+            user = self.auth.auth.current_user()
+            if user['admin']:
+                pack = self.flow_transit(current, form_enabled)
+                pack['authed'] = True
+                return pack
+            return {"value": None, "error": "Admin Only Object!", "user": user["username"]}

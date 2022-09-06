@@ -82,10 +82,14 @@ class Heading(Element):
 
 
 class Card(Element):
-    def __init__(self, title, size):
+    def __init__(self, title, size, padding = True):
         super().__init__()
-        self.outer = '''<div class="col-md-{}"><div class="card shadow mb-4"><div class="card-header py-3"><h6 class="text-primary m-0 fw-bold">{}</h6></div><div class="card-body" flow>{}</div></div></div>'''.format(
-            size, title, "{}")
+        if padding:
+            self.outer = '''<div class="col-md-{}"><div class="card shadow mb-4"><div class="card-header py-3"><h6 class="text-primary m-0 fw-bold">{}</h6></div><div class="card-body" flow>{}</div></div></div>'''.format(
+                size, title, "{}")
+        else:
+            self.outer = '''<div class="col-md-{}"><div class="card shadow mb-4"><div class="card-header py-3"><h6 class="text-primary m-0 fw-bold">{}</h6></div><div flow>{}</div></div></div>'''.format(
+                size, title, "{}")
 
 
 class Row(Element):
@@ -103,7 +107,7 @@ class Feature(Element):
         if not bar:
             html = """
 <div class="col-md-{} col-xl-3 mb-4">
-    <div class="card shadow border-start-primary py-2">
+    <div class="card shadow border-start-primary py-2 border-bottom-{}">
         <div class="card-body">
             <div class="row align-items-center no-gutters">
                 <div class="col me-2">
@@ -116,11 +120,11 @@ class Feature(Element):
     </div>
 </div>
 """
-            self.outer = condense(html).format(size, color, title, inner, icon)
+            self.outer = condense(html).format(size, color, color, title, inner, icon)
         else:
             html = """
 <div class="col-md-{} col-xl-3 mb-4">
-    <div class="card shadow border-start-info py-2">
+    <div class="card shadow border-start-info py-2 border-bottom-{}">
         <div class="card-body">
             <div class="row align-items-center no-gutters">
                 <div class="col me-2">
@@ -142,7 +146,7 @@ class Feature(Element):
     </div>
 </div>
 """
-            self.outer = condense(html).format(size, color, title, inner, color, icon)
+            self.outer = condense(html).format(size, color, color, title, inner, color, icon)
 
 
 class Table(Element):
@@ -180,10 +184,10 @@ class Table_Row(Element):
 class Table_Cell(Element):
     """Table cell"""
 
-    def __init__(self, text=""):
+    def __init__(self, text=None):
         super().__init__()
         self.outer = "<th>{}</th>"
-        if text!="":
+        if text!=None:
             self.append(text)
 
 
@@ -198,17 +202,17 @@ class Icon(Element):
 class Button(Element):
     """Button with Flow Support"""
 
-    def __init__(self, color="primary", icon="fas fa-flag", flow="void", text="", href=""):
+    def __init__(self, color="primary", icon="fas fa-flag", flow="void", text="", href="#", push : int= 0):
         super().__init__()
         self.flow_enabled = False
         self.html = '''
-<a class="btn btn-{} btn-icon-split" role="button" flow-click="{}" href="{}">
+<a class="btn btn-{} btn-icon-split" role="button" flow-click="{}" href="{}" style="margin-left:{}px;">
     <span class="text-white-50 icon">
         <i class="{}"></i>
     </span>
     <span class="text-white text">{}</span>
 </a>
-'''.format(color, flow, href, icon, "{}")
+'''.format(color, flow, href, push, icon, "{}")
         self.outer = condense(self.html)
         if text != "":
             self.append(text)
@@ -278,6 +282,11 @@ class Form_Check(Element):
         else:
             checked = ""
         self.outer = '<div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="{}" {} /><label class="form-check-label"><strong>{}</strong></label></div>'.format(name, checked, text)
+
+class Form_File(Element):
+    def __init__(self, name):
+        super().__init__()
+        self.outer = '<input class="form-control form-control-sm" type="file" name="{name}" style="margin: 10px 0px;" multiple />'.format(name)
 
 class Image(Element):
     """HTML image"""
@@ -349,3 +358,7 @@ class Collapsable(Element):
                         </div>
                     </div>''').format(title, "{}")
         
+class Void(Element):
+    def __init__(self):
+        super().__init__()
+        self.outer = "{}"

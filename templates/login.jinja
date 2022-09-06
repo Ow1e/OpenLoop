@@ -1,9 +1,74 @@
 {% extends "fullscreen.html" %}
 
-{% block title %}{{title}} - OpenLoop{% endblock %}
+{% block title %}Login - OpenLoop{% endblock %}
 
 {% block content %}
-<div style="height:100vh;padding:10px;margin-top:20px;">
-    {{html | safe}}
+<div class="container">
+    <div class="row justify-content-center">
+        <div id="login_main" class="col-md-9 col-lg-12 col-xl-6">
+            <div class="card shadow-lg o-hidden border-0 my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-12">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h4 class="text-dark mb-4">Welcome Back!</h4>
+                                    <div class="alert alert-danger" role="alert" style="border-radius: 10px;" hidden><span>Your username or password is wrong.</span></div>
+                                </div>
+                                <form class="user" method="post" action="/auth/handle">
+                                    <div class="mb-3"><input class="form-control form-control-user" type="text" aria-describedby="emailHelp" placeholder="Username" name="username" required /></div>
+                                    <div class="mb-3"><input class="form-control form-control-user" type="password" placeholder="Password" name="password" required /></div>
+                                    <div class="mb-3">
+                                        <div class="custom-control custom-checkbox small"></div>
+                                    </div><button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+                                    <hr /><a class="btn d-block btn-google btn-user w-100 mb-2" role="button" style="background: var(--bs-indigo);" href="javascript:enable_key();"><i class="fas fa-key"></i>  Use a Login Key</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="login_key" class="col-md-9 col-lg-12 col-xl-6" hidden>
+            <div class="card shadow-lg o-hidden border-0 my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 col-xl-12">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h4 class="text-dark mb-4">Login Key</h4>
+                                </div>
+                                <form class="user" action="/auth/key">
+                                    <div class="mb-3"><input class="form-control" type="text" style="border-radius: 10rem;padding: 1rem;" name="key" placeholder="USER@1A2B3C4D5H" autocomplete="off" required minlength="8" maxlength="32" /></div>
+                                    <div class="mb-3"></div>
+                                    <div class="mb-3">
+                                        <div class="custom-control custom-checkbox small"></div>
+                                    </div><button class="btn d-block btn-user w-100" type="submit" style="background: var(--bs-indigo);color: var(--bs-white);"><i class="fas fa-key"></i>  Login</button>
+                                </form>
+                                <div class="text-center"></div>
+                                <div class="text-center"></div>
+                                <div class="text-center"><a class="small" href="javascript:go_back();">Use username and password</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+{% endblock %}
+{% block js %}
+<script>
+function enable_key(){
+    console.info("Switching to key");
+    document.getElementById("login_main").hidden = true; 
+    document.getElementById("login_key").hidden = false;
+}
+
+function go_back(){
+    console.info("Switching to login");
+    document.getElementById("login_key").hidden = true;
+    document.getElementById("login_main").hidden = false; 
+}
+</script>
 {% endblock %}

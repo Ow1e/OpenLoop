@@ -70,16 +70,7 @@ def set_pl_redirects(plugin_list, flow):
         flow["redirects"]["plugins"][i.name] = f"/plugin/{i.name}"
             
 def plugins(plugin_list):
-    table = Table()
-
-    header = Table_Header()
     body = Table_Body()
-
-    header_row = Table_Row()
-    header_row.append(Table_Cell("Plugin Name"))
-    header_row.append(Table_Cell("Plugin Location"))
-    header_row.append(Table_Cell("Plugin Page"))
-    header.append(header_row)
 
     for i in plugin_list:
         row = Table_Row()
@@ -90,27 +81,32 @@ def plugins(plugin_list):
         row.append(btn_cell)
         body.append(row)
 
-    table.append(header)
-    table.append(body)
-    if len(body) > 9:
-        table.append(header)
-    
-    return table.export()
+    return body.export()
 
 def plugins_view():
     p = Page()
-    c = Card("Plugins", 7)
-    chart = Div()
-    chart.add_flow("pages.builtin.plugins")
+    p.append(Heading("Plugins", 0))
+    c = Card("Plugins Online", 7)
+    table = Table()
+    header = Table_Header()
+    body = Table_Body()
+
+    header_row = Table_Row()
+    header_row.append(Table_Cell("Plugin Name"))
+    header_row.append(Table_Cell("Plugin Location"))
+    header_row.append(Table_Cell("Plugin Page"))
+    header.append(header_row)
+
+    body.add_flow("pages.plugins.mylist")
+
+    table.append(body)
+    table.append(header)
+
     c.append("Plugin metadata updates every time a OpenLoop Core instance is restarted or a manual restart occurs")
-    c.append(chart)
-    c.append(Button(icon="fas fa-redo", color="danger", flow="void", text="Restart Plugins", href="/plugins/restart"))
+    c.append(table)
+    c.append(Button(icon="fas fa-redo", color="danger", flow="pages.plugins.restart", text="Restart Plugins"))
     p.append(c)
 
-    c = Card("Plugin API", 5)
-    c.append(Text("See documentation "))
-    c.append(Link("https://docs.cyclone.biz", "here"))
-    p.append(c)
     return p.export()
 
 def login_page():
@@ -134,4 +130,48 @@ def login_page():
 
     c.append(form)
     p.append(c)
+    return p.export()
+
+def welcome_page():
+    p = Page()
+    p.append(Heading("OpenLoop Wizzard", 0))
+    c = Card("Register Account", 6)
+
+    form = HTML_Form("/auth/handle") # Goes to auth.py to manage
+    
+    username = Form_Element()
+    username.append(Label("Username"))
+    username.append(Input("username", required=True))
+
+    password = Form_Element()
+    password.append(Label("Password"))
+    password.append(Input("password", required=True))
+
+    form.append(username)
+    form.append(password)
+    form.append(Form_Button("Register"))
+
+    c.append(form)
+    p.append(c)
+
+    c = Card("Welcome", 6)
+    c.append("Welcome to OpenLoop, a experimental ecosystem made for large scale automation. No matter your application, size and purpose, OpenLoop aims to deliver your needs. Any feedback and contribution is welcomed!\n\n- The Cyclone Team\n")
+    c.append(Image("/static/img/CycloneWhite.png", 70))
+
+    p.append(c)
+
+    p.append(f"""<code>
+Core Verion {openloop.comb_code}
+OpenLoop {openloop.num}-{openloop.code}
+{openloop.cache_gitver}
+
+Making the world a better place.
+</code>""")
+
+    return p.export()
+
+def login_nomongo():
+    p = Page()
+    p.append(Heading("MongoDB is offline", 3))
+    p.append(Text("OpenLoop is disabled until a conection is reached", traditional=True))
     return p.export()

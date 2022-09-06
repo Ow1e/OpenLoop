@@ -5,6 +5,7 @@ Manage alerts with db
 from datetime import datetime
 from time import sleep
 
+from openloop.time import convert_zones
 from openloop.plugins import CoreThread
 
 alert = """<a class="dropdown-item d-flex align-items-center" href="{}"><div class="me-3"><div class="bg-{} icon-circle"><i class="{} text-white"></i></div></div><div><span class="small text-gray-500">{}</span><p>{}</p></div></a>"""
@@ -17,28 +18,6 @@ def div_exponent(inter, div):
         if current >= inter:
             running = False
             return (int((current-div)/div), inter-(current-div))
-    
-def convert_zones(datetype : datetime):
-    rel = datetype
-    now = datetime.utcnow()
-    change = now-rel
-    ans = ""
-    
-    days = change.days
-    if days == 0:
-        secs = change.total_seconds()
-        if secs < 60: # Totals one minute
-            return f"{int(secs)} second ago."
-        elif secs < 3600: # Totals one hour
-            return f"{int(secs/60)} minutes ago."
-        elif int(secs/3600)==1:
-            return "1 hour ago."
-        else:
-            return f"{int(secs/3600)} hours ago."
-    else:
-        month = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][rel.month]
-        day = ["Monday", "Tuesday", "Wendsday", "Thursday", "Friday", "Saturday", "Sunday"][rel.weekday()]
-        return f"{day}, {month} {rel.day} {rel.year}"
 
 class AlertManager:
     """This is loaded by the loader, it has properties of a list but automatically sets a export function to ReFlow"""
