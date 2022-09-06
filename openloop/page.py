@@ -97,14 +97,14 @@ def plugins_view():
     header_row.append(Table_Cell("Plugin Page"))
     header.append(header_row)
 
-    body.add_flow("plugins.mylist")
+    body.add_flow("pages.plugins.mylist")
 
     table.append(body)
     table.append(header)
 
     c.append("Plugin metadata updates every time a OpenLoop Core instance is restarted or a manual restart occurs")
     c.append(table)
-    c.append(Button(icon="fas fa-redo", color="danger", flow="plugins.restart", text="Restart Plugins"))
+    c.append(Button(icon="fas fa-redo", color="danger", flow="pages.plugins.restart", text="Restart Plugins"))
     p.append(c)
 
     return p.export()

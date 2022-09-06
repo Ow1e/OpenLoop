@@ -13,9 +13,8 @@ class Maintain_Handler:
         self.web = web
         methods = shared.methods
 
-        shared.flow["plugins"] = {}
-        shared.flow.admin_only.append("plugins.restart")
-        flow = shared.flow["plugins"]
+        shared.flow.admin_only.append("pages.plugins.restart")
+        flow = shared.flow["pages"]["plugins"]
 
         @web.route("/")
         @shared.vault.login_required

@@ -30,7 +30,8 @@ class Flow(dict):
         self["redirects"] = {}
         self["pages"] = {
             "builtin": {},
-            "devices": {}
+            "devices": {},
+            "plugins": {}
         }
         self["plugins"] = {} # This is for plugins
         self["void"] = None
